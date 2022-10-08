@@ -145,7 +145,7 @@ const Departments = (props) => {
 
                         <div className="mb-3">
                             <label className="form-label required" htmlFor="Department Code">Department Code</label>
-                            <input type="text" className="form-control" id="DepartmentCode" value={formData.DepartmentCode} onChange={onEdit} required placeholder="e.g AUD" />
+                            <input type="text" disabled={formData.EntryID !== "" ? true : false} className="form-control" id="DepartmentCode" value={formData.DepartmentCode} onChange={onEdit} required placeholder="e.g AUD" />
                         </div>
                         <div className="mb-3">
                             <div className="form-label required">Head of Department State</div>
