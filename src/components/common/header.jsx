@@ -14,7 +14,7 @@ const Header = (props) => {
   }
 
   return (
-    <header id="head" className="navbar navbar-expand-md navbar-light d-print-none">
+    <header id="head" className={`navbar navbar-expand-md navbar-light d-print-none`}>
       <div className="container-xl">
         <button
           className="navbar-toggler"
@@ -45,14 +45,14 @@ const Header = (props) => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logic-and" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M22 12h-5"></path>
-                  <path d="M2 9h5"></path>
-                  <path d="M2 15h5"></path>
-                  <path d="M9 5c6 0 8 3.5 8 7s-2 7 -8 7h-2v-14h2z"></path>
-                </svg>
-                {props.loginData[0].BranchName} Branch
+                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-logic-and" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M22 12h-5" />
+        <path d="M2 9h5" />
+        <path d="M2 15h5" />
+        <path d="M9 5c6 0 8 3.5 8 7s-2 7 -8 7h-2v-14h2z" />
+      </svg>
+                {props.loginData[0].Branch} Branch
               </a>
               <a
                 href="https://github.com/sponsors/codecalm"
@@ -61,18 +61,18 @@ const Header = (props) => {
                 rel="noreferrer"
               >
                 {/* Download SVG icon from http://tabler-icons.io/i/heart */}
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-world-www" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M19.5 7a8.998 8.998 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4"></path>
-                  <path d="M11.5 3a16.989 16.989 0 0 0 -1.826 4"></path>
-                  <path d="M12.5 3a16.989 16.989 0 0 1 1.828 4.004"></path>
-                  <path d="M19.5 17a8.998 8.998 0 0 1 -7.5 4a8.991 8.991 0 0 1 -7.484 -4"></path>
-                  <path d="M11.5 21a16.989 16.989 0 0 1 -1.826 -4"></path>
-                  <path d="M12.5 21a16.989 16.989 0 0 0 1.828 -4.004"></path>
-                  <path d="M2 10l1 4l1.5 -4l1.5 4l1 -4"></path>
-                  <path d="M17 10l1 4l1.5 -4l1.5 4l1 -4"></path>
-                  <path d="M9.5 10l1 4l1.5 -4l1.5 4l1 -4"></path>
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-world-www" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M19.5 7a8.998 8.998 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4" />
+        <path d="M11.5 3a16.989 16.989 0 0 0 -1.826 4" />
+        <path d="M12.5 3a16.989 16.989 0 0 1 1.828 4.004" />
+        <path d="M19.5 17a8.998 8.998 0 0 1 -7.5 4a8.991 8.991 0 0 1 -7.484 -4" />
+        <path d="M11.5 21a16.989 16.989 0 0 1 -1.826 -4" />
+        <path d="M12.5 21a16.989 16.989 0 0 0 1.828 -4.004" />
+        <path d="M2 10l1 4l1.5 -4l1.5 4l1 -4" />
+        <path d="M17 10l1 4l1.5 -4l1.5 4l1 -4" />
+        <path d="M9.5 10l1 4l1.5 -4l1.5 4l1 -4" />
+      </svg>
                 Website
               </a>
             </div>
@@ -246,10 +246,10 @@ const Header = (props) => {
             >
               <span
                 className="avatar avatar-sm"
-                style={{ backgroundImage: props.loginData[0].Passport === "" ? `url(${Logo})` : `url(${props.loginData[0].Passport})` }}
+                style={{ backgroundImage: props.loginData[0].ImagePath === "" ? `url(${Logo})` : `url(${props.loginData[0].ImagePath})` }}
               />
               <div className="d-none d-xl-block ps-2">
-                <div>{props.loginData[0].FullName}</div>
+                <div>{props.loginData[0].FirstName + " "+ props.loginData[0].MiddleName + " " +props.loginData[0].Surname}</div>
                 <div className="mt-1 small text-muted">{props.loginData[0].Designation}</div>
               </div>
             </a>
@@ -268,6 +268,7 @@ const Header = (props) => {
             </div>
           </div>
         </div>
+
       </div>
     </header>
   )

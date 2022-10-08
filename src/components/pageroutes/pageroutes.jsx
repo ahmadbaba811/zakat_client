@@ -2,20 +2,40 @@ import React, { useEffect } from "react";
 import { Route, Router, Routes } from "react-router-dom";
 import Header from "../common/header";
 import DashBoards from "../dashboard/dashaord";
+import NaviagtionTab from "../common/navbar";
+import Error404 from "../common/error404";
+import { useState } from "react";
 
 const PageRoutes = () => {
     // useEffect(()=>{
     //     document.getElementById("head").scrollTop();
     //   },[])
 
+    const [overlap, setOverLap] = useState("navbar navbar-expand-md navbar-light d-print-none")
+    const [sticky, setSticky] = useState("")
+    const Sticky = ()=>{
+        if(sticky === ""){setSticky("sticky-top")}else{setSticky("")}
+
+    }
+    const Overlap = ()=>{
+        const ov = "navbar navbar-expand-md navbar-dark navbar-overlap d-print-none";
+        setOverLap(ov)
+
+    }
 
     return (
         <>
-        <Header/>
-        <Routes>
-            <Route path="/" element={<DashBoards />} />
-            <Route path="/dashboard" element={<DashBoards />} />
-        </Routes></>
+            <div className={"sticky-top"}>
+                <Header overlap={overlap} /><NaviagtionTab Overlap={Overlap} Sticky={Sticky} />
+            </div>
+
+            <Routes>
+                <Route path="/" element={<DashBoards />} />
+                <Route path="/dashboard" element={<DashBoards />} />
+
+
+                <Route path="*" element={<Error404 />} />
+            </Routes></>
     )
 }
 export default PageRoutes;

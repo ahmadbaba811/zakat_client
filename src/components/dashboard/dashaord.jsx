@@ -1,11 +1,13 @@
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import Loader from "../common/loader";
 import Modal from "../common/modal/modal";
 import SuccessModal from "../common/modal/successmodal";
 // import {SuccessModal} from "../common/modal/successmodal";
-
-
-
 const DashBoards = () => {
+
+    const [isLoading, setIsLoading] = useState(true)
     const popee={
         size:'modal-sm'
     }
@@ -13,7 +15,13 @@ const DashBoards = () => {
         {SuccessModal(popee)}
         }
 
-    return (
+    useEffect(()=>{
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 3000);
+    },[])
+
+    return isLoading ? (<Loader/>) : (
         <div className="page-wrapper">
             <div className="page-header d-print-none">
                 <div className="container-xl">

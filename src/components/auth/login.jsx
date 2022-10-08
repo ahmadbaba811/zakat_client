@@ -24,27 +24,35 @@ const Login = (props) => {
         setPasswordType(val)
     }
 
+    const onEdit=(e)=>{
+        setFormData({
+            ...formData,
+            [e.target.id] : e.target.value
+        })
+    }
+
     const Login = async(e)=>{
         e.preventDefault();
         toast.info('please wait...')
-        // await axios.post(`${serverLink}login/staff_login`, formData).then((res)=>{
-        //     if (res.data.message === "success") {
-        //         toast.success('login successful')
-        //         setTimeout(() => {
-        //             props.setOnLoginDetails([res.data.userData]);
-        //             setLoading(false);
-        //         }, 1000);
-        //     } else {
-        //         setLoading(false);
-        //         toast.error('wrong login credetials...')
-        //     }
+        await axios.post(`${serverLink}login/staff_login`, formData).then((res)=>{
+            if (res.data.status === 200) {
+                console.log(res.data)
+                toast.success('login successful')
+                setTimeout(() => {
+                    props.setOnLoginDetails(res.data.UserDetails);
+                    setLoading(false);
+                }, 1000);
+            } else {
+                setLoading(false);
+                toast.error('wrong login credetials...')
+            }
 
-        // })
+        })
 
-        setTimeout(() => {
-                        props.setOnLoginDetails([{FullName:'IDRIS AHMAD', Email:'ahmadub81@gmail.com', Designation:'Branch Manager', BranchName:'Ikeja', Passport:'https://img.freepik.com/premium-vector/portrait-young-man-with-beard-hair-style-male-avatar-vector-illustration_266660-423.jpg?w=2000'}]);
-                        setLoading(false);
-                    }, 2000);
+        // setTimeout(() => {
+        //                 props.setOnLoginDetails([{FullName:'IDRIS AHMAD', Email:'ahmadub81@gmail.com', Designation:'Branch Manager', BranchName:'Ikeja', Passport:'https://img.freepik.com/premium-vector/portrait-young-man-with-beard-hair-style-male-avatar-vector-illustration_266660-423.jpg?w=2000'}]);
+        //                 setLoading(false);
+        //             }, 2000);
         
         
 
@@ -66,10 +74,13 @@ const Login = (props) => {
                                 <div className="mb-3">
                                     <label className="form-label">Email address</label>
                                     <input
+                                    id={"StaffID"}
+                                    onChange={onEdit}
                                         type="email"
                                         className="form-control"
                                         placeholder="your@email.com"
                                         autoComplete="off"
+                                        required
                                     />
                                 </div>
                                 <div className="mb-2">
@@ -81,6 +92,9 @@ const Login = (props) => {
                                     </label>
                                     <div className="input-group input-group-flat">
                                         <input
+                                            id="Password"
+                                            required
+                                            onChange={onEdit}
                                             type={passwordType=== true ? 'password':'text'}
                                             className="form-control"
                                             placeholder="Your password"
