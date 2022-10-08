@@ -1,6 +1,8 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { connect } from "react-redux";
+import { setLoginDetails } from "../../action/action";
 import Loader from "../common/loader";
 import Modal from "../common/modal/modal";
 import SuccessModal from "../common/modal/successmodal";
@@ -108,9 +110,9 @@ const DashBoards = () => {
 
                                     <div className="d-flex align-items-center">
                                         <div className="subheader">Sales
-                                            {/* <a href="#" className="btn" data-bs-toggle="modal" data-bs-target="#modal-large">
+                                            <a href="#" className="btn" data-bs-toggle="modal" data-bs-target="#modal-large">
                                                 Large modal
-                                            </a> */}
+                                            </a>
                                             
                                         </div>
                                         <div className="ms-auto lh-1">
@@ -658,4 +660,18 @@ const DashBoards = () => {
         </div>
     )
 }
-export default DashBoards;
+const mapStateToProps = (state) => {
+    return {
+      loginData: state.LoginDetails,
+    };
+  };
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      setOnLoginDetails: (p) => {
+        dispatch(setLoginDetails(p));
+      }
+    };
+  };
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(DashBoards);

@@ -19,6 +19,7 @@ const Modal = (props) => {
                     <div className="modal-header">
                         <h5 className="modal-title">{title}</h5>
                         <button
+                            id="Close"
                             type="button"
                             className="btn-close"
                             data-bs-dismiss="modal"
@@ -28,7 +29,7 @@ const Modal = (props) => {
                     <div className="modal-body">
                         {props.children}
                     </div>
-                    
+
                 </div>
             </div>
         </div>

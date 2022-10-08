@@ -6,6 +6,7 @@ const CryptoJS = require("crypto-js");
 export const shortCode = "ZKT"
 export const projectCode = "ZAKAT MANAGEMENT";
 export const projectSecretKey = "__ZKT_MGT_WIS-DOM!ICT"
+export const projectLogo = ""
 
 export const formatDateAndTime = (date, option) => {
     if (date !== null) {

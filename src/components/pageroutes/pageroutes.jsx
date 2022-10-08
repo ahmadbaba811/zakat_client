@@ -5,6 +5,9 @@ import DashBoards from "../dashboard/dashaord";
 import NaviagtionTab from "../common/navbar";
 import Error404 from "../common/error404";
 import { useState } from "react";
+import Branches from "../settings/branches";
+import Departments from "../settings/departments";
+import Roles from "../settings/roles";
 
 const PageRoutes = () => {
     // useEffect(()=>{
@@ -13,11 +16,11 @@ const PageRoutes = () => {
 
     const [overlap, setOverLap] = useState("navbar navbar-expand-md navbar-light d-print-none")
     const [sticky, setSticky] = useState("")
-    const Sticky = ()=>{
-        if(sticky === ""){setSticky("sticky-top")}else{setSticky("")}
+    const Sticky = () => {
+        if (sticky === "") { setSticky("sticky-top") } else { setSticky("") }
 
     }
-    const Overlap = ()=>{
+    const Overlap = () => {
         const ov = "navbar navbar-expand-md navbar-dark navbar-overlap d-print-none";
         setOverLap(ov)
 
@@ -26,12 +29,17 @@ const PageRoutes = () => {
     return (
         <>
             <div className={"sticky-top"}>
-                <Header overlap={overlap} /><NaviagtionTab Overlap={Overlap} Sticky={Sticky} />
+                <Header overlap={overlap} />
+                <NaviagtionTab Overlap={Overlap} Sticky={Sticky} />
             </div>
 
             <Routes>
                 <Route path="/" element={<DashBoards />} />
                 <Route path="/dashboard" element={<DashBoards />} />
+                <Route path="/branch" element={<Branches />} />
+                <Route path="/roles" element={<Roles/>} />
+                <Route path="/department" element={<Departments />} />
+                <Route path="/loan-types" element={''} />
 
 
                 <Route path="*" element={<Error404 />} />

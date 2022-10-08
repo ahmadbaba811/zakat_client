@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const NaviagtionTab = (props) => {
   return (
@@ -275,7 +276,7 @@ const NaviagtionTab = (props) => {
                       <line x1="18.35" y1="5.65" x2={15} y2={9} />
                     </svg>
                   </span>
-                  <span className="nav-link-title">Help</span>
+                  <span className="nav-link-title">Staff</span>
                 </a>
                 <div className="dropdown-menu">
                   <a className="dropdown-item" href="./docs/index.html">
@@ -329,18 +330,11 @@ const NaviagtionTab = (props) => {
                   <span className="nav-link-title">Settings</span>
                 </a>
                 <div className="dropdown-menu">
-                  <span onClick={props.Sticky} className="dropdown-item" href="./docs/index.html">
-                    Sticky Navbar
-                  </span>
-                  
-                  <a
-                    className="dropdown-item"
-                    href="https://github.com/tabler/tabler"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    Source code
-                  </a>
+                  <Link to='/branch' className="dropdown-item" >Branch</Link>
+                  <Link to='/department' className="dropdown-item" >Departments</Link>
+                  <Link to='/loan-types' className="dropdown-item" >Loan Types</Link>
+                  <Link to='/roles' className="dropdown-item" >Roles</Link>
+                 
                 </div>
               </li>
             </ul>

@@ -36,10 +36,10 @@ const Login = (props) => {
         toast.info('please wait...')
         await axios.post(`${serverLink}login/staff_login`, formData).then((res)=>{
             if (res.data.status === 200) {
-                console.log(res.data)
                 toast.success('login successful')
                 setTimeout(() => {
                     props.setOnLoginDetails(res.data.UserDetails);
+                    window.location.href = "/dashboard"
                     setLoading(false);
                 }, 1000);
             } else {

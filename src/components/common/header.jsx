@@ -52,7 +52,7 @@ const Header = (props) => {
         <path d="M2 15h5" />
         <path d="M9 5c6 0 8 3.5 8 7s-2 7 -8 7h-2v-14h2z" />
       </svg>
-                {props.loginData[0].Branch} Branch
+                {props.loginData[0].BranchName}
               </a>
               <a
                 href="https://github.com/sponsors/codecalm"
