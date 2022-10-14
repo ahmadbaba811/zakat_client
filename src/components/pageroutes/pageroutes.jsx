@@ -8,6 +8,7 @@ import { useState } from "react";
 import Branches from "../settings/branches";
 import Departments from "../settings/departments";
 import Roles from "../settings/roles";
+import LoanTypes from "../settings/loanTypes";
 
 const PageRoutes = () => {
     // useEffect(()=>{
@@ -39,7 +40,7 @@ const PageRoutes = () => {
                 <Route path="/branch" element={<Branches />} />
                 <Route path="/roles" element={<Roles/>} />
                 <Route path="/department" element={<Departments />} />
-                <Route path="/loan-types" element={''} />
+                <Route path="/loan-types" element={<LoanTypes />} />
 
 
                 <Route path="*" element={<Error404 />} />

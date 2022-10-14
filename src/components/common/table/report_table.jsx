@@ -46,11 +46,17 @@ function ReportTable(props) {
             );
         }
     };
-
+    const paletteType= 'dark';
     const theme = createTheme({
         palette:{
-            type:'dark'
-        },
+            mode:paletteType,
+            background:{
+              default:paletteType==='light' ?'#eaeaea':'#121212'
+            }
+          },
+        // palette:{
+        //     type:'dark'
+        // },
         typography: {
             fontSize: 9
           },
