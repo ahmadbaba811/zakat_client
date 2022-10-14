@@ -46,12 +46,12 @@ const Header = (props) => {
                 rel="noreferrer"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-logic-and" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M22 12h-5" />
-        <path d="M2 9h5" />
-        <path d="M2 15h5" />
-        <path d="M9 5c6 0 8 3.5 8 7s-2 7 -8 7h-2v-14h2z" />
-      </svg>
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M22 12h-5" />
+                  <path d="M2 9h5" />
+                  <path d="M2 15h5" />
+                  <path d="M9 5c6 0 8 3.5 8 7s-2 7 -8 7h-2v-14h2z" />
+                </svg>
                 {props.loginData[0].BranchName}
               </a>
               <a
@@ -62,71 +62,85 @@ const Header = (props) => {
               >
                 {/* Download SVG icon from http://tabler-icons.io/i/heart */}
                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-world-www" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M19.5 7a8.998 8.998 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4" />
-        <path d="M11.5 3a16.989 16.989 0 0 0 -1.826 4" />
-        <path d="M12.5 3a16.989 16.989 0 0 1 1.828 4.004" />
-        <path d="M19.5 17a8.998 8.998 0 0 1 -7.5 4a8.991 8.991 0 0 1 -7.484 -4" />
-        <path d="M11.5 21a16.989 16.989 0 0 1 -1.826 -4" />
-        <path d="M12.5 21a16.989 16.989 0 0 0 1.828 -4.004" />
-        <path d="M2 10l1 4l1.5 -4l1.5 4l1 -4" />
-        <path d="M17 10l1 4l1.5 -4l1.5 4l1 -4" />
-        <path d="M9.5 10l1 4l1.5 -4l1.5 4l1 -4" />
-      </svg>
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M19.5 7a8.998 8.998 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4" />
+                  <path d="M11.5 3a16.989 16.989 0 0 0 -1.826 4" />
+                  <path d="M12.5 3a16.989 16.989 0 0 1 1.828 4.004" />
+                  <path d="M19.5 17a8.998 8.998 0 0 1 -7.5 4a8.991 8.991 0 0 1 -7.484 -4" />
+                  <path d="M11.5 21a16.989 16.989 0 0 1 -1.826 -4" />
+                  <path d="M12.5 21a16.989 16.989 0 0 0 1.828 -4.004" />
+                  <path d="M2 10l1 4l1.5 -4l1.5 4l1 -4" />
+                  <path d="M17 10l1 4l1.5 -4l1.5 4l1 -4" />
+                  <path d="M9.5 10l1 4l1.5 -4l1.5 4l1 -4" />
+                </svg>
                 Website
               </a>
             </div>
           </div>
+
+
           <div className="d-none d-md-flex">
-            <a
-              href="?theme=dark"
-              className="nav-link px-0 hide-theme-dark"
-              title="Enable dark mode"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-            >
-              {/* Download SVG icon from http://tabler-icons.io/i/moon */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon"
-                width={24}
-                height={24}
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
-              </svg>
-            </a>
-            <a
-              href="?theme=light"
-              className="nav-link px-0 hide-theme-light"
-              title="Enable light mode"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-            >
-              {/* Download SVG icon from http://tabler-icons.io/i/sun */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon"
-                width={24}
-                height={24}
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <circle cx={12} cy={12} r={4} />
-                <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
-              </svg>
-            </a>
+            {
+              window.localStorage.getItem("tablerTheme") === "light" ?
+                <a
+                  onClick={() => {
+                    window.localStorage.setItem("tablerTheme", "dark")
+                  }}
+                  href=""
+                  className="nav-link px-0 hide-theme-dark"
+                  title="Enable dark mode"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                >
+                  {/* Download SVG icon from http://tabler-icons.io/i/moon */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="icon"
+                    width={24}
+                    height={24}
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+                  </svg>
+                </a>
+                :
+                <a
+                  onClick={() => {
+                    window.localStorage.setItem("tablerTheme", "light")
+                  }}
+                  href=""
+                  className="nav-link px-0 hide-theme-light"
+                  title="Enable light mode"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="icon"
+                    width={24}
+                    height={24}
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <circle cx={12} cy={12} r={4} />
+                    <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
+                  </svg>
+                </a>
+            }
+
+
+
             <div className="nav-item dropdown d-none d-md-flex me-3">
               <a
                 href="#"
@@ -237,6 +251,8 @@ const Header = (props) => {
               </div>
             </div>
           </div>
+
+
           <div className="nav-item dropdown">
             <a
               href="#"
@@ -249,7 +265,7 @@ const Header = (props) => {
                 style={{ backgroundImage: props.loginData[0].ImagePath === "" ? `url(${Logo})` : `url(${props.loginData[0].ImagePath})` }}
               />
               <div className="d-none d-xl-block ps-2">
-                <div>{props.loginData[0].FirstName + " "+ props.loginData[0].MiddleName + " " +props.loginData[0].Surname}</div>
+                <div>{props.loginData[0].FirstName + " " + props.loginData[0].MiddleName + " " + props.loginData[0].Surname}</div>
                 <div className="mt-1 small text-muted">{props.loginData[0].Designation}</div>
               </div>
             </a>

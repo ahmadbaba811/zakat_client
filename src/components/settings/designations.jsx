@@ -11,38 +11,39 @@ import ReportTable from "../common/table/report_table";
 import { toast } from "react-toastify";
 import { NetworkErrorAlert } from "../common/sweetalert/sweetalert";
 import { PageHeader } from "../common/pageHeader";
+import { formatDate } from "../../constants/constants";
 
-const Roles = (props) => {
+const Designations = (props) => {
     const token = props.loginData[0].token;
 
     const [isLoading, setIsLoading] = useState(true);
-    const columns = ["SN", "Role Title", "Status", "Action"];
+    const columns = ["SN", "Designation Code", "Designation Title", "Action"];
     const [data, setData] = useState([]);
-    const [staffList, setStaffList] = useState([]);
     const [formData, setFormData] = useState({
         EntryID: "",
-        RoleName: "",
+        DesignationCode: "",
+        DesignationName:"",
         Status: 1,
         InsertedBy: props.loginData[0].StaffID
     })
 
     const getData = async () => {
         try {
-            await axios.get(`${serverLink}settings/roles/list`, token).then((res) => {
+            await axios.get(`${serverLink}settings/designation/list`, token).then((res) => {
                 if (res.data.length > 0) {
                     let rows = [];
                     res.data.map((x, i) => {
                         rows.push([
                             i + 1,
-                            x.RoleName,
-                            (<label className={x.Status === 0 ? "badge bg-info" : "badge bg-success"} >{x.Status === 0 ? "Inactive" : "Active"}</label>),
-
+                            x.DesignationCode,
+                            x.DesignationName,
                             (
                                 <button className="btn btn-ghost-primary active w-100" data-bs-toggle="modal" data-bs-target="#modal-large" onClick={() => {
                                     setFormData({
                                         ...formData,
-                                        EntryID: x.EntryID, RoleName: x.RoleName,
-                                        Status: x.Status, HOD: x.HOD
+                                        EntryID: x.EntryID, 
+                                        DesignationName: x.DesignationName,
+                                        DesignationCode: x.DesignationCode
                                     })
                                 }}>Edit
 
@@ -58,17 +59,8 @@ const Roles = (props) => {
         }
     }
 
-    const getStaff = async () => {
-        await axios.get(`${serverLink}settings/staff/list`, token).then((res) => {
-            if (res.data.length > 0) {
-                setStaffList(res.data)
-            }
-        })
-    }
-
     useEffect(() => {
         getData();
-       // getStaff();
     }, [])
 
     const onEdit = (e) => {
@@ -78,27 +70,27 @@ const Roles = (props) => {
         })
     }
 
-    const submitRole = async (e) => {
+    const submitDesignation = async (e) => {
         e.preventDefault();
         try {
             if (formData.EntryID === "") {
-                await axios.post(`${serverLink}settings/roles/add`, formData, token).then((res) => {
+                await axios.post(`${serverLink}settings/designation/add`, formData, token).then((res) => {
                     if (res.data.message === "success") {
                         getData();
                         document.getElementById("Close").click();
-                        toast.success("roles added successfully...");
+                        toast.success("designation added successfully...");
                     } else if (res.data.message === "exist") {
-                        toast.error("roles already exists...");
+                        toast.error("designation already exists...");
                     } else {
                         NetworkErrorAlert();
                     }
                 })
             } else {
-                await axios.post(`${serverLink}settings/roles/update`, formData, token).then((res) => {
+                await axios.post(`${serverLink}settings/designation/update`, formData, token).then((res) => {
                     if (res.data.message === "success") {
                         getData();
                         document.getElementById("Close").click();
-                        toast.success("roles updated successfully...")
+                        toast.success("designation updated successfully...")
                     } else {
                         NetworkErrorAlert();
                     }
@@ -120,7 +112,7 @@ const Roles = (props) => {
 
     return isLoading ? (<Loader />) : (
         <div className="page-wrapper">
-            <PageHeader target="modal-large" Reset={Reset} title={["Roles", "Settings", "Roles"]} btntext={"Add Role"} />
+            <PageHeader target="modal-large" Reset={Reset} title={["Designation", "Settings", "designation"]} btntext={"Add Role"} />
 
             <div className="page-body">
                 <div className="container-xl">
@@ -130,21 +122,17 @@ const Roles = (props) => {
                 </div>
             </div>
 
-            <Modal title="Add/Edit Roles" >
-                <form onSubmit={submitRole}>
+            <Modal title="Add/Edit Designation" size="modal-sm" >
+                <form onSubmit={submitDesignation}>
                     <div className="col-md-6 col-xl-12">
                         <div className="mb-3">
-                            <label className="form-label required" htmlFor="Department Name">Role Name</label>
-                            <input type="text" className="form-control" value={formData.RoleName} id="RoleName" onChange={onEdit} required placeholder="e.g Manager" />
+                            <label className="form-label required" htmlFor="Department Name">Designation Code</label>
+                            <input type="text" disabled={formData.EntryID !== "" ? true : false} className="form-control" value={formData.DesignationCode} id="DesignationCode" onChange={onEdit} required placeholder="e.g MGR" />
                         </div>
 
                         <div className="mb-3">
-                            <div className="form-label required">Status</div>
-                            <select className="form-select" id="Status" required onChange={onEdit} value={formData.Status} >
-                                <option value={""}>-select role-</option>
-                                <option value={1}>Active</option>
-                                <option value={0}>Inactive</option>
-                            </select>
+                            <div className="form-label required">Designation Name</div>
+                            <input type="text" className="form-control" value={formData.DesignationName} id="DesignationName" onChange={onEdit} required placeholder="e.g Manager" />
                         </div>
 
                         <div className="mb-3">
@@ -176,4 +164,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Roles);
+export default connect(mapStateToProps, mapDispatchToProps)(Designations);

@@ -11,38 +11,46 @@ import ReportTable from "../common/table/report_table";
 import { toast } from "react-toastify";
 import { NetworkErrorAlert } from "../common/sweetalert/sweetalert";
 import { PageHeader } from "../common/pageHeader";
+import { currencyConverter } from "../../constants/constants";
 
-const Roles = (props) => {
+const LoanTypes = (props) => {
     const token = props.loginData[0].token;
 
     const [isLoading, setIsLoading] = useState(true);
-    const columns = ["SN", "Role Title", "Status", "Action"];
+    const columns = ["SN", "Loan Name", "Code", "Min Amt(N)", "Max Amt(N)", "Status", "Action"];
     const [data, setData] = useState([]);
     const [staffList, setStaffList] = useState([]);
     const [formData, setFormData] = useState({
         EntryID: "",
-        RoleName: "",
+        LoanName: "",
+        LoanCode: "",
+        MinAmount: "",
+        MaxAmount: "",
         Status: 1,
         InsertedBy: props.loginData[0].StaffID
     })
 
     const getData = async () => {
         try {
-            await axios.get(`${serverLink}settings/roles/list`, token).then((res) => {
+            await axios.get(`${serverLink}settings/loan_types/list`, token).then((res) => {
                 if (res.data.length > 0) {
                     let rows = [];
                     res.data.map((x, i) => {
                         rows.push([
                             i + 1,
-                            x.RoleName,
+                            x.LoanName,
+                            x.LoanCode,
+                            currencyConverter(x.MinAmount),
+                            currencyConverter(x.MaxAmount),
                             (<label className={x.Status === 0 ? "badge bg-info" : "badge bg-success"} >{x.Status === 0 ? "Inactive" : "Active"}</label>),
 
                             (
                                 <button className="btn btn-ghost-primary active w-100" data-bs-toggle="modal" data-bs-target="#modal-large" onClick={() => {
                                     setFormData({
                                         ...formData,
-                                        EntryID: x.EntryID, RoleName: x.RoleName,
-                                        Status: x.Status, HOD: x.HOD
+                                        EntryID: x.EntryID, LoanName: x.LoanName, LoanCode: x.LoanCode, MinAmount: x.MinAmount,
+                                        MaxAmount: x.MaxAmount,
+                                        Status: x.Status,
                                     })
                                 }}>Edit
 
@@ -58,17 +66,8 @@ const Roles = (props) => {
         }
     }
 
-    const getStaff = async () => {
-        await axios.get(`${serverLink}settings/staff/list`, token).then((res) => {
-            if (res.data.length > 0) {
-                setStaffList(res.data)
-            }
-        })
-    }
-
     useEffect(() => {
         getData();
-       // getStaff();
     }, [])
 
     const onEdit = (e) => {
@@ -78,27 +77,27 @@ const Roles = (props) => {
         })
     }
 
-    const submitRole = async (e) => {
+    const submitLoanType = async (e) => {
         e.preventDefault();
         try {
             if (formData.EntryID === "") {
-                await axios.post(`${serverLink}settings/roles/add`, formData, token).then((res) => {
+                await axios.post(`${serverLink}settings/loan_types/add`, formData, token).then((res) => {
                     if (res.data.message === "success") {
                         getData();
                         document.getElementById("Close").click();
-                        toast.success("roles added successfully...");
+                        toast.success("Loan type added successfully...");
                     } else if (res.data.message === "exist") {
-                        toast.error("roles already exists...");
+                        toast.error("Loan type already exists...");
                     } else {
                         NetworkErrorAlert();
                     }
                 })
             } else {
-                await axios.post(`${serverLink}settings/roles/update`, formData, token).then((res) => {
+                await axios.patch(`${serverLink}settings/loan_types/update`, formData, token).then((res) => {
                     if (res.data.message === "success") {
                         getData();
                         document.getElementById("Close").click();
-                        toast.success("roles updated successfully...")
+                        toast.success("Loan type updated successfully...")
                     } else {
                         NetworkErrorAlert();
                     }
@@ -113,14 +112,17 @@ const Roles = (props) => {
         setFormData({
             ...formData,
             EntryID: "",
-            RoleName: "",
-            Status: "",
+            LoanName: "",
+            LoanCode: "",
+            MinAmount: "",
+            MaxAmount: "",
+            Status: 1
         })
     }
 
     return isLoading ? (<Loader />) : (
         <div className="page-wrapper">
-            <PageHeader target="modal-large" Reset={Reset} title={["Roles", "Settings", "Roles"]} btntext={"Add Role"} />
+            <PageHeader target="modal-large" Reset={Reset} title={["Loan Types", "Settings", "Loan Type"]} btntext={"Add Loan Type"} />
 
             <div className="page-body">
                 <div className="container-xl">
@@ -130,12 +132,30 @@ const Roles = (props) => {
                 </div>
             </div>
 
-            <Modal title="Add/Edit Roles" >
-                <form onSubmit={submitRole}>
+            <Modal title="Add/Edit Loan Type" >
+                <form onSubmit={submitLoanType}>
                     <div className="col-md-6 col-xl-12">
                         <div className="mb-3">
-                            <label className="form-label required" htmlFor="Department Name">Role Name</label>
-                            <input type="text" className="form-control" value={formData.RoleName} id="RoleName" onChange={onEdit} required placeholder="e.g Manager" />
+                            <label className="form-label required" htmlFor="LoanName">Loan Name</label>
+                            <input type="text" className="form-control" value={formData.LoanName} id="LoanName" onChange={onEdit} required placeholder="e.g Zakat loan" />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label required" htmlFor="LoanCode">Loan Code</label>
+                            <input type="text" className="form-control" value={formData.LoanCode} id="LoanCode" onChange={onEdit} required placeholder="e.g ZKT" />
+                        </div>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="mb-3">
+                                    <label className="form-label required" htmlFor="MinAmount">Min. Amount</label>
+                                    <input type="number" className="form-control" value={formData.MinAmount} id="MinAmount" onChange={onEdit} required placeholder="e.g 0.00" />
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className="mb-3">
+                                    <label className="form-label required" htmlFor="MaxAmount">Max. Amount</label>
+                                    <input type="number" className="form-control" value={formData.MaxAmount} id="MaxAmount" onChange={onEdit} required placeholder="e.g 0.00" />
+                                </div>
+                            </div>
                         </div>
 
                         <div className="mb-3">
@@ -176,4 +196,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Roles);
+export default connect(mapStateToProps, mapDispatchToProps)(LoanTypes);

@@ -4,7 +4,7 @@ const Loader = () => {
     return (
         <div className="mb-3">
             <div className="progress">
-                <div className="progress-bar progress-bar-indeterminate bg-green" />
+                <div className="progress-bar progress-bar-indeterminate bg-cyan" />
             </div>
 
             <div className="page-wrapper">

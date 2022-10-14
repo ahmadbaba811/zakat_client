@@ -36,6 +36,7 @@ const Login = (props) => {
         toast.info('please wait...')
         await axios.post(`${serverLink}login/staff_login`, formData).then((res)=>{
             if (res.data.status === 200) {
+                window.localStorage.setItem("tablerTheme", "light")
                 toast.success('login successful')
                 setTimeout(() => {
                     props.setOnLoginDetails(res.data.UserDetails);

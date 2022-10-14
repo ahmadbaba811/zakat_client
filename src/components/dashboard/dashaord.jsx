@@ -1,27 +1,30 @@
+import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { connect } from "react-redux";
-import { setLoginDetails } from "../../action/action";
+import { setBranchList, setLoginDetails } from "../../action/action";
+import { serverLink } from "../../constants/url";
 import Loader from "../common/loader";
 import Modal from "../common/modal/modal";
 import SuccessModal from "../common/modal/successmodal";
 // import {SuccessModal} from "../common/modal/successmodal";
-const DashBoards = () => {
-
+const DashBoards = (props) => {
+    const token = props.loginData[0].token
     const [isLoading, setIsLoading] = useState(true)
-    const popee={
-        size:'modal-sm'
-    }
-    const Show=()=>{
-        {SuccessModal(popee)}
-        }
-
+       
     useEffect(()=>{
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 3000);
+        getBranches();
     },[])
+
+    const getBranches=async()=>{
+        await axios.get(`${serverLink}settings/branch/list`, token).then((res)=>{
+            props.setOnBranchList(res.data);
+            setTimeout(() => {
+                setIsLoading(false)
+            }, 3000);     
+        })
+    }
 
     return isLoading ? (<Loader/>) : (
         <div className="page-wrapper">
@@ -670,6 +673,9 @@ const mapStateToProps = (state) => {
     return {
       setOnLoginDetails: (p) => {
         dispatch(setLoginDetails(p));
+      },
+      setOnBranchList: (p) => {
+        dispatch(setBranchList(p));
       }
     };
   };

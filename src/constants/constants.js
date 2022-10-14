@@ -138,3 +138,13 @@ export const formatDateAndTime = (date, option) => {
       }
     })
   }
+
+  export const Audit = (message, branch, actionBy, token) => {
+    axios.post(`${serverLink}settings/audit`, { Message:message, Branch: branch, InsertedBy:actionBy}, token).then((res) => {
+      if (res.data.message === "success") {
+  
+      } else {
+        console.log(res.data)
+      }
+    })
+  }

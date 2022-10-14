@@ -8,6 +8,11 @@ import { useState } from "react";
 import Branches from "../settings/branches";
 import Departments from "../settings/departments";
 import Roles from "../settings/roles";
+import LoanTypes from "../settings/loan-types";
+import ManageStaff from "../staff/manage-staff";
+import Designations from "../settings/designations";
+import StaffList from "../staff/staff-list";
+import OnBoardCustomer from "../kyc/onboard-customer/onboard";
 
 const PageRoutes = () => {
     // useEffect(()=>{
@@ -36,10 +41,20 @@ const PageRoutes = () => {
             <Routes>
                 <Route path="/" element={<DashBoards />} />
                 <Route path="/dashboard" element={<DashBoards />} />
+
+                {/* settings routes */}
                 <Route path="/branch" element={<Branches />} />
                 <Route path="/roles" element={<Roles/>} />
                 <Route path="/department" element={<Departments />} />
-                <Route path="/loan-types" element={''} />
+                <Route path="/loan-types" element={<LoanTypes/>} />
+                <Route path="/designations" element={<Designations/>} />
+                
+                {/* staff routes */}
+                <Route path="/manage-staff" element={<ManageStaff/>} />
+                <Route path="/staff-list" element={<StaffList/>} />
+
+                {/* kyc routes */}
+                <Route path="/onboard-customer" element={<OnBoardCustomer/>} />
 
 
                 <Route path="*" element={<Error404 />} />

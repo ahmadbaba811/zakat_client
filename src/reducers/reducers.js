@@ -7,3 +7,13 @@ export const LoginDetailsReducer = (state = [], action) => {
         return state;
     }
   };
+
+  
+export const branch_list_reducer = (state = [], action) => {
+  switch (action.type) {
+    case `SET_ZKT_BRANCH_LIST`:
+      return action.payload;
+    default:
+      return state;
+  }
+};

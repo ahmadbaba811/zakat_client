@@ -69,9 +69,13 @@ const NaviagtionTab = (props) => {
                 <div className="dropdown-menu">
                   <div className="dropdown-menu-columns">
                     <div className="dropdown-menu-column">
-                      <a className="dropdown-item" href="./empty.html">
-                        Empty page
-                      </a>
+                      <Link className="dropdown-item" to="/verify-bvn">
+                        Verify BVN
+                      </Link>
+                      <Link className="dropdown-item" to="/onboard-customer">
+                        On-board Customer
+                      </Link>
+                      
 
                       <div className="dropend">
                         <a
@@ -111,7 +115,7 @@ const NaviagtionTab = (props) => {
               </li>
 
               <li className="nav-item dropdown">
-              <a
+                <a
                   className="nav-link dropdown-toggle"
                   href="#navbar-extra"
                   data-bs-toggle="dropdown"
@@ -153,10 +157,10 @@ const NaviagtionTab = (props) => {
                   </div>
                 </div>
               </li>
-             
+
 
               <li className="nav-item dropdown">
-              <a
+                <a
                   className="nav-link dropdown-toggle"
                   href="#navbar-extra"
                   data-bs-toggle="dropdown"
@@ -255,44 +259,26 @@ const NaviagtionTab = (props) => {
                 >
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
                     {/* Download SVG icon from http://tabler-icons.io/i/lifebuoy */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <circle cx={12} cy={12} r={4} />
-                      <circle cx={12} cy={12} r={9} />
-                      <line x1={15} y1={15} x2="18.35" y2="18.35" />
-                      <line x1={9} y1={15} x2="5.65" y2="18.35" />
-                      <line x1="5.65" y1="5.65" x2={9} y2={9} />
-                      <line x1="18.35" y1="5.65" x2={15} y2={9} />
+                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-users" width={24} height={24} viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <circle cx={9} cy={7} r={4}></circle>
+                      <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                      <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
                     </svg>
                   </span>
                   <span className="nav-link-title">Staff</span>
                 </a>
                 <div className="dropdown-menu">
-                  <a className="dropdown-item" href="./docs/index.html">
-                    Documentation
-                  </a>
-                  <a className="dropdown-item" href="./changelog.html">
-                    Site Map
-                  </a>
-                  <a
-                    className="dropdown-item"
-                    href="https://github.com/tabler/tabler"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    Source code
-                  </a>
+                  <Link to="/manage-staff" className="dropdown-item">
+                    Manage Staff
+                  </Link>
+                  <Link to="/staff-list" className="dropdown-item">
+                    Staff List
+                  </Link>
+                  <Link to="/staff-report" className="dropdown-item">
+                    Staff Report
+                  </Link>
                 </div>
               </li>
               <li className="nav-item dropdown">
@@ -306,25 +292,10 @@ const NaviagtionTab = (props) => {
                 >
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
                     {/* Download SVG icon from http://tabler-icons.io/i/lifebuoy */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <circle cx={12} cy={12} r={4} />
-                      <circle cx={12} cy={12} r={9} />
-                      <line x1={15} y1={15} x2="18.35" y2="18.35" />
-                      <line x1={9} y1={15} x2="5.65" y2="18.35" />
-                      <line x1="5.65" y1="5.65" x2={9} y2={9} />
-                      <line x1="18.35" y1="5.65" x2={15} y2={9} />
+                    <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-settings" width={24} height={24} viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
+                      <circle cx={12} cy={12} r={3}></circle>
                     </svg>
                   </span>
                   <span className="nav-link-title">Settings</span>
@@ -332,9 +303,10 @@ const NaviagtionTab = (props) => {
                 <div className="dropdown-menu">
                   <Link to='/branch' className="dropdown-item" >Branch</Link>
                   <Link to='/department' className="dropdown-item" >Departments</Link>
+                  <Link to='/designations' className="dropdown-item" >Designations</Link>
                   <Link to='/loan-types' className="dropdown-item" >Loan Types</Link>
                   <Link to='/roles' className="dropdown-item" >Roles</Link>
-                 
+
                 </div>
               </li>
             </ul>
