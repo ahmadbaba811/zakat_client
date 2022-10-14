@@ -116,6 +116,7 @@ const LoanTypes =(props)=>{
         }
     }
 
+    
     const onEdit = (e) => {
         setFormData({
             ...formData,
