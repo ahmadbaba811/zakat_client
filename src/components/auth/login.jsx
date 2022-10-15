@@ -77,7 +77,7 @@ const Login = (props) => {
                                     <input
                                     id={"StaffID"}
                                     onChange={onEdit}
-                                        type="email"
+                                        type="text"
                                         className="form-control"
                                         placeholder="your@email.com"
                                         autoComplete="off"

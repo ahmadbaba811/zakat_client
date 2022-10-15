@@ -20,7 +20,7 @@ const Designations = (props) => {
     const columns = ["SN", "Designation Code", "Designation Title", "Action"];
     const [data, setData] = useState([]);
     const [formData, setFormData] = useState({
-        EntryID: "",
+        ID: "",
         DesignationCode: "",
         DesignationName:"",
         Status: 1,
@@ -41,7 +41,7 @@ const Designations = (props) => {
                                 <button className="btn btn-ghost-primary active w-100" data-bs-toggle="modal" data-bs-target="#modal-large" onClick={() => {
                                     setFormData({
                                         ...formData,
-                                        EntryID: x.EntryID, 
+                                        EntryID: x.ID, 
                                         DesignationName: x.DesignationName,
                                         DesignationCode: x.DesignationCode
                                     })
@@ -73,7 +73,7 @@ const Designations = (props) => {
     const submitDesignation = async (e) => {
         e.preventDefault();
         try {
-            if (formData.EntryID === "") {
+            if (formData.ID === "") {
                 await axios.post(`${serverLink}settings/designation/add`, formData, token).then((res) => {
                     if (res.data.message === "success") {
                         getData();
@@ -104,7 +104,7 @@ const Designations = (props) => {
     const Reset = () => {
         setFormData({
             ...formData,
-            EntryID: "",
+            ID: "",
             RoleName: "",
             Status: "",
         })

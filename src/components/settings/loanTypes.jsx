@@ -85,7 +85,6 @@ const LoanTypes =(props)=>{
 
     const submitLoanType = async (e) => {
         e.preventDefault();
-        console.log("data: "+formData.LoanCode)
         try {
             if (formData.ID === "") {
                 await axios.post(`${serverLink}settings/loan_types/add`, formData, token).then((res) => {

@@ -21,7 +21,7 @@ const LoanTypes = (props) => {
     const [data, setData] = useState([]);
     const [staffList, setStaffList] = useState([]);
     const [formData, setFormData] = useState({
-        EntryID: "",
+        ID: "",
         LoanName: "",
         LoanCode: "",
         MinAmount: "",
@@ -48,7 +48,7 @@ const LoanTypes = (props) => {
                                 <button className="btn btn-ghost-primary active w-100" data-bs-toggle="modal" data-bs-target="#modal-large" onClick={() => {
                                     setFormData({
                                         ...formData,
-                                        EntryID: x.EntryID, LoanName: x.LoanName, LoanCode: x.LoanCode, MinAmount: x.MinAmount,
+                                        ID: x.ID, LoanName: x.LoanName, LoanCode: x.LoanCode, MinAmount: x.MinAmount,
                                         MaxAmount: x.MaxAmount,
                                         Status: x.Status,
                                     })
@@ -80,7 +80,7 @@ const LoanTypes = (props) => {
     const submitLoanType = async (e) => {
         e.preventDefault();
         try {
-            if (formData.EntryID === "") {
+            if (formData.ID === "") {
                 await axios.post(`${serverLink}settings/loan_types/add`, formData, token).then((res) => {
                     if (res.data.message === "success") {
                         getData();
@@ -111,7 +111,7 @@ const LoanTypes = (props) => {
     const Reset = () => {
         setFormData({
             ...formData,
-            EntryID: "",
+            ID: "",
             LoanName: "",
             LoanCode: "",
             MinAmount: "",
