@@ -43,3 +43,11 @@ export const staff_details_reducer = (state=[], action)=>{
       return state
   }
 }
+export const set_role_list_reducer = (state=[], action)=>{
+  switch (action.type) {
+    case  `SET_ROLE_LIST`:
+      return action.payload;  
+    default:
+      return state
+  }
+}
