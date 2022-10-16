@@ -28,8 +28,6 @@ const StaffList = (props) => {
         try {
             await axios.get(`${serverLink}staff/all_staff_list/${branch}`, token).then((res) => {
                 if (res.data.length > 0) {
-                    setStaffList(res.data)
-                    setStaffList2(res.data);
                     let rows = [];
                     res.data.map((x, i) => {
                         rows.push([
@@ -42,9 +40,11 @@ const StaffList = (props) => {
                             x.Phone,
                             x.Branch,
                             x.Department,
-                            (<label className={x.Status === 0 ? "badge bg-info" : "badge bg-success"} >{x.Status === 0 ? "Inactive" : "Active"}</label>)
+                            (<label className={x.IsActive.toString() === "0" ? "badge bg-info" : "badge bg-success"} >{x.IsActive.toString() === "0" ? "Inactive" : "Active"}</label>)
                         ])
                     })
+                    setStaffList(res.data)
+                    setStaffList2(res.data);
                     setData(rows)
                 }
                 setIsLoading(false);

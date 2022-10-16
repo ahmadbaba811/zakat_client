@@ -25,7 +25,7 @@ const Header = (props) => {
           <span className="navbar-toggler-icon" />
         </button>
         <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-          <a href="." style={{ textDecoration: 'none' }} className="text text-black-50">
+          <a href="/" style={{ textDecoration: 'none' }} className="text text-black-50">
             <img
               src={Logo}
               width={110}
