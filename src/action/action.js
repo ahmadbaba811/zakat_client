@@ -13,3 +13,10 @@ export const setBranchList = (p) => {
     payload: p,
   };
 };
+
+export const setRoleList = (p) => {
+  return {
+    type: `SET_ZKT_ROLES_LIST`,
+    payload: p,
+  };
+};

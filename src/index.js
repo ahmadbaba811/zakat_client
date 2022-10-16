@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -27,6 +27,7 @@ if (serverStatus === "Dev") {
     composeEnhancers(applyMiddleware(thunkMiddleware))
   );
 }
+
 
 const persist = persistStore(store);
 const root = ReactDOM.createRoot(document.getElementById('root'));

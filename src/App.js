@@ -8,10 +8,28 @@ import { connect } from "react-redux";
 import { Dashboard } from '@mui/icons-material';
 import PageRoutes from './components/pageroutes/pageroutes';
 import PublicRoutes from './components/pageroutes/publicroutes';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { serverLink } from './constants/url';
+import { setRoleList } from './action/action';
 
 
 function App(props) {
+  const token = props.loginData[0].token;
+  const [roles, setRoles]=useState([]);
+
+  const getRoles = async()=>{
+    await axios.get(`${serverLink}settings/roles/list`, token).then((res)=>{
+        if(res.data.length > 0) {
+            setRoles(res.data)
+        }
+    })
+  }
+
+  useEffect(()=>{
+    getRoles();
+  }, []);
+
   return (
     <div className="" id="aa">
       <Router>
@@ -39,4 +57,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(App);
+const mapDispatchToProps = (dispatch) => {
+  return {
+      setOnLoginDetails: (p) => {
+          dispatch(setRoleList(p));
+      }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

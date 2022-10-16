@@ -61,7 +61,7 @@ const LoanTypes =(props)=>{
                             </button>)
                         ])
                     })
-                    setData(rows)
+                    setData(rows);
                 }
                 setIsLoading(false);
             })
@@ -81,13 +81,14 @@ const LoanTypes =(props)=>{
     useEffect(() => {
         getData();
         getLoanTypes();
+        console.log("data: "+props.loginData[0]);
     }, []);
 
     const submitLoanType = async (e) => {
-        e.preventDefault();
-        console.log("data: "+formData.LoanCode)
+        e.preventDefault(); 
         try {
             if (formData.ID === "") {
+               formData.InsertedBy=props.loginData[0].Email;
                 await axios.post(`${serverLink}settings/loan_types/add`, formData, token).then((res) => {
                     console.log(res.data.message)
                     if (res.data.message === "success") {
@@ -122,20 +123,6 @@ const LoanTypes =(props)=>{
             ...formData,
             [e.target.id]: e.target.value
         })
-        if (e.target.id === "Status") {
-            if (e.target.checked === true) {
-                setFormData({
-                    ...formData,
-                    [e.target.id]: e.target.value
-                })
-            } else {
-                setFormData({
-                    ...formData,
-                    [e.target.id]: e.target.value
-                })
-            }
-
-        }
     }
     const Reset = () => {
         setFormData({
@@ -187,12 +174,12 @@ const LoanTypes =(props)=>{
                             </input>
                         </div>
                         <div className="mb-3">
-                            <label className="form-label required" htmlFor="MaxAmount">Max Amount</label>
+                            <label className="form-label required" htmlFor="MaxAmount">Max Amounts</label>
                             <input type="text" className="form-control" value={formData.MaxAmount} onChange={onEdit} 
                                 id="MaxAmount" required placeholder="e.g 2,400,000" >
                             </input>
                         </div>
-                       
+                        
                         <div className="mb-3">
                             <label className="form-label required" htmlFor="Town">Inserted By</label>
                             <input type="text" className="form-control" id="InsertedBy" onChange={onEdit} 
