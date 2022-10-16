@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { setLoginDetails } from "../../action/action";
 import Logo from '../../images/zakat.jpg'
+import { serverLink } from "../../constants/url";
 
 const Header = (props) => {
   useEffect(() => {
@@ -265,7 +266,7 @@ const Header = (props) => {
             >
               <span
                 className="avatar avatar-sm"
-                style={{ backgroundImage: props.loginData[0].ImagePath === "" ? `url(${Logo})` : `url(${props.loginData[0].ImagePath})` }}
+                style={{ backgroundImage: props.loginData[0].ImagePath === "" ? `url(${Logo})` : `url(${`${serverLink}public/uploads/staff/${props.loginData[0].ImagePath}`})` }}
               />
               <div className="d-none d-xl-block ps-2">
                 <div>{props.loginData[0].FirstName + " " + props.loginData[0].MiddleName + " " + props.loginData[0].Surname}</div>

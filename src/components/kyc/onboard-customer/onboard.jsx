@@ -24,7 +24,6 @@ const OnBoardCustomer = (props) => {
     const getData = async () => {
         try {
             await axios.get(`${serverLink}customer/last_customer_id`, token).then((response) => {
-                console.log(response)
                 if (response.data.length > 0) {
 
                     const lastId = response.data[0].CustomerID;

@@ -14,13 +14,14 @@ import { PageHeader } from "../common/pageHeader";
 import { Link } from "react-router-dom";
 import zakat from '../../images/zakat.jpg'
 import { nigerianStates } from 'nigerian-states-and-lgas';
+import { Audit, formatDate } from "../../constants/constants";
 
 
 const CustomersList = (props) => {
     const token = props.loginData[0].token;
 
     const [isLoading, setIsLoading] = useState(true);
-    const columns = ["SN", "CustomerID", "Full Name", "Email", "Phone", "Gender", "Status", "Passport"];
+    const columns = ["SN", "CustomerID", "Full Name", "Email", "Phone", "Gender", "Status", "Passport", "Action"];
     const [data, setData] = useState([]);
     const [customerList, setcustomerList] = useState([]);
 
@@ -32,8 +33,8 @@ const CustomersList = (props) => {
     const [lgaList, setLgaList] = useState([]);
 
     const [formData, setFormData] = useState({
-        EntryID: "",
-        CustomerID: props.CustomerID,
+        ID: "",
+        CustomerID: "",
         FirstName: "",
         MiddleName: "",
         Surname: "",
@@ -47,16 +48,35 @@ const CustomersList = (props) => {
         Address: "",
         LandMark: "",
         InsertedBy: props.loginData[0].StaffID,
-        Status: "",
+        Status: 1,
         Passport: "",
         DateOfBirth: "",
         Gender: "",
-        Bvn: ""
+        Bvn: "",
+        Branch: props.loginData[0].Branch
     })
 
 
     const getData = async () => {
         try {
+            await axios.get(`${serverLink}customer/last_customer_id`, token).then((response) => {
+                if (response.data.length > 0) {
+                    const lastId = response.data[0].CustomerID;
+                    const lastIndex = Number(lastId.split("CU")[1]) + 1;
+                    const padStaffID = (lastIndex, places) =>
+                        String(lastIndex).padStart(places, "0");
+                    const new_cu_id = `CU${padStaffID(lastIndex, 4)}`;
+                    setFormData({
+                        ...formData,
+                        CustomerID: new_cu_id
+                    })
+                } else {
+                    setFormData({
+                        ...formData,
+                        CustomerID: 'CU0001'
+                    })
+                }
+            })
             await axios.get(`${serverLink}customer/customer/list`, token).then((res) => {
                 if (res.data.length > 0) {
                     let rows = [];
@@ -64,7 +84,7 @@ const CustomersList = (props) => {
                         rows.push([
                             i + 1,
                             x.CustomerID,
-                            <Link to={`/customer-info/${x.CustomerID}`} >{x.FirstName + " " + x.MiddleName + " " + x.Surname}</Link>,
+                            <Link to={`/customer/${x.CustomerID}`} >{x.FirstName + " " + x.MiddleName + " " + x.Surname}</Link>,
                             x.Email,
                             x.Phone,
                             <label className={x.Gender === "Male" ? "badge bg-success" : "badge bg-info"}>
@@ -73,7 +93,47 @@ const CustomersList = (props) => {
                             <label className={x.Status === 1 ? "badge bg-success" : "badge bg-danger"}>
                                 {x.Status === 1 ? "Active" : "InActive"}
                             </label>,
-                            <img src={`${serverLink}public/uploads/customers/${x.Passport}`} className={'image-circle w-50'} />
+                            <img
+                                src={
+                                    x.Passport === "" ? zakat : `${serverLink}public/uploads/customer/${x.Passport}`
+                                }
+                                style={{maxWidth:'60px'}} />,
+                            (<button className="btn btn-sm btn-success"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modal-large"
+                                onClick={() => {
+                                    setLgaList(statesLga.filter(j => j.state === x.StateOfOrigin)[0].lgas);
+                                    setImg(x.Passport)
+                                    setFormData({
+                                        ...formData,
+                                        ID: x.ID,
+                                        CustomerID: x.CustomerID,
+                                        FirstName: x.FirstName,
+                                        MiddleName: x.MiddleName,
+                                        Surname: x.Surname,
+                                        Email: x.Email,
+                                        Phone: x.Phone,
+                                        Bvn: x.Bvn,
+                                        StateOfOrigin: x.StateOfOrigin,
+                                        Lga: x.Lga,
+                                        City: x.City,
+                                        Address: x.Address,
+                                        LandMark: x.LandMark,
+                                        DateOfBirth: formatDate(x.DateOfBirth),
+                                        Gender: x.Gender,
+                                        Bvn: x.Bvn,
+                                    })
+                                    setimageSrc({
+                                        ...imageSrc,
+                                        Passport: x.Passport,
+                                    })
+
+                                }}
+                            >
+                                Edit
+
+                            </button>
+                            )
 
                         ])
                     })
@@ -124,29 +184,98 @@ const CustomersList = (props) => {
             Passport: URL.createObjectURL(e.target.files[0])
         })
     }
-    const submitPersonalIndo = async (e) => {
+    const onSubmit = async (e) => {
+        console.log(formData)
         e.preventDefault();
-        try {
-            await axios.post(`${serverLink}customer/personal_info/add`, formData, token).then((res) => {
-                if (res.data.message === "success") {
-                    document.getElementById("Close").click();
-                    toast.success("Customer Added Successfully")
+        if (formData.Passport !== "") {
+            if (!formData.Passport.type.includes("image/")) {
+                toast.error("Only images file is allowed");
+                return false;
+            }
+            if (parseInt(formData.Passport.size) / 1000 > 200) {
+                toast.error("image size cannot be more than 200kb");
+                return false;
+            }
+        }
 
-                } else {
-                    document.getElementById("Close").click();
-                    toast.error("something went wrong, please try again");
-                }
-            })
+        try {
+            if (formData.ID === "") {
+                await axios.post(`${serverLink}customer/personal_info/add`, formData, token).then((res) => {
+                    if (res.data.message === "success") {
+                        const dt = new FormData();
+                        dt.append("File", formData.Passport);
+                        dt.append("CustomerID", formData.CustomerID);
+                        if (formData.Passport !== "") {
+                            axios.post(`${serverLink}customer/customer_photo`, dt, token).then((res) => { })
+                        }
+                        getData();
+                        Audit(`New Customer with ID ${formData.CustomerID} Added in ${formData.Branch} Branch`, formData.Branch, formData.InsertedBy, token)
+                        document.getElementById("Close").click();
+                        toast.success("Customer Added Successfully");
+                        Reset()
+                    } else {
+                        document.getElementById("Close").click();
+                        toast.error("something went wrong, please try again");
+                    }
+                })
+            } else {
+                await axios.post(`${serverLink}customer/personal_info/update`, formData, token).then((res) => {
+                    if (res.data.message === "success") {
+                        const dt = new FormData();
+                        dt.append("File", formData.Passport);
+                        dt.append("CustomerID", formData.CustomerID);
+
+                        if (formData.Passport !== "") {
+                            axios.post(`${serverLink}customer/customer_photo`, dt, token).then((res) => { })
+                        }
+                        getData();
+                        Audit(`Customer with ID ${formData.CustomerID} Recorded Updated by ${formData.InsertedBy}`, formData.Branch, formData.InsertedBy, token)
+                        document.getElementById("Close").click();
+                        toast.success("Customer record updated Successfully");
+                        Reset()
+                    } else {
+                        document.getElementById("Close").click();
+                        toast.error("something went wrong, please try again");
+                    }
+                })
+            }
         } catch (e) {
             NetworkErrorAlert();
         }
 
     }
 
+    const Reset = () => {
+        setFormData({
+            ...formData,
+            ID: "",
+            CustomerID: "",
+            FirstName: "",
+            MiddleName: "",
+            Surname: "",
+            Email: "",
+            Phone: "",
+            Bvn: "",
+            BvnStatus: "",
+            StateOfOrigin: "",
+            Lga: "",
+            City: "",
+            Address: "",
+            LandMark: "",
+            InsertedBy: props.loginData[0].StaffID,
+            Status: 1,
+            Passport: "",
+            DateOfBirth: "",
+            Gender: "",
+            Bvn: "",
+            Branch: props.loginData[0].Branch
+        })
+    }
+
 
     return isLoading ? (<Loader />) : (
         <div className="page-wrapper">
-            <PageHeader target="modal-large" title={["Roles", "Settings", "Roles"]} btntext={"Add Role"} />
+            <PageHeader Reset={Reset} target="modal-large" title={["KYC", "Customer", "Customer List"]} btntext={"Add Customer"} />
 
             <div className="page-body">
                 <div className="container-xl">
@@ -156,8 +285,8 @@ const CustomersList = (props) => {
                 </div>
             </div>
 
-            <Modal title="Add/Edit Roles" size="modal-full-width" >
-                <form onSubmit={submitPersonalIndo}>
+            <Modal title="Add/Edit Customer Info" size="modal-full-width" >
+                <form onSubmit={onSubmit}>
                     <div className="row">
 
                         <div className="col-md-9">
@@ -196,7 +325,7 @@ const CustomersList = (props) => {
                                 <div className="col-md-4">
                                     <div className="mb-3">
                                         <label className="form-label required">BVN</label>
-                                        <input type={"number"} maxLength={11} required className="form-control" id="Bvn" onChange={onEdit} value={formData.Bvn} />
+                                        <input type={"number"} disabled={formData.ID !== "" ? true : false} maxLength={11} required className="form-control" id="Bvn" onChange={onEdit} value={formData.Bvn} />
                                     </div>
                                 </div>
 
@@ -286,7 +415,7 @@ const CustomersList = (props) => {
                                             img === "" ?
                                                 imageSrc.Passport === "" ? zakat
                                                     : imageSrc.Passport
-                                                : `${serverLink}public/uploads/staff/${formData.ImagePath}`
+                                                : `${serverLink}public/uploads/customer/${img}`
                                         } alt="staff image" width={"150px"} />
                                     </label>
 
@@ -295,7 +424,7 @@ const CustomersList = (props) => {
                             <div className="d-flex justify-content-center mb-3 pb-3">
                                 <span>
                                     <label className="form-label required">Passport</label>
-                                    <input type={"file"} accept="image/*" id="ImagePath" onChange={onImageEdit} className="w-100" />
+                                    <input type={"file"} accept="image/*" id="Passport" onChange={onImageEdit} className="w-100" />
                                 </span>
                             </div>
 

@@ -43,16 +43,27 @@ const StafffReport = (props) => {
         })
     }
     const onIsactiveToggle = (e) => {
+        let status;
         if (e.target.checked === true) {
-            setFormData({
-                ...formData,
-                IsActive: 1
-            })
+            status = 1
         } else {
-            setFormData({
-                ...formData,
-                IsActive: 0
+            status = 0
+        }
+        try {
+            axios.put(`${serverLink}staff/update_profile_status`, { IsActive: status, StaffID: formData.StaffID }, token).then((res) => {
+                if (res.data.message === 'success') {
+                    setFormData({
+                        ...formData,
+                        IsActive: status
+                    })
+                    toast.success('Account Status updated')
+                } else {
+                    toast.error("please try again...")
+                }
             })
+        } catch (e) {
+            console.log(e)
+            NetworkErrorAlert();
         }
     }
 
@@ -222,10 +233,17 @@ const StafffReport = (props) => {
                                         <input type="text" onChange={onEdit} id="cPassword"
                                             className="form-control" value={formData.cPassword} />
                                     </div>
+                                    <div className="card-footer bg-transparent mt-auto">
+                                        <div className="btn-list justify-content-end">
+                                            <button type="submit" onClick={onSubmit} className="btn btn-primary">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <h3 className="card-title mt-4">Profile Status</h3>
-                                <p className="card-subtitle">Activate or Deactive your profile</p>
+                                <p className="card-subtitle">Activate or Deactive your Account</p>
                                 <div>
                                     <label className="form-check form-switch form-switch-lg">
                                         <input defaultChecked={formData.IsActive === 1 ? true : false} onChange={onIsactiveToggle} className="form-check-input" type="checkbox" />
@@ -235,18 +253,12 @@ const StafffReport = (props) => {
                                     </label>
                                 </div>
                             </div>
-                            <div className="card-footer bg-transparent mt-auto">
-                                <div className="btn-list justify-content-end">
-                                    <button type="submit" onClick={onSubmit} className="btn btn-primary">
-                                        Submit
-                                    </button>
-                                </div>
-                            </div>
+
 
 
                             <StaffActivities />
 
-                            <LoginHistory/>
+                            <LoginHistory />
                         </div>
 
 

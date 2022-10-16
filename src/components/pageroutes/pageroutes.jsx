@@ -18,6 +18,7 @@ import staffReportList from "../staff/staff-report-list";
 import StaffReportList from "../staff/staff-report-list";
 import { Footer } from "../common/footer";
 import CustomersList from "../kyc/customers-list";
+import CustomerDetails from "../kyc/customer-details/details";
 
 const PageRoutes = () => {
     // useEffect(()=>{
@@ -63,6 +64,7 @@ const PageRoutes = () => {
                 {/* kyc routes */}
                 <Route path="/onboard-customer" element={<OnBoardCustomer />} />
                 <Route path="/customer-list" element={<CustomersList/>} />
+                <Route path="/customer/:slug" element={<CustomerDetails/>} />
 
 
                 <Route path="*" element={<Error404 />} />

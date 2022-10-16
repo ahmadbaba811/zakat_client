@@ -51,50 +51,57 @@ const LoginHistory = (props) => {
                 </div>
             </div>
             <div className="card-body">
-                {
-                    loginList.length > 0 ?
-                        loginList.map((x, i) => {
-                            const randomcolor = colorsclasses_lt[Math.floor(Math.random() * colorsclasses_lt.length)];
-                            return (
-                                <div className="card" key={i}>
-                                    <div className="table-responsive">
-                                        <table className="table table-vcenter card-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Staff</th>
-                                                    <th>Session</th>
-                                                    <th>Login Time</th>
-                                                    <th>Location</th>
-                                                    <th>IPAddress</th>
-                                                    <th>Logout Time</th>
-                                                    <th>Date</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
+
+                <div className="card">
+                    <div className="table-responsive">
+                        <table className="table table-vcenter card-table">
+                            <thead>
+                                <tr>
+                                    <th>Staff</th>
+                                    <th>Session</th>
+                                    <th>Login Time</th>
+                                    <th>Location</th>
+                                    <th>IPAddress</th>
+                                    <th>Logout Time</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    loginList.length > 0 ?
+                                        loginList.map((x, i) => {
+                                            return (
+                                                <tr key={i}>
                                                     <td>{x.StaffID} </td>
                                                     <td className="text-muted">
-                                                       {x.SessionID}
+                                                        {x.SessionID}
                                                     </td>
                                                     <td className="text-muted">{formatDateAndTime(x.LoginTime, "date_and_time")}</td>
                                                     <td className="text-muted">{x.Location}</td>
                                                     <td className="text-muted">{x.IPAddress}</td>
                                                     <td className="text-muted">{x.LogoutTime}</td>
                                                     <td>{formatDate(x.InsertedDate)}</td>
-                                                </tr>                                               
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            )
-                        })
-                        :
-                        <div className="text-center">
-                            <h2>
-                                No Activities
-                            </h2>
-                        </div>
-                }
+                                                </tr>
+                                            )
+                                        })
+                                        :
+                                        <tr className="text-center">
+                                            <td>
+                                                <h2>
+                                                </h2>
+                                            </td>
+                                        </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div className="text-center">
+                    <h2>
+                        No Activities
+                    </h2>
+                </div>
 
             </div>
 
