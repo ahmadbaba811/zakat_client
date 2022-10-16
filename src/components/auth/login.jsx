@@ -3,38 +3,71 @@ import React from "react";
 import { useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import {serverLink} from '../../constants/url'
+import { serverLink } from '../../constants/url'
 import { setLoginDetails } from "../../action/action";
 import { toast } from "react-toastify";
+import { encryptData } from "../../constants/constants";
+import { useEffect } from "react";
 
 const Login = (props) => {
     let [passwordType, setPasswordType] = useState(true);
     const [loading, setLoading] = useState(true)
     const [formData, setFormData] = useState({
-        Email:"",
-        StaffID:"",
-        Password:"",
+        Email: "",
+        StaffID: "",
+        Password: "",
+        IPAddress: "",
+        State: "",
+        Country: "",
+        Location: ""
+
     })
 
-    const ChangePtype=()=>{
+    const getData = async () => {
+        const res = await axios.get('https://geolocation-db.com/json/')
+        setFormData({
+            ...formData,
+            IPAddress: res.data.IPv4,
+            Country: res.data.country_name,
+            State: res.data.state,
+            Location: `${res.data.city}  ` + "-" + `long: ${res.data.longitude}  ` + "-" + `lat: ${res.data.latitude}  `,
+        })
+        //setIP(res.data.IPv4)
+    }
+
+    useEffect(() => {
+        getData();
+    }, [])
+
+    const ChangePtype = () => {
         let val;
-        if(passwordType === true){
+        if (passwordType === true) {
             val = false
-        }else{val=true}
+        } else { val = true }
         setPasswordType(val)
     }
 
-    const onEdit=(e)=>{
+    const onEdit = (e) => {
         setFormData({
             ...formData,
-            [e.target.id] : e.target.value
+            [e.target.id]: e.target.value
         })
     }
 
-    const Login = async(e)=>{
+    const Login = async (e) => {
+        const dt = {
+            Email: formData.Email,
+            StaffID: formData.StaffID,
+            Password: encryptData(formData.Password),
+            IPAddress: formData.IPAddress,
+            State: formData.State,
+            Country: formData.Country,
+            Location: formData.Location,
+            SessionID: Math.floor(Math.random() * 10000000)
+        }
         e.preventDefault();
         toast.info('please wait...')
-        await axios.post(`${serverLink}login/staff_login`, formData).then((res)=>{
+        await axios.post(`${serverLink}login/staff_login`, dt).then((res) => {
             if (res.data.status === 200) {
                 window.localStorage.setItem("tablerTheme", "light")
                 toast.success('login successful')
@@ -54,8 +87,8 @@ const Login = (props) => {
         //                 props.setOnLoginDetails([{FullName:'IDRIS AHMAD', Email:'ahmadub81@gmail.com', Designation:'Branch Manager', BranchName:'Ikeja', Passport:'https://img.freepik.com/premium-vector/portrait-young-man-with-beard-hair-style-male-avatar-vector-illustration_266660-423.jpg?w=2000'}]);
         //                 setLoading(false);
         //             }, 2000);
-        
-        
+
+
 
     }
 
@@ -71,13 +104,13 @@ const Login = (props) => {
                     <div className="card card-md">
                         <div className="card-body">
                             <h2 className="h2 text-center mb-4">Login to your account</h2>
-                            <form  noValidate={false} onSubmit={Login}>
+                            <form noValidate={false} onSubmit={Login}>
                                 <div className="mb-3">
                                     <label className="form-label">Email address</label>
                                     <input
-                                    id={"StaffID"}
-                                    onChange={onEdit}
-                                        type="email"
+                                        id={"StaffID"}
+                                        onChange={onEdit}
+                                        type="text"
                                         className="form-control"
                                         placeholder="your@email.com"
                                         autoComplete="off"
@@ -96,7 +129,7 @@ const Login = (props) => {
                                             id="Password"
                                             required
                                             onChange={onEdit}
-                                            type={passwordType=== true ? 'password':'text'}
+                                            type={passwordType === true ? 'password' : 'text'}
                                             className="form-control"
                                             placeholder="Your password"
                                             autoComplete="off"

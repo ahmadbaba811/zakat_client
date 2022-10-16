@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { setLoginDetails } from "../../action/action";
 import Logo from '../../images/zakat.jpg'
+import { serverLink } from "../../constants/url";
 
 const Header = (props) => {
   useEffect(() => {
@@ -25,7 +26,7 @@ const Header = (props) => {
           <span className="navbar-toggler-icon" />
         </button>
         <h1 className="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-          <a href="." style={{ textDecoration: 'none' }} className="text text-black-50">
+          <a href="/" style={{ textDecoration: 'none' }} className="text text-black-50">
             <img
               src={Logo}
               width={110}
@@ -44,6 +45,9 @@ const Header = (props) => {
                 className="btn"
                 target="_blank"
                 rel="noreferrer"
+                title="Branch"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-logic-and" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -52,7 +56,7 @@ const Header = (props) => {
                   <path d="M2 15h5" />
                   <path d="M9 5c6 0 8 3.5 8 7s-2 7 -8 7h-2v-14h2z" />
                 </svg>
-                {props.loginData[0].BranchName}
+                {props.loginData[0].Branch}
               </a>
               <a
                 href="https://github.com/sponsors/codecalm"
@@ -262,7 +266,7 @@ const Header = (props) => {
             >
               <span
                 className="avatar avatar-sm"
-                style={{ backgroundImage: props.loginData[0].ImagePath === "" ? `url(${Logo})` : `url(${props.loginData[0].ImagePath})` }}
+                style={{ backgroundImage: props.loginData[0].ImagePath === "" ? `url(${Logo})` : `url(${`${serverLink}public/uploads/staff/${props.loginData[0].ImagePath}`})` }}
               />
               <div className="d-none d-xl-block ps-2">
                 <div>{props.loginData[0].FirstName + " " + props.loginData[0].MiddleName + " " + props.loginData[0].Surname}</div>

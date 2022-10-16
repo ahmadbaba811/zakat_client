@@ -75,7 +75,10 @@ const NaviagtionTab = (props) => {
                       <Link className="dropdown-item" to="/onboard-customer">
                         On-board Customer
                       </Link>
-                      
+                      <Link to="/customer-list" className="dropdown-item">
+                        Customer List
+                      </Link>
+
 
                       <div className="dropend">
                         <a
@@ -271,7 +274,7 @@ const NaviagtionTab = (props) => {
                 </a>
                 <div className="dropdown-menu">
                   <Link to="/manage-staff" className="dropdown-item">
-                    Manage Staff
+                    Add Staff
                   </Link>
                   <Link to="/staff-list" className="dropdown-item">
                     Staff List

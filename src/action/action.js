@@ -14,9 +14,23 @@ export const setBranchList = (p) => {
   };
 };
 
-export const setRoleList = (p) => {
-  return {
-    type: `SET_ZKT_ROLES_LIST`,
+export const setDepartmentList=(p)=>{
+  return{
+    type:`SET_DEPARTMENT_LIST`,
     payload: p,
-  };
-};
+  }
+}
+
+export const setDesignationList =(p)=>{
+  return{
+    type: `SET_DESIGNATION_LIST`,
+    payload: p,
+  }
+}
+
+export const setStaffDetails =(p)=>{
+  return{
+    type: `SET_STAFF_DETAILS`,
+    payload: p,
+  }
+}

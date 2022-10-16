@@ -43,7 +43,7 @@ const OnBoardCustomer = (props) => {
                     })
                     setIsLoading(false)
                 }
-                
+                setIsLoading(false)
                 
             })
         } catch (e) {

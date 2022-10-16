@@ -3,8 +3,10 @@ import { persistReducer } from "redux-persist";
 import { combineReducers } from "redux";
 import {
     branch_list_reducer,
+    department_list_reducer,
+    designation_list_reducer,
     LoginDetailsReducer,
-    role_list_reducer,
+    staff_details_reducer,
 
 } from './reducers';
 import { shortCode } from '../constants/constants'
@@ -12,7 +14,9 @@ import { shortCode } from '../constants/constants'
 const rootReducer = combineReducers({
     LoginDetails: LoginDetailsReducer,
     branch_list: branch_list_reducer,
-    roles_list: role_list_reducer
+    department_list: department_list_reducer,
+    designation_list : designation_list_reducer,
+    staff_details: staff_details_reducer
 });
 
 const persistConfig = {

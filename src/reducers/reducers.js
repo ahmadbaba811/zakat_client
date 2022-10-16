@@ -18,11 +18,28 @@ export const branch_list_reducer = (state = [], action) => {
   }
 };
 
-export const role_list_reducer = (state = [], action) => {
+export const department_list_reducer = (state = [], action) => {
   switch (action.type) {
-    case `SET_ZKT_ROLES_LIST`:
+    case `SET_DEPARTMENT_LIST`:
       return action.payload;
     default:
       return state;
   }
 };
+
+export const designation_list_reducer = (state=[], action)=>{
+  switch (action.type) {
+    case  `SET_DESIGNATION_LIST`:
+      return action.payload;  
+    default:
+      return state
+  }
+}
+export const staff_details_reducer = (state=[], action)=>{
+  switch (action.type) {
+    case  `SET_STAFF_DETAILS`:
+      return action.payload;  
+    default:
+      return state
+  }
+}

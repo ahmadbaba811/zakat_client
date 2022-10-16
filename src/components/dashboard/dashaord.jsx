@@ -3,8 +3,9 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { connect } from "react-redux";
-import { setBranchList, setLoginDetails } from "../../action/action";
+import { setBranchList, setLoginDetails, setDepartmentList, setDesignationList } from "../../action/action";
 import { serverLink } from "../../constants/url";
+import { Footer } from "../common/footer";
 import Loader from "../common/loader";
 import Modal from "../common/modal/modal";
 import SuccessModal from "../common/modal/successmodal";
@@ -18,6 +19,17 @@ const DashBoards = (props) => {
     },[])
 
     const getBranches=async()=>{
+        await axios.get(`${serverLink}settings/department/list`, token).then((res) => {
+            if (res.data.length > 0) {
+               props.setOnDepartmentList(res.data)
+            }
+        })
+        await axios.get(`${serverLink}settings/designation/list`, token).then((res) => {
+            if (res.data.length > 0) {
+                props.setOnDesignationList(res.data);
+            }
+        })
+
         await axios.get(`${serverLink}settings/branch/list`, token).then((res)=>{
             props.setOnBranchList(res.data);
             setTimeout(() => {
@@ -25,6 +37,7 @@ const DashBoards = (props) => {
             }, 3000);     
         })
     }
+
 
     return isLoading ? (<Loader/>) : (
         <div className="page-wrapper">
@@ -584,82 +597,7 @@ const DashBoards = (props) => {
                 </div>
             </div>
 
-            <footer className="footer footer-transparent d-print-none">
-                <div className="container-xl">
-                    <div className="row text-center align-items-center flex-row-reverse">
-                        <div className="col-lg-auto ms-lg-auto">
-                            <ul className="list-inline list-inline-dots mb-0">
-                                <li className="list-inline-item">
-                                    <a href="./docs/index.html" className="link-secondary">
-                                        Documentation
-                                    </a>
-                                </li>
-                                <li className="list-inline-item">
-                                    <a href="./license.html" className="link-secondary">
-                                        License
-                                    </a>
-                                </li>
-                                <li className="list-inline-item">
-                                    <a
-                                        href="https://github.com/tabler/tabler"
-                                        target="_blank"
-                                        className="link-secondary"
-                                        rel="noopener"
-                                    >
-                                        Source code
-                                    </a>
-                                </li>
-                                <li className="list-inline-item">
-                                    <a
-                                        href="https://github.com/sponsors/codecalm"
-                                        target="_blank"
-                                        className="link-secondary"
-                                        rel="noopener"
-                                    >
-                                        {/* Download SVG icon from http://tabler-icons.io/i/heart */}
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            className="icon text-pink icon-filled icon-inline"
-                                            width={24}
-                                            height={24}
-                                            viewBox="0 0 24 24"
-                                            strokeWidth={2}
-                                            stroke="currentColor"
-                                            fill="none"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        >
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-                                        </svg>
-                                        Sponsor
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className="col-12 col-lg-auto mt-3 mt-lg-0">
-                            <ul className="list-inline list-inline-dots mb-0">
-                                <li className="list-inline-item">
-                                    Copyright © 2022
-                                    <a href="." className="link-secondary">
-                                        Tabler
-                                    </a>
-                                    . All rights reserved.
-                                </li>
-                                <li className="list-inline-item">
-                                    <a
-                                        href="./changelog.html"
-                                        className="link-secondary"
-                                        rel="noopener"
-                                    >
-                                        v1.0.0-beta12
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            <Footer/>
         </div>
     )
 }
@@ -676,6 +614,12 @@ const mapStateToProps = (state) => {
       },
       setOnBranchList: (p) => {
         dispatch(setBranchList(p));
+      },
+      setOnDepartmentList: (p) => {
+        dispatch(setDepartmentList(p));
+      },
+      setOnDesignationList:(p)=>{
+        dispatch(setDesignationList(p))
       }
     };
   };

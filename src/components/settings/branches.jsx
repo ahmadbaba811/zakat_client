@@ -24,7 +24,7 @@ const Branches = (props) => {
     const [lgaList, setLgaList] = useState([]);
     const [staffList, setStaffList] = useState([]);
     const [formData, setFormData] = useState({
-        EntryID: "",
+        ID: "",
         BranchCode: "",
         BranchName: "",
         BranchAddress: "",
@@ -55,7 +55,7 @@ const Branches = (props) => {
                                 setLgaList(statesLga.filter(k => k.state === x.State)[0].lgas)
                                 setFormData({
                                     ...formData,
-                                    EntryID: x.EntryID, BranchName: x.BranchName,
+                                    ID: x.ID, BranchName: x.BranchName,
                                     BranchCode: x.BranchCode, BranchAddress: x.BranchAddress, State: x.State, Lga: x.Lga, Manager: x.Manager, Status: x.Status, Town: x.Town
                                 })
                             }}>Edit
@@ -118,7 +118,7 @@ const Branches = (props) => {
     const submitBranch = async (e) => {
         e.preventDefault();
         try {
-            if (formData.EntryID === "") {
+            if (formData.ID === "") {
                 await axios.post(`${serverLink}settings/branch/add`, formData, token).then((res) => {
                     if (res.data.message === "success") {
                         getData();
@@ -148,7 +148,7 @@ const Branches = (props) => {
     const Reset = () => {
         setFormData({
             ...formData,
-            EntryID: "",
+            ID: "",
             BranchCode: "",
             BranchName: "",
             BranchAddress: "",
@@ -162,7 +162,7 @@ const Branches = (props) => {
 
     return isLoading ? (<Loader />) : (
         <div className="page-wrapper">
-            <PageHeader target="modal-large" title={["Branches", "Settings", "Branches"]} btntext={"Create new Branch"}  />
+            <PageHeader target="modal-large" Reset={Reset} title={["Branches", "Settings", "Branches"]} btntext={"Create new Branch"}  />
 
             <div className="page-body">
                 <div className="container-xl">
@@ -184,7 +184,7 @@ const Branches = (props) => {
 
                         <div className="mb-3">
                             <label className="form-label required" htmlFor="Branch Name">Branch Code</label>
-                            <input type="text" disabled={formData.EntryID !== "" ? true : false} className="form-control" id="BranchCode" value={formData.BranchCode} onChange={onEdit} required placeholder="e.g IKJ" />
+                            <input type="text" disabled={formData.ID !== "" ? true : false} className="form-control" id="BranchCode" value={formData.BranchCode} onChange={onEdit} required placeholder="e.g IKJ" />
                         </div>
 
                         <div className="mb-3">

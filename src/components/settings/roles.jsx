@@ -20,7 +20,7 @@ const Roles = (props) => {
     const [data, setData] = useState([]);
     const [staffList, setStaffList] = useState([]);
     const [formData, setFormData] = useState({
-        EntryID: "",
+        ID: "",
         RoleName: "",
         Status: 1,
         InsertedBy: props.loginData[0].StaffID
@@ -41,7 +41,7 @@ const Roles = (props) => {
                                 <button className="btn btn-ghost-primary active w-100" data-bs-toggle="modal" data-bs-target="#modal-large" onClick={() => {
                                     setFormData({
                                         ...formData,
-                                        EntryID: x.EntryID, RoleName: x.RoleName,
+                                        ID: x.ID, RoleName: x.RoleName,
                                         Status: x.Status, HOD: x.HOD
                                     })
                                 }}>Edit
@@ -81,7 +81,7 @@ const Roles = (props) => {
     const submitRole = async (e) => {
         e.preventDefault();
         try {
-            if (formData.EntryID === "") {
+            if (formData.ID === "") {
                 await axios.post(`${serverLink}settings/roles/add`, formData, token).then((res) => {
                     if (res.data.message === "success") {
                         getData();
@@ -112,7 +112,7 @@ const Roles = (props) => {
     const Reset = () => {
         setFormData({
             ...formData,
-            EntryID: "",
+            ID: "",
             RoleName: "",
             Status: "",
         })

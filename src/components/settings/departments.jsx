@@ -21,7 +21,7 @@ const Departments = (props) => {
     const [data, setData] = useState([]);
     const [staffList, setStaffList] = useState([]);
     const [formData, setFormData] = useState({
-        EntryID: "",
+        ID: "",
         DepartmentCode: "",
         DepartmentName: "",
         HOD: "",
@@ -43,7 +43,7 @@ const Departments = (props) => {
                                 <button className="btn btn-ghost-primary active w-100" data-bs-toggle="modal" data-bs-target="#modal-large" onClick={() => {
                                     setFormData({
                                         ...formData,
-                                        EntryID: x.EntryID, DepartmentName: x.DepartmentName,
+                                        ID: x.ID, DepartmentName: x.DepartmentName,
                                         DepartmentCode: x.DepartmentCode, HOD: x.HOD
                                     })
                                 }}>Edit
@@ -83,7 +83,7 @@ const Departments = (props) => {
     const submitDepartment = async (e) => {
         e.preventDefault();
         try {
-            if (formData.EntryID === "") {
+            if (formData.ID === "") {
                 await axios.post(`${serverLink}settings/department/add`, formData, token).then((res) => {
                     if (res.data.message === "success") {
                         getData();
@@ -114,7 +114,7 @@ const Departments = (props) => {
     const Reset = () => {
         setFormData({
             ...formData,
-            EntryID: "",
+            ID: "",
             DepartmentCode: "",
             DepartmentName: "",
             HOD: "",
@@ -145,7 +145,7 @@ const Departments = (props) => {
 
                         <div className="mb-3">
                             <label className="form-label required" htmlFor="Department Code">Department Code</label>
-                            <input type="text" disabled={formData.EntryID !== "" ? true : false} className="form-control" id="DepartmentCode" value={formData.DepartmentCode} onChange={onEdit} required placeholder="e.g AUD" />
+                            <input type="text" disabled={formData.ID !== "" ? true : false} className="form-control" id="DepartmentCode" value={formData.DepartmentCode} onChange={onEdit} required placeholder="e.g AUD" />
                         </div>
                         <div className="mb-3">
                             <div className="form-label required">Head of Department State</div>
