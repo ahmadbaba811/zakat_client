@@ -162,7 +162,7 @@ const Branches = (props) => {
 
     return isLoading ? (<Loader />) : (
         <div className="page-wrapper">
-            <PageHeader target="modal-large" title={["Branches", "Settings", "Branches"]} btntext={"Create new Branch"}  />
+            <PageHeader target="modal-large" Reset={Reset} title={["Branches", "Settings", "Branches"]} btntext={"Create new Branch"}  />
 
             <div className="page-body">
                 <div className="container-xl">

@@ -13,6 +13,10 @@ import ManageStaff from "../staff/manage-staff";
 import Designations from "../settings/designations";
 import StaffList from "../staff/staff-list";
 import OnBoardCustomer from "../kyc/onboard-customer/onboard";
+import StafffReport from "../staff/staff-report/staff-report";
+import staffReportList from "../staff/staff-report-list";
+import StaffReportList from "../staff/staff-report-list";
+import { Footer } from "../common/footer";
 
 const PageRoutes = () => {
     // useEffect(()=>{
@@ -44,21 +48,28 @@ const PageRoutes = () => {
 
                 {/* settings routes */}
                 <Route path="/branch" element={<Branches />} />
-                <Route path="/roles" element={<Roles/>} />
+                <Route path="/roles" element={<Roles />} />
                 <Route path="/department" element={<Departments />} />
-                <Route path="/loan-types" element={<LoanTypes/>} />
-                <Route path="/designations" element={<Designations/>} />
-                
+                <Route path="/loan-types" element={<LoanTypes />} />
+                <Route path="/designations" element={<Designations />} />
+
                 {/* staff routes */}
-                <Route path="/manage-staff" element={<ManageStaff/>} />
-                <Route path="/staff-list" element={<StaffList/>} />
+                <Route path="/manage-staff" element={<ManageStaff />} />
+                <Route path="/staff-list" element={<StaffList />} />
+                <Route path="/staff-report/:slug" element={<StafffReport />} />
+                <Route path="/staff-report" element={<StaffReportList />} />
 
                 {/* kyc routes */}
-                <Route path="/onboard-customer" element={<OnBoardCustomer/>} />
+                <Route path="/onboard-customer" element={<OnBoardCustomer />} />
 
 
                 <Route path="*" element={<Error404 />} />
-            </Routes></>
+            </Routes>
+
+            <div className={"mt-2 mb-4"}>
+                <Footer />
+            </div>
+        </>
     )
 }
 export default PageRoutes;

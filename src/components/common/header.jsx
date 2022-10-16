@@ -44,6 +44,9 @@ const Header = (props) => {
                 className="btn"
                 target="_blank"
                 rel="noreferrer"
+                title="Branch"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-logic-and" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -52,7 +55,7 @@ const Header = (props) => {
                   <path d="M2 15h5" />
                   <path d="M9 5c6 0 8 3.5 8 7s-2 7 -8 7h-2v-14h2z" />
                 </svg>
-                {props.loginData[0].BranchName}
+                {props.loginData[0].Branch}
               </a>
               <a
                 href="https://github.com/sponsors/codecalm"

@@ -24,15 +24,15 @@ const ManageStaff = (props) => {
     let _id_ = params.search !== "" ? params.search.split("=")[1] : '';
     const [isLoading, setIsLoading] = useState(true);
     const [branhcList, setBranchList] = useState(props.branch_list);
-    const [departmentList, setDepartmentList] = useState([])
-    const [designationList, setDesignationList] = useState([]);
+    const [departmentList, setDepartmentList] = useState(props.department_list)
+    const [designationList, setDesignationList] = useState(props.designation_list);
     const [lgaList, setLgaList] = useState([]);
     const [imageSrc, setsetImageSrc] = useState({
         Passport: ""
     })
     const [img, setImg] = useState('')
     const [formData, setFormData] = useState({
-        EntryID: "",
+        ID: "",
         StaffID: "", Branch: "", Designation: "", Department: "", Email: "",
         Phone: "", FirstName: "", MiddleName: "", Surname: "", Gender: "",
         HighestQualification: "", ImagePath: "", IsActive: "", StateOfOrigin: "",
@@ -41,45 +41,45 @@ const ManageStaff = (props) => {
     })
 
     const getData = async () => {
+
         try {
             await axios.get(`${serverLink}staff/last_staff_id`, token).then((response) => {
-                const lastId = response.data[0].StaffID;
-                const indexOfId = lastId.split("ZK")[1];
-                const lastIndex = Number(indexOfId) + 1;
-                const padStaffID = (lastIndex, places) =>
-                    String(lastIndex).padStart(places, "0");
-                const newStaffId = `ZK${padStaffID(lastIndex, 4)}`;
-                setFormData({
-                    ...formData,
-                    StaffID: newStaffId
-                })
+                if (_id_ === "") {
+                    if (response.data.length > 0) {
+                        const lastId = response.data[0].StaffID;
+                        const indexOfId = lastId.split("ZK")[1];
+                        const lastIndex = Number(indexOfId) + 1;
+                        const padStaffID = (lastIndex, places) =>
+                            String(lastIndex).padStart(places, "0");
+                        const newStaffId = `ZK${padStaffID(lastIndex, 4)}`;
+                        setFormData({
+                            ...formData,
+                            StaffID: newStaffId
+                        })
+                        setTimeout(() => {
+
+                        }, 500);
+                    }
+                }
+            }).then(async () => {
+                if (_id_ !== "") {
+                    await axios.get(`${serverLink}staff/staff_list/${_id_}`, token).then((res) => {
+                        if (res.data.length > 0) {
+                            let filtered = statesLga.filter(x => x.state === res.data[0].StateOfOrigin);
+                            setTimeout(() => {
+                                setLgaList(filtered.length > 0 ? filtered[0].lgas : []);
+                                setFormData(...res.data);
+                                setImg(res.data[0].ImagePath)
+                                setIsLoading(false)
+                            }, 200);
+                        }
+                    })
+
+                }
+                setIsLoading(false)
             })
 
-            await axios.get(`${serverLink}settings/branch/list`, token).then((res) => {
-                if (res.data.length > 0) {
-                    setBranchList(res.data);
-                    props.setOnBranchList(res.data);
-                }
-            })
-            await axios.get(`${serverLink}settings/department/list`, token).then((res) => {
-                if (res.data.length > 0) {
-                    setDepartmentList(res.data);
-                }
-            })
-            await axios.get(`${serverLink}settings/designation/list`, token).then((res) => {
-                if (res.data.length > 0) {
-                    setDesignationList(res.data);
-                }
-            })
-            if (_id_ !== "") {
-                await axios.get(`${serverLink}staff/staff_list/${_id_}`, token).then((res) => {
-                    let filtered = statesLga.filter(x => x.state === res.data[0].StateOfOrigin);
-                    setLgaList(filtered.length > 0 ? filtered[0].lgas : []);
-                    setFormData(res.data[0]);
-                    setImg(res.data[0].ImagePath)
-                })
-            }
-            setIsLoading(false)
+
         } catch (e) {
             console.log(e)
             NetworkErrorAlert();
@@ -128,7 +128,7 @@ const ManageStaff = (props) => {
     const submitStaff = async (e) => {
         e.preventDefault();
         try {
-            if (formData.EntryID === "") {
+            if (formData.ID === "") {
                 await axios.post(`${serverLink}staff/add_staff`, formData, token).then(async (res) => {
                     if (res.data.message === "success") {
                         Audit(
@@ -180,19 +180,6 @@ const ManageStaff = (props) => {
             NetworkErrorAlert();
         }
     }
-
-    // const Reset2 = () => {
-
-    //     setFormData({
-    //         ...formData,
-    //         EntryID: "",
-    //         StaffID: "", Branch: "", Designation: "", Department: "", Email: "",
-    //         Phone: "", FirstName: "", MiddleName: "", Surname: "", Gender: "",
-    //         HighestQualification: "", ImagePath: "", IsActive: "", StateOfOrigin: "",
-    //         Lga: "", MaritalStatus: "", Religion: "", Role: "", DateOfBirth: "", Address: "",
-    //         Password: "", ImagePath: "",
-    //     })
-    // }
 
     const Reset = () => {
         navigate('/staff-list')
@@ -422,7 +409,9 @@ const ManageStaff = (props) => {
 const mapStateToProps = (state) => {
     return {
         loginData: state.LoginDetails,
-        branch_list: state.branch_list
+        branch_list: state.branch_list,
+        designation_list: state.designation_list,
+        department_list: state.department_list
     };
 };
 

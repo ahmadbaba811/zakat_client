@@ -22,7 +22,7 @@ const Designations = (props) => {
     const [formData, setFormData] = useState({
         ID: "",
         DesignationCode: "",
-        DesignationName:"",
+        DesignationName: "",
         Status: 1,
         InsertedBy: props.loginData[0].StaffID
     })
@@ -41,7 +41,7 @@ const Designations = (props) => {
                                 <button className="btn btn-ghost-primary active w-100" data-bs-toggle="modal" data-bs-target="#modal-large" onClick={() => {
                                     setFormData({
                                         ...formData,
-                                        EntryID: x.ID, 
+                                        EntryID: x.ID,
                                         DesignationName: x.DesignationName,
                                         DesignationCode: x.DesignationCode
                                     })
@@ -105,8 +105,9 @@ const Designations = (props) => {
         setFormData({
             ...formData,
             ID: "",
-            RoleName: "",
-            Status: "",
+            DesignationCode: "",
+            DesignationName: "",
+            Status: 1,
         })
     }
 

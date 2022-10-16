@@ -148,3 +148,5 @@ export const formatDateAndTime = (date, option) => {
       }
     })
   }
+
+  export const colorsclasses_lt  = ["primary-lt", "success-lt", "danger-lt", "info-lt", "secondary-lt", "warning-lt"]

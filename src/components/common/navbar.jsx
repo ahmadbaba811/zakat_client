@@ -271,7 +271,7 @@ const NaviagtionTab = (props) => {
                 </a>
                 <div className="dropdown-menu">
                   <Link to="/manage-staff" className="dropdown-item">
-                    Manage Staff
+                    Add Staff
                   </Link>
                   <Link to="/staff-list" className="dropdown-item">
                     Staff List
