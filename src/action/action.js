@@ -34,3 +34,4 @@ export const setStaffDetails =(p)=>{
     payload: p,
   }
 }
+ 
