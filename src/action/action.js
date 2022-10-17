@@ -34,3 +34,9 @@ export const setStaffDetails =(p)=>{
     payload: p,
   }
 }
+export const setRoleList =(p)=>{
+  return{
+    type: `SET_ROLE_LIST`,
+    payload: p,
+  }
+}
