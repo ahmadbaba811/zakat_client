@@ -15,15 +15,18 @@ import { setRoleList } from './action/action';
 
 
 function App(props) {
-  const token = props.loginData[0].token;
+  const token = props.loginData[0]?.token;
   const [roles, setRoles]=useState([]);
 
   const getRoles = async()=>{
-    await axios.get(`${serverLink}settings/roles/list`, token).then((res)=>{
+    if(token !== ''){
+      await axios.get(`${serverLink}settings/roles/list`, token).then((res)=>{
         if(res.data.length > 0) {
             setRoles(res.data)
         }
     })
+    }
+    
   }
 
   useEffect(()=>{

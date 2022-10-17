@@ -6,6 +6,7 @@ import {
     department_list_reducer,
     designation_list_reducer,
     LoginDetailsReducer,
+    set_role_list_reducer,
     staff_details_reducer,
 
 } from './reducers';
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     branch_list: branch_list_reducer,
     department_list: department_list_reducer,
     designation_list : designation_list_reducer,
-    staff_details: staff_details_reducer
+    staff_details: staff_details_reducer,
+    role_list: set_role_list_reducer
 });
 
 const persistConfig = {
