@@ -270,7 +270,12 @@ const Header = (props) => {
               />
               <div className="d-none d-xl-block ps-2">
                 <div>{props.loginData[0].FirstName + " " + props.loginData[0].MiddleName + " " + props.loginData[0].Surname}</div>
-                <div className="mt-1 small text-muted">{props.loginData[0].Designation}</div>
+                <div className="mt-1 small text-muted">
+                  {
+                    props.designation_list.length > 0 &&
+                    props.designation_list.filter(x=>x.DesignationCode === props.loginData[0].Designation)[0].DesignationName
+                  }
+                  </div>
               </div>
             </a>
             <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -297,6 +302,7 @@ const Header = (props) => {
 const mapStateToProps = (state) => {
   return {
     loginData: state.LoginDetails,
+    designation_list: state.designation_list
   };
 };
 

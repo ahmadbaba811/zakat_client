@@ -59,24 +59,6 @@ const CustomersList = (props) => {
 
     const getData = async () => {
         try {
-            await axios.get(`${serverLink}customer/last_customer_id`, token).then((response) => {
-                if (response.data.length > 0) {
-                    const lastId = response.data[0].CustomerID;
-                    const lastIndex = Number(lastId.split("CU")[1]) + 1;
-                    const padStaffID = (lastIndex, places) =>
-                        String(lastIndex).padStart(places, "0");
-                    const new_cu_id = `CU${padStaffID(lastIndex, 4)}`;
-                    setFormData({
-                        ...formData,
-                        CustomerID: new_cu_id
-                    })
-                } else {
-                    setFormData({
-                        ...formData,
-                        CustomerID: 'CU0001'
-                    })
-                }
-            })
             await axios.get(`${serverLink}customer/customer/list`, token).then((res) => {
                 if (res.data.length > 0) {
                     let rows = [];
@@ -97,7 +79,7 @@ const CustomersList = (props) => {
                                 src={
                                     x.Passport === "" ? zakat : `${serverLink}public/uploads/customer/${x.Passport}`
                                 }
-                                style={{maxWidth:'60px'}} />,
+                                style={{ maxWidth: '60px' }} />,
                             (<button className="btn btn-sm btn-success"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modal-large"
@@ -185,7 +167,6 @@ const CustomersList = (props) => {
         })
     }
     const onSubmit = async (e) => {
-        console.log(formData)
         e.preventDefault();
         if (formData.Passport !== "") {
             if (!formData.Passport.type.includes("image/")) {
@@ -213,7 +194,11 @@ const CustomersList = (props) => {
                         document.getElementById("Close").click();
                         toast.success("Customer Added Successfully");
                         Reset()
-                    } else {
+                    }
+                    else if (res.data.message === "exist") {
+                        toast.error("Email or phone number already exists");
+                    }
+                    else {
                         document.getElementById("Close").click();
                         toast.error("something went wrong, please try again");
                     }
@@ -325,7 +310,7 @@ const CustomersList = (props) => {
                                 <div className="col-md-4">
                                     <div className="mb-3">
                                         <label className="form-label required">BVN</label>
-                                        <input type={"number"} disabled={formData.ID !== "" ? true : false} maxLength={11} required className="form-control" id="Bvn" onChange={onEdit} value={formData.Bvn} />
+                                        <input type={"number"}   autoComplete="off" disabled={formData.ID !== "" ? true : false} maxLength={11} required className="form-control" id="Bvn" onChange={onEdit} value={formData.Bvn} />
                                     </div>
                                 </div>
 
