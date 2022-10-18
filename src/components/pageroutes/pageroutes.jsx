@@ -12,13 +12,13 @@ import LoanTypes from "../settings/loan-types";
 import ManageStaff from "../staff/manage-staff";
 import Designations from "../settings/designations";
 import StaffList from "../staff/staff-list";
-import OnBoardCustomer from "../kyc/onboard-customer/onboard";
 import StafffReport from "../staff/staff-report/staff-report";
 import staffReportList from "../staff/staff-report-list";
 import StaffReportList from "../staff/staff-report-list";
 import { Footer } from "../common/footer";
 import CustomersList from "../kyc/customers-list";
 import CustomerDetails from "../kyc/customer-details/details";
+import VerifyBvn from "../kyc/verify-bvn";
 
 const PageRoutes = () => {
     // useEffect(()=>{
@@ -62,9 +62,9 @@ const PageRoutes = () => {
                 <Route path="/staff-report" element={<StaffReportList />} />
 
                 {/* kyc routes */}
-                <Route path="/onboard-customer" element={<OnBoardCustomer />} />
                 <Route path="/customer-list" element={<CustomersList/>} />
                 <Route path="/customer/:slug" element={<CustomerDetails/>} />
+                <Route path="/verify-bvn" element={<VerifyBvn/>}  />
 
 
                 <Route path="*" element={<Error404 />} />

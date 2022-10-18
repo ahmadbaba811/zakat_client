@@ -5,6 +5,7 @@ import {
     branch_list_reducer,
     department_list_reducer,
     designation_list_reducer,
+    loan_types_reducer,
     LoginDetailsReducer,
     set_role_list_reducer,
     staff_details_reducer,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
     department_list: department_list_reducer,
     designation_list : designation_list_reducer,
     staff_details: staff_details_reducer,
-    role_list: set_role_list_reducer
+    role_list: set_role_list_reducer,
+    loan_types_list : loan_types_reducer
 });
 
 const persistConfig = {

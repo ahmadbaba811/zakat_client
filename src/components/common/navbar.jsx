@@ -72,46 +72,9 @@ const NaviagtionTab = (props) => {
                       <Link className="dropdown-item" to="/verify-bvn">
                         Verify BVN
                       </Link>
-                      <Link className="dropdown-item" to="/onboard-customer">
-                        On-board Customer
-                      </Link>
                       <Link to="/customer-list" className="dropdown-item">
                         Customer List
                       </Link>
-
-
-                      <div className="dropend">
-                        <a
-                          className="dropdown-item dropdown-toggle"
-                          href="#sidebar-cards"
-                          data-bs-toggle="dropdown"
-                          data-bs-auto-close="outside"
-                          role="button"
-                          aria-expanded="false"
-                        >
-                          Cards
-                          <span className="badge badge-sm bg-green text-uppercase ms-2">
-                            New
-                          </span>
-                        </a>
-                        <div className="dropdown-menu">
-                          <a href="./cards.html" className="dropdown-item">
-                            Sample cards
-                          </a>
-                          <a href="./card-actions.html" className="dropdown-item">
-                            Card actions
-                            <span className="badge badge-sm bg-green text-uppercase ms-2">
-                              New
-                            </span>
-                          </a>
-                          <a
-                            href="./cards-masonry.html"
-                            className="dropdown-item"
-                          >
-                            Cards Masonry
-                          </a>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -161,45 +124,42 @@ const NaviagtionTab = (props) => {
                 </div>
               </li>
 
-
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
-                  href="#navbar-extra"
+                  href="#navbar-layout"
                   data-bs-toggle="dropdown"
                   data-bs-auto-close="outside"
                   role="button"
                   aria-expanded="false"
                 >
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
-                    {/* Download SVG icon from http://tabler-icons.io/i/star */}
+                    {/* Download SVG icon from http://tabler-icons.io/i/layout-2 */}
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
+                      xmlns="http://www.w3.org/2000/svg" className="icon" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round"
+                      strokeLinejoin="round" >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
+                      <rect x={4} y={4} width={6} height={5} rx={2} />
+                      <rect x={4} y={13} width={6} height={7} rx={2} />
+                      <rect x={14} y={4} width={6} height={7} rx={2} />
+                      <rect x={14} y={15} width={6} height={5} rx={2} />
                     </svg>
                   </span>
-                  <span className="nav-link-title">Transactions</span>
+                  <span className="nav-link-title">Loan</span>
                 </a>
                 <div className="dropdown-menu">
                   <div className="dropdown-menu-columns">
                     <div className="dropdown-menu-column">
-                      <a
-                        className="dropdown-item"
-                        href="./layout-horizontal.html"
-                      >
-                        Horizontal
-                      </a>
+                      <Link className="dropdown-item" to="/">
+                        Pending Applications
+                      </Link>
+                      <Link className="dropdown-item" to="/">
+                        Pending Applications
+                      </Link>
+                      <Link className="dropdown-item" to="/">
+                        Pending Applications
+                      </Link>
+
                     </div>
                   </div>
                 </div>
@@ -217,17 +177,8 @@ const NaviagtionTab = (props) => {
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
                     {/* Download SVG icon from http://tabler-icons.io/i/layout-2 */}
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
+                      xmlns="http://www.w3.org/2000/svg" className="icon" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round"
+                      strokeLinejoin="round" >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                       <rect x={4} y={4} width={6} height={5} rx={2} />
                       <rect x={4} y={13} width={6} height={7} rx={2} />
@@ -235,17 +186,15 @@ const NaviagtionTab = (props) => {
                       <rect x={14} y={15} width={6} height={5} rx={2} />
                     </svg>
                   </span>
-                  <span className="nav-link-title">Loan</span>
+                  <span className="nav-link-title">Paybacks</span>
                 </a>
                 <div className="dropdown-menu">
                   <div className="dropdown-menu-columns">
                     <div className="dropdown-menu-column">
-                      <a
-                        className="dropdown-item"
-                        href="./layout-horizontal.html"
-                      >
-                        Horizontal
-                      </a>
+                      <Link className="dropdown-item" to="/">
+                        Pending Applications
+                      </Link>
+
                     </div>
                   </div>
                 </div>

@@ -40,3 +40,11 @@ export const setRoleList =(p)=>{
     payload: p,
   }
 }
+
+
+export const setLoanTypes =(p)=>{
+  return{
+    type: `SET_LOAN_TYPES_LIST`,
+    payload: p,
+  }
+}
