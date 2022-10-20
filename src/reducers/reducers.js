@@ -60,3 +60,13 @@ export const loan_types_reducer = (state=[], action)=>{
       return state
   }
 }
+
+
+export const customer_details_reducer = (state=[], action)=>{
+  switch (action.type) {
+    case  `SET_CUSTOMER_DETAILS`:
+      return action.payload;  
+    default:
+      return state
+  }
+}

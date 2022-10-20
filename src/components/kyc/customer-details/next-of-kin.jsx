@@ -124,7 +124,7 @@ const CustomerNextOfKin = (props) => {
                         </div>
                     </div>
                     <div className="d-flex justify-content-end">
-                        <a data-bs-toggle="modal" data-bs-target={"#nok-modal"} className="btn btn-md btn-primary">
+                        <a data-bs-toggle="modal" onClick={Reset} data-bs-target={"#nok-modal"} className="btn btn-md btn-primary">
                             Add Next of Kin
                         </a>
                     </div>

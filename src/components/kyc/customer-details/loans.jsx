@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { setCustomerDetails } from "../../../action/action";
 import { currencyConverter, formatDate, formatDateAndTime } from "../../../constants/constants";
 import { serverLink } from "../../../constants/url";
 import ComponentLoader from "../../common/modal/component-loader";
@@ -96,7 +97,9 @@ const CustomerLoans = (props) => {
                                                             </span>
                                                         </td>
                                                         <td className="text-muted">
-                                                            <Link to={`/`} className="btn btn-sm btn-info" >
+                                                            <Link to={`/loans/${x.ID}`} onClick={()=>{
+                                                                props.setOnCustomerDetails(props.customer)
+                                                            }} className="btn btn-sm btn-info" >
                                                                 View Details
                                                             </Link>
                                                         </td>
@@ -130,4 +133,12 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, null)(CustomerLoans)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setOnCustomerDetails: (p) => {
+            dispatch(setCustomerDetails(p));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerLoans)

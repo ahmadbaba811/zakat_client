@@ -150,6 +150,9 @@ const NaviagtionTab = (props) => {
                 <div className="dropdown-menu">
                   <div className="dropdown-menu-columns">
                     <div className="dropdown-menu-column">
+                      <Link className="dropdown-item" to="/loans">
+                        All Applications
+                      </Link>
                       <Link className="dropdown-item" to="/">
                         Pending Applications
                       </Link>

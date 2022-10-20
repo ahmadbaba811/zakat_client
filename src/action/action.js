@@ -48,3 +48,10 @@ export const setLoanTypes =(p)=>{
     payload: p,
   }
 }
+
+export const setCustomerDetails =(p)=>{
+  return{
+    type: `SET_CUSTOMER_DETAILS`,
+    payload: p,
+  }
+}

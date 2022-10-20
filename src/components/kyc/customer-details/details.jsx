@@ -5,7 +5,7 @@ import { useState } from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import { currencyConverter, decryptData, encryptData } from "../../../constants/constants";
+import { currencyConverter, decryptData, encryptData, formatDate } from "../../../constants/constants";
 import { serverLink } from "../../../constants/url";
 import zakat from '../../../images/zakat.jpg'
 import Loader from "../../common/loader";
@@ -44,6 +44,8 @@ const CustomerDetails = (props) => {
         AccountName: "",
         AccountNumber: "",
         BankName: "",
+        LastLoanReceived: "",
+        LastLoanPaid: "",
         InsertedBy: props.loginData[0].StaffID,
     })
 
@@ -60,6 +62,15 @@ const CustomerDetails = (props) => {
             }
             setIsLoading(false)
         })
+        await axios.get(`${serverLink}loan/last_loan/${customerID}`, token).then((res) => {
+            if (res.data.length > 0) {
+                setFormData({
+                    ...formData,
+                    LastLoanPaid: formatDate(res.data[0]?.LastLoanPaid),
+                    LastLoanReceived: (formatDate(res.data[1]?.LastLoanReceived))
+                })
+            }
+        })
     }
 
     useEffect(() => {
@@ -68,7 +79,6 @@ const CustomerDetails = (props) => {
     }, [])
 
     const onEdit = (e) => {
-
         if (e.target.id === "LoanType") {
             let val = e.target.value.split(",");
             setFormData({
@@ -110,7 +120,7 @@ const CustomerDetails = (props) => {
         try {
             showConfirm("Warning", "Submit Loan Application?", "warning").then(async (isConfirm) => {
                 if (isConfirm) {
-                    await axios.post(`${serverLink}loan/apply`, formData).then((res) => {
+                    await axios.post(`${serverLink}loan/apply`, formData, token).then((res) => {
                         if (res.data.message === 'success') {
                             document.getElementById("Close").click();
 
@@ -124,6 +134,26 @@ const CustomerDetails = (props) => {
             NetworkErrorAlert();
         }
 
+    }
+
+    const Reset = () => {
+        setFormData({
+            ...formData,
+            LoanType: "",
+            MaxAmount: "",
+            MinAmount: "",
+            IssueingBranch: props.loginData[0].Branch,
+            customerID: customerID,
+            AmountApplied: "",
+            PayBackInstallments: "",
+            LoanDuration: "",
+            DueDateFirst: "",
+            DueDateLast: "",
+            AccountName: "",
+            AccountNumber: "",
+            BankName: "",
+            InsertedBy: props.loginData[0].StaffID,
+        })
     }
 
     return isLoading ? (<Loader />) : (
@@ -142,7 +172,7 @@ const CustomerDetails = (props) => {
                                                     <a href="#" data-bs-toggle="modal" data-bs-target="#bvn-modal" className="btn btn-outline-success">
                                                         Verifiy BVN
                                                     </a>
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#loan-modal" className="btn btn-outline-primary ms-2">
+                                                    <a href="#" onClick={Reset} data-bs-toggle="modal" data-bs-target="#loan-modal" className="btn btn-outline-primary ms-2">
                                                         Apply Loan
                                                     </a>
                                                 </div>
@@ -290,7 +320,7 @@ const CustomerDetails = (props) => {
                                     <div className="col-md-6 col-xl-12">
                                         <div className="mb-3">
                                             <label className="form-label required">Loan Type</label>
-                                            <select className="form-control form-select" onChange={onEdit} id="LoanType" required >
+                                            <select className="form-control form-select" value={formData.LoanType} onChange={onEdit} id="LoanType" required >
                                                 <option value={""} >-select options-</option>
                                                 {
                                                     loanTypes.length > 0 &&
@@ -344,6 +374,23 @@ const CustomerDetails = (props) => {
                                                     <input type="date" className="form-control" id="DueDateLast" onChange={onEdit} value={formData.DueDateLast} required />
                                                 </div>
                                             </div>
+                                            {
+                                                formData.LastLoanPaid !== "" &&
+                                                <>
+                                                    <div className="col-md-6">
+                                                        <div className="mb-3">
+                                                            <label className="form-label required">Date Last Loan Received</label>
+                                                            <input type="date" disabled className="form-control" id="LastLoanReceived" onChange={onEdit} value={formData.LastLoanReceived} required />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <div className="mb-3">
+                                                            <label className="form-label required">Date Last Loan Paid</label>
+                                                            <input type="date" className="form-control" id="LastLoanPaid" onChange={onEdit} value={formData.LastLoanPaid} disabled required />
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            }
                                         </div>
                                         <hr />
                                         <h4>Disbursement Account Details</h4>

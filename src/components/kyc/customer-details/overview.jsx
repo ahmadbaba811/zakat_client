@@ -38,7 +38,7 @@ const CustomerOverview = (props) => {
     return (
 
         <div className="row col-md-12">
-             <div className="col-md-3">
+            <div className="col-md-3">
                 <div className="card card-sm">
                     <div className="card-body">
                         <div className="row align-items-center">
@@ -59,90 +59,95 @@ const CustomerOverview = (props) => {
                     </div>
                 </div>
             </div>
-            <div className="col-md-3">
-                <div className="card card-sm">
-                    <div className="card-body">
-                        <div className="row align-items-center">
-                            <div className="col-auto">
-                                <span className="bg-green text-white avatar">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><circle cx={6} cy={19} r={2} /><circle cx={17} cy={19} r={2} /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></svg>
-                                </span>
-                            </div>
-                            <div className="col">
-                                <div className="h1">
-                                    {TotalAccounts.length > 0 ? TotalAccounts[0].Accounts : 0}
-                                </div>
-                                <div className="text-muted">
-                                    Total Registered Accounts
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-           
-            <div className="col-md-2">
-                <div className="card card-sm">
-                    <div className="card-body">
-                        <div className="row align-items-center">
-                            <div className="col-auto">
-                                <span className="bg-green text-white avatar">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><circle cx={6} cy={19} r={2} /><circle cx={17} cy={19} r={2} /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></svg>
-                                </span>
-                            </div>
-                            <div className="col">
-                                <div className="h1">
-                                    {TotalDebit.length > 0 ? TotalDebit[0].TotalDebit : 0}
-                                </div>
-                                <div className="text-muted">
-                                    Total Debit Transactions
+            <div className="col-md-9">
+                <div className="row">
+                    <div className="col-md-3">
+                        <div className="card card-sm">
+                            <div className="card-body">
+                                <div className="row align-items-center">
+                                    <div className="col-auto">
+                                        <span className="bg-green text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="icon" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><circle cx={6} cy={19} r={2} /><circle cx={17} cy={19} r={2} /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></svg>
+                                        </span>
+                                    </div>
+                                    <div className="col">
+                                        <div className="h1">
+                                            {TotalAccounts.length > 0 ? TotalAccounts[0].Accounts : 0}
+                                        </div>
+                                        <div className="text-muted">
+                                            Accounts
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div className="col-md-2">
-                <div className="card card-sm">
-                    <div className="card-body">
-                        <div className="row align-items-center">
-                            <div className="col-auto">
-                                <span className="bg-green text-white avatar">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><circle cx={6} cy={19} r={2} /><circle cx={17} cy={19} r={2} /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></svg>
-                                </span>
-                            </div>
-                            <div className="col">
-                                <div className="h1">
-                                    {TotalCredit.length > 0 ? TotalCredit[0].TotalCredit : 0}
-                                </div>
-                                <div className="text-muted">
-                                    Total Credit Transactions
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="col-md-2">
-                <div className="card card-sm">
-                    <div className="card-body">
-                        <div className="row align-items-center">
-                            <div className="col-auto">
-                                <span className="bg-green text-white avatar">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="icon" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><circle cx={6} cy={19} r={2} /><circle cx={17} cy={19} r={2} /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></svg>
-                                </span>
-                            </div>
-                            <div className="col">
-                                <div className="h1">
-                                    {TotalLoans.length > 0 ? TotalLoans[0].TotalLoans : 0}
-                                </div>
-                                <div className="text-muted">
-                                    Total Loan Records
+                    <div className="col-md-3">
+                        <div className="card card-sm">
+                            <div className="card-body">
+                                <div className="row align-items-center">
+                                    <div className="col-auto">
+                                        <span className="bg-green text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="icon" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><circle cx={6} cy={19} r={2} /><circle cx={17} cy={19} r={2} /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></svg>
+                                        </span>
+                                    </div>
+                                    <div className="col">
+                                        <div className="h1">
+                                            {TotalDebit.length > 0 ? TotalDebit[0].TotalDebit : 0}
+                                        </div>
+                                        <div className="text-muted">
+                                            Debit Transactions
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div className="col-md-3">
+                        <div className="card card-sm">
+                            <div className="card-body">
+                                <div className="row align-items-center">
+                                    <div className="col-auto">
+                                        <span className="bg-green text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="icon" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><circle cx={6} cy={19} r={2} /><circle cx={17} cy={19} r={2} /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></svg>
+                                        </span>
+                                    </div>
+                                    <div className="col">
+                                        <div className="h1">
+                                            {TotalCredit.length > 0 ? TotalCredit[0].TotalCredit : 0}
+                                        </div>
+                                        <div className="text-muted">
+                                            Credit Transactions
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-3">
+                        <div className="card card-sm">
+                            <div className="card-body">
+                                <div className="row align-items-center">
+                                    <div className="col-auto">
+                                        <span className="bg-green text-white avatar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="icon" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><circle cx={6} cy={19} r={2} /><circle cx={17} cy={19} r={2} /><path d="M17 17h-11v-14h-2" /><path d="M6 5l14 1l-1 7h-13" /></svg>
+                                        </span>
+                                    </div>
+                                    <div className="col">
+                                        <div className="h1">
+                                            {TotalLoans.length > 0 ? TotalLoans[0].TotalLoans : 0}
+                                        </div>
+                                        <div className="text-muted">
+                                            Total Loan Records
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
             </div>
 
 
