@@ -88,6 +88,14 @@ const PayBackHistory = (props) => {
                     toast.success("Payback record added");
                 }
             })
+            if (totalPaid + parseInt(formData.AmountPaid) === parseInt(props.loanDetails[0]?.AmountApplied)) {
+                await axios.put(`${serverLink}loan/payback/complete_payback`, formData, props.token).then((res) => {
+                    if (res.data.message === "success") {
+                        Audit(`Loan ${props.ApplicationID} fully paid back by ${formData.InsertedBy}`, formData.Branch, formData.InsertedBy, props.token)
+                        props.getData();
+                    }
+                })
+            }
 
         } catch (e) {
             console.log(e)

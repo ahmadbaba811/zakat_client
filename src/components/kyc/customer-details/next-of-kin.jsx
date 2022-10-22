@@ -201,8 +201,8 @@ const CustomerNextOfKin = (props) => {
                                     <input type="text" className="form-control" id="FirstName" value={formData.FirstName} onChange={onEdit} required placeholder="First Name" />
                                 </div>
                                 <div className="mb-3">
-                                    <label className="form-label required">Middle Name</label>
-                                    <input type="text" className="form-control" id="MiddleName" value={formData.MiddleName} onChange={onEdit} required placeholder="Middle Name" />
+                                    <label className="form-label">Middle Name</label>
+                                    <input type="text" className="form-control" id="MiddleName" value={formData.MiddleName} onChange={onEdit}  placeholder="Middle Name" />
                                 </div>
 
                                 <div className="mb-3">

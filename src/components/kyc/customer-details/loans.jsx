@@ -92,12 +92,15 @@ const CustomerLoans = (props) => {
                                                             </span>
                                                         </td>
                                                         <td className="text-muted">
-                                                            <span className={x.PayBackStatus === 1 ? "badge bg-success" : "badge bg-danger"}>
-                                                                {x.PayBackStatus === 1 ? "Closed" : "Open"}
+                                                            <span className={x.PayBackStatus === 1 ?
+                                                                "badge bg-info" : x.PayBackStatus === 2 ?
+                                                                    "badge bg-success" : "badge bg-danger"} >
+                                                                {x.PayBackStatus === 1 ? "Payback Ongoing" :
+                                                                    x.PayBackStatus === 2 ? "Closed" : "Open"}
                                                             </span>
                                                         </td>
                                                         <td className="text-muted">
-                                                            <Link to={`/loans/${x.ID}`} onClick={()=>{
+                                                            <Link to={`/loans/${x.ID}`} onClick={() => {
                                                                 props.setOnCustomerDetails(props.customer)
                                                             }} className="btn btn-sm btn-info" >
                                                                 View Details

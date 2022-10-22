@@ -33,7 +33,6 @@ const LoanNOK = (props) => {
             })
 
             await axios.get(`${serverLink}loan/loan_nok/list/${props.ApplicationID}`, props.token).then((res) => {
-                console.log(res.data)
                 if (res.data.length > 0) {
                     setloan_nokList(res.data)
                 }

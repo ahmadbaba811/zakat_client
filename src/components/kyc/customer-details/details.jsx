@@ -47,6 +47,7 @@ const CustomerDetails = (props) => {
         LastLoanReceived: "",
         LastLoanPaid: "",
         InsertedBy: props.loginData[0].StaffID,
+        Ltype:""
     })
 
     const getData = async () => {
@@ -85,7 +86,8 @@ const CustomerDetails = (props) => {
                 ...formData,
                 LoanType: val[0],
                 MaxAmount: val[1],
-                MinAmount: val[2]
+                MinAmount: val[2],
+                Ltype: e.target.value
             })
             return false;
         }
@@ -117,6 +119,15 @@ const CustomerDetails = (props) => {
 
     const applyLoan = (e) => {
         e.preventDefault();
+        if (formData.AmountApplied < formData.MinAmount) {
+            toast.error("Amount less than minimum value");
+            return false;
+
+        }
+        if (formData.AmountApplied > formData.MaxAmount) {
+            toast.error("Amount is more than maximum value");
+            return false;
+        }
         try {
             showConfirm("Warning", "Submit Loan Application?", "warning").then(async (isConfirm) => {
                 if (isConfirm) {
@@ -320,7 +331,7 @@ const CustomerDetails = (props) => {
                                     <div className="col-md-6 col-xl-12">
                                         <div className="mb-3">
                                             <label className="form-label required">Loan Type</label>
-                                            <select className="form-control form-select" value={formData.LoanType} onChange={onEdit} id="LoanType" required >
+                                            <select className="form-control form-select" value={formData.Ltype} onChange={onEdit} id="LoanType" required >
                                                 <option value={""} >-select options-</option>
                                                 {
                                                     loanTypes.length > 0 &&
