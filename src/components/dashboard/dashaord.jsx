@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { connect } from "react-redux";
-import { setBranchList, setLoginDetails, setDepartmentList, setDesignationList } from "../../action/action";
+import { setBranchList, setLoginDetails, setDepartmentList, setDesignationList, setLoanTypes } from "../../action/action";
 import { serverLink } from "../../constants/url";
 import { Footer } from "../common/footer";
 import Loader from "../common/loader";
@@ -31,7 +31,11 @@ const DashBoards = (props) => {
         })
 
         await axios.get(`${serverLink}settings/branch/list`, token).then((res)=>{
-            props.setOnBranchList(res.data);
+            props.setOnBranchList(res.data);  
+        })
+
+        await axios.get(`${serverLink}settings/loan_types/list`, token).then((res)=>{
+            props.setOnLoanTypesList(res.data);
             setTimeout(() => {
                 setIsLoading(false)
             }, 3000);     
@@ -620,6 +624,9 @@ const mapStateToProps = (state) => {
       },
       setOnDesignationList:(p)=>{
         dispatch(setDesignationList(p))
+      },
+      setOnLoanTypesList:(p)=>{
+        dispatch(setLoanTypes(p))
       }
     };
   };

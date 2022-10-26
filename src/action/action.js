@@ -40,3 +40,18 @@ export const setRoleList =(p)=>{
     payload: p,
   }
 }
+
+
+export const setLoanTypes =(p)=>{
+  return{
+    type: `SET_LOAN_TYPES_LIST`,
+    payload: p,
+  }
+}
+
+export const setCustomerDetails =(p)=>{
+  return{
+    type: `SET_CUSTOMER_DETAILS`,
+    payload: p,
+  }
+}

@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Route, Router, Routes } from "react-router-dom";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
 import Header from "../common/header";
 import DashBoards from "../dashboard/dashaord";
 import NaviagtionTab from "../common/navbar";
@@ -12,13 +12,14 @@ import LoanTypes from "../settings/loan-types";
 import ManageStaff from "../staff/manage-staff";
 import Designations from "../settings/designations";
 import StaffList from "../staff/staff-list";
-import OnBoardCustomer from "../kyc/onboard-customer/onboard";
 import StafffReport from "../staff/staff-report/staff-report";
-import staffReportList from "../staff/staff-report-list";
 import StaffReportList from "../staff/staff-report-list";
 import { Footer } from "../common/footer";
 import CustomersList from "../kyc/customers-list";
 import CustomerDetails from "../kyc/customer-details/details";
+import VerifyBvn from "../kyc/verify-bvn";
+import LoanRecords from "../loan/loan-records";
+import LoanDetails from "../loan/loan-details";
 
 const PageRoutes = () => {
     // useEffect(()=>{
@@ -45,6 +46,7 @@ const PageRoutes = () => {
             </div>
 
             <Routes>
+                { window.scrollTo({ top: 0, behavior: 'smooth' })}
                 <Route path="/" element={<DashBoards />} />
                 <Route path="/dashboard" element={<DashBoards />} />
 
@@ -62,9 +64,13 @@ const PageRoutes = () => {
                 <Route path="/staff-report" element={<StaffReportList />} />
 
                 {/* kyc routes */}
-                <Route path="/onboard-customer" element={<OnBoardCustomer />} />
                 <Route path="/customer-list" element={<CustomersList/>} />
                 <Route path="/customer/:slug" element={<CustomerDetails/>} />
+                <Route path="/verify-bvn" element={<VerifyBvn/>}  />
+
+                {/* Loan Routes */}
+                <Route path="/loans" element={<LoanRecords/>}  />
+                <Route path="/loans/:slug" element={<LoanDetails/>} />
 
 
                 <Route path="*" element={<Error404 />} />

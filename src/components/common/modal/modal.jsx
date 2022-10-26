@@ -4,6 +4,7 @@ const Modal = (props) => {
     const size = !props.size ? "modal-lg" : props.size;
     const title = !props.title ? "" : props.title;
     const id = !props.id ? "modal-large" : props.id;
+    const close = !props.close ? "Close" : props.close
 
     return (
         <div
@@ -19,7 +20,7 @@ const Modal = (props) => {
                     <div className="modal-header">
                         <h5 className="modal-title">{title}</h5>
                         <button
-                            id="Close"
+                            id={close}
                             type="button"
                             className="btn-close"
                             data-bs-dismiss="modal"

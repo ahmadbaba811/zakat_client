@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { setLoginDetails } from "../../action/action";
 import Logo from '../../images/zakat.jpg'
 import { serverLink } from "../../constants/url";
+import BranchSVG from './arrows-split.svg'
 
 const Header = (props) => {
   useEffect(() => {
@@ -40,6 +41,11 @@ const Header = (props) => {
         <div className="navbar-nav flex-row order-md-last">
           <div className="nav-item d-none d-md-flex me-3">
             <div className="btn-list">
+              {/* <div className="mb-3">
+                <select type="text" className="form-control">
+                  <option value={3} style={{backgroundImage:`url(${Logo})`}} >  Mallory Hulme</option>
+                </select>
+              </div> */}
               <a
                 href="https://github.com/tabler/tabler"
                 className="btn"
@@ -56,7 +62,11 @@ const Header = (props) => {
                   <path d="M2 15h5" />
                   <path d="M9 5c6 0 8 3.5 8 7s-2 7 -8 7h-2v-14h2z" />
                 </svg>
-                {props.loginData[0].Branch}
+                {
+                  props.branch_list.length > 0 ?
+                    props.branch_list.filter(x => x.BranchCode === props.loginData[0].Branch)[0].BranchName :
+                    props.loginData[0].Branch
+                }
               </a>
               <a
                 href="https://github.com/sponsors/codecalm"
@@ -273,9 +283,9 @@ const Header = (props) => {
                 <div className="mt-1 small text-muted">
                   {
                     props.designation_list.length > 0 &&
-                    props.designation_list.filter(x=>x.DesignationCode === props.loginData[0].Designation)[0].DesignationName
+                    props.designation_list.filter(x => x.DesignationCode === props.loginData[0].Designation)[0].DesignationName
                   }
-                  </div>
+                </div>
               </div>
             </a>
             <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -302,7 +312,8 @@ const Header = (props) => {
 const mapStateToProps = (state) => {
   return {
     loginData: state.LoginDetails,
-    designation_list: state.designation_list
+    designation_list: state.designation_list,
+    branch_list: state.branch_list,
   };
 };
 
