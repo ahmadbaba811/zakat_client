@@ -196,16 +196,10 @@ const PersonalInfo = (props) => {
                             </div>
                         </div>
 
-                        <div className="col-md-8">
+                        <div className="col-md-4">
                             <div className="mb-3">
                                 <label className="form-label required">City/Town</label>
                                 <input type={"text"} required className="form-control" id="City" onChange={onEdit} value={formData.City} />
-                            </div>
-                        </div>
-                        <div className="col-md-8">
-                            <div className="mb-3">
-                                <div className="form-label required">Adress</div>
-                                <textarea className="form-control" id="Address" onChange={onEdit} value={formData.Address} rows="5" />
                             </div>
                         </div>
                         <div className="col-md-4">
@@ -214,6 +208,13 @@ const PersonalInfo = (props) => {
                                 <input type={"text"} required className="form-control" id="LandMark" onChange={onEdit} value={formData.LandMark} />
                             </div>
                         </div>
+                        <div className="col-md-12">
+                            <div className="mb-3">
+                                <div className="form-label required">Adress</div>
+                                <textarea className="form-control" id="Address" onChange={onEdit} value={formData.Address} rows="5" />
+                            </div>
+                        </div>
+                        
                     </div>
                     <div className="mb-3 mt-3">
                         <button className="btn btn-md btn-primary w-100" type="submit">Submit</button>
