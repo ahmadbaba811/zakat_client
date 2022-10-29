@@ -75,6 +75,9 @@ const NaviagtionTab = (props) => {
                       <Link to="/customer-list" className="dropdown-item">
                         Customer List
                       </Link>
+                      <Link to="/verified-customer-list" className="dropdown-item">
+                        Verified Customers
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -153,14 +156,17 @@ const NaviagtionTab = (props) => {
                       <Link className="dropdown-item" to="/loans">
                         All Applications
                       </Link>
-                      <Link className="dropdown-item" to="/">
+                      <Link className="dropdown-item" to="/pending-loans">
                         Pending Applications
                       </Link>
-                      <Link className="dropdown-item" to="/">
-                        Pending Applications
+                      <Link className="dropdown-item" to="/approved-loans">
+                        Approved Loans
                       </Link>
-                      <Link className="dropdown-item" to="/">
-                        Pending Applications
+                      <Link className="dropdown-item" to="/defected-loans">
+                        Defected Loans
+                      </Link>
+                      <Link className="dropdown-item" to="/denied-loans">
+                        Rejected Loans
                       </Link>
 
                     </div>
@@ -194,8 +200,8 @@ const NaviagtionTab = (props) => {
                 <div className="dropdown-menu">
                   <div className="dropdown-menu-columns">
                     <div className="dropdown-menu-column">
-                      <Link className="dropdown-item" to="/">
-                        Pending Applications
+                      <Link className="dropdown-item" to="/paybacks">
+                        Loan Paybacks
                       </Link>
 
                     </div>

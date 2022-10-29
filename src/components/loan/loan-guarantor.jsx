@@ -33,6 +33,7 @@ const LoanGuarantor = (props) => {
         try {
             await axios.get(`${serverLink}loan/loan_guarantor/list/${props.ApplicationID}`, props.token).then((res) => {
                 if (res.data.length > 0) {
+                    props.setLoanGuarantor(res.data)
                     setloan_guarantorList(res.data)
                 }
                 setIsLoading(false)

@@ -20,6 +20,12 @@ import CustomerDetails from "../kyc/customer-details/details";
 import VerifyBvn from "../kyc/verify-bvn";
 import LoanRecords from "../loan/loan-records";
 import LoanDetails from "../loan/loan-details";
+import LoanRecordsPending from "../loan/loan-records-pending";
+import LoanRecordsApproved from "../loan/loan-records-approved";
+import LoanRecordsDefected from "../loan/loan-records-defected";
+import LoanRecordsDenied from "../loan/loan-records-denied";
+import VerifiedCustomersList from "../kyc/customer-list-verified";
+import LoanPayBacks from "../paybacks/paybacks";
 
 const PageRoutes = () => {
     // useEffect(()=>{
@@ -64,6 +70,7 @@ const PageRoutes = () => {
                 <Route path="/staff-report" element={<StaffReportList />} />
 
                 {/* kyc routes */}
+                <Route path="/verified-customer-list" element={<VerifiedCustomersList/>} />
                 <Route path="/customer-list" element={<CustomersList/>} />
                 <Route path="/customer/:slug" element={<CustomerDetails/>} />
                 <Route path="/verify-bvn" element={<VerifyBvn/>}  />
@@ -71,7 +78,13 @@ const PageRoutes = () => {
                 {/* Loan Routes */}
                 <Route path="/loans" element={<LoanRecords/>}  />
                 <Route path="/loans/:slug" element={<LoanDetails/>} />
+                <Route path="/pending-loans" element={<LoanRecordsPending/>} />
+                <Route path="/approved-loans" element={<LoanRecordsApproved/>} />
+                <Route path="/defected-loans" element={<LoanRecordsDefected/>} />
+                <Route path="/denied-loans" element={<LoanRecordsDenied/>} />
 
+                {/* Paybacks */}
+                <Route path="/paybacks" element={<LoanPayBacks/>} />
 
                 <Route path="*" element={<Error404 />} />
             </Routes>

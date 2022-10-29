@@ -15,7 +15,7 @@ const Modal = (props) => {
             aria-modal="true"
             role="dialog"
         >
-            <div className={`modal-dialog ${size} modal-dialog-centered`} role="document">
+            <div className={`modal-dialog ${size} modal-dialog-centered`} role="document" >
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">{title}</h5>

@@ -20,6 +20,7 @@ const CustomerLoans = (props) => {
         try {
             await axios.get(`${serverLink}customer/loans/list/${props.customer[0]?.CustomerID}`, token).then((res) => {
                 if (res.data.length > 0) {
+                    props.setLoans(res.data);
                     setLoans(res.data);
                     setLoans2(res.data);
                     props.setLastLoan(res.data)

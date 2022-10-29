@@ -33,6 +33,7 @@ const LoanCollateral = (props) => {
         try {
             await axios.get(`${serverLink}loan/loan_applicant_group/list/${props.ApplicationID}`, props.token).then((res) => {
                 if (res.data.length > 0) {
+                    props.setLoanCollateral(res.data)
                     setloan_collateralList(res.data)
                 }
                 setIsLoading(false)

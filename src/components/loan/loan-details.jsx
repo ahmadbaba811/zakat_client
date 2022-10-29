@@ -16,18 +16,18 @@ import LoanGuarantor from "./loan-guarantor";
 import LoanCollateral from "./loan-collateral";
 import swal from "sweetalert";
 import { toast } from "react-toastify";
-import { NetworkErrorAlert } from "../common/sweetalert/sweetalert";
+import { NetworkErrorAlert, showConfirm } from "../common/sweetalert/sweetalert";
 import Modal from "../common/modal/modal";
-
-
 
 const LoanDetails = (props) => {
     const token = props.loginData[0].token;
     const [isLoading, setIsLoading] = useState(true);
     const params = useLocation();
     const ApplicationID = params.pathname.split("/")[2];
-    const [customer, setCustomer] = useState(props.customer_details.length > 0 ? props.customer_details : [])
-
+    const [customer, setCustomer] = useState(props.customer_details.length > 0 ? props.customer_details : []);
+    const [loanCollateral, setLoanCollateral] = useState([]);
+    const [loanNOK, setLoanNOK] = useState([]);
+    const [loanGuarantor, setLoanGuarantor] = useState([]);
 
     const [loanDetails, setLoanDetails] = useState([]);
     const [formData, setFormData] = useState({
@@ -72,13 +72,26 @@ const LoanDetails = (props) => {
     const Reset = () => {
         setFormData({
             ...formData,
-            ID:"",
+            ID: "",
 
         })
 
     }
 
     const ApproveLoan = () => {
+        if(loanCollateral.length === 0){
+            toast.error("Please add Loan collateral")
+            return false;
+        }
+        if(loanNOK.length === 0){
+            toast.error("Please add Loan Next of Kin")
+            return false;
+        }
+        if(loanGuarantor.length === 0){
+            toast.error("Please add Loan Guarantor")
+            return false;
+        }
+
         swal({
             text: `Enter Approved Amount \n Amount Applied is ${currencyConverter(loanDetails[0].AmountApplied)}`,
             content: "input",
@@ -128,6 +141,19 @@ const LoanDetails = (props) => {
 
     const extendDate = async (e) => {
         e.preventDefault();
+        if (loanDetails[0]?.IsDefected === 1) {
+            toast.error("Loan is defected, date cannot be extended");
+            return false;
+        }
+        if (loanDetails[0]?.PayBackStatus === 2) {
+            toast.error("Loan Already paid back completely");
+            return false;
+        }
+
+        if (loanDetails[0]?.ApplicationStatus === 0) {
+            toast.error("Loan Applications is still pending");
+            return false;
+        }
         try {
             await axios.put(`${serverLink}loan/extend_date`,
                 { ApplicationID: ApplicationID, DueDateLast: formData.DueDateLast }, token).then((res) => {
@@ -146,6 +172,32 @@ const LoanDetails = (props) => {
         }
     }
 
+    const addAsDefected = (e) => {
+        if (loanDetails[0]?.ApplicationStatus === 0) {
+            toast.error("Loan Applications is still pending");
+            return false;
+        }
+        if (loanDetails[0]?.PayBackStatus === 2) {
+            toast.error("Loan Already paid back completely, Loan cannot be defected");
+            return false;
+        }
+        try {
+            showConfirm("Warning", "Are you sure you want to add this loan as defected?", "warning")
+            .then(async (isConfirmed) => {
+                if (isConfirmed) {
+                    await axios.put(`${serverLink}loan/add_defected/${ApplicationID}`, formData, token).then((res) => {
+                        if (res.data.message === 'success') {
+                            toast.success("Loan Status Changed")
+                        }
+                    })
+                }
+            })
+        } catch (e) {
+            console.log(e)
+            NetworkErrorAlert();
+        }
+    }
+
     return isLoading ? (<Loader />) : (
         <div className="page-body">
             <div className="container-xl">
@@ -158,26 +210,28 @@ const LoanDetails = (props) => {
                                         <div className="d-flex justify-content-between">
                                             <h2 className="mb-4">
                                                 {customer[0].Surname} {customer[0].MiddleName} {customer[0].FirstName} {customer[0].CustomerID}</h2>
-                                                <h3>
-                                                    {
-                                                        props.loan_types.length > 0 &&
-                                                        props.loan_types.filter(x=>x.LoanCode === loanDetails[0].LoanType)[0].LoanName +" (" +loanDetails[0].LoanType+")"
-                                                    }
-                                                   
-                                                    </h3>
+                                            <h3>
+                                                {
+                                                    props.loan_types.length > 0 &&
+                                                    props.loan_types.filter(x => x.LoanCode === loanDetails[0].LoanType)[0].LoanName + " (" + loanDetails[0].LoanType + ")"
+                                                }
+
+                                            </h3>
                                             <div className="row g-2 align-items-center">
                                                 <div className="col-6 col-sm-4 col-md-2 col-xl py-3">
                                                     <button
-                                                        disabled={loanDetails.length > 0 &&
-                                                            parseInt(loanDetails[0]?.AmountApproved) > 0 ? true : false}
+                                                        disabled={loanDetails[0]?.ApplicationStatus === 1 ? true : false}
                                                         onClick={ApproveLoan} className="btn btn-outline-success">
                                                         Approve Loan
                                                     </button>
-                                                    <a href="#" onClick={Reset} data-bs-toggle="modal" data-bs-target="#loan-modal" className="btn btn-outline-primary ms-2">
-                                                        Close Loan
-                                                    </a>
-                                                    <a href="#" onClick={Reset} data-bs-toggle="modal" data-bs-target="#extent_date" className="btn btn-outline-primary ms-2">
+                                                    <a href="#"
+                                                        onClick={Reset} data-bs-toggle="modal" 
+                                                        data-bs-target="#extent_date" className="btn btn-outline-primary ms-2">
                                                         Extend Due Date
+                                                    </a>
+
+                                                    <a href="#" onClick={addAsDefected} className="btn btn-outline-danger ms-2">
+                                                        Add as Defected
                                                     </a>
                                                 </div>
 
@@ -297,6 +351,16 @@ const LoanDetails = (props) => {
                                                                             </span>
                                                                         </div>
                                                                     </div>
+                                                                    <div className="datagrid-item">
+                                                                        <div className="datagrid-title">Is Defected ?</div>
+                                                                        <div className="datagrid-content">
+                                                                            <span className={loanDetails[0]?.IsDefected.toString() !== '1' ?
+                                                                                "badge bg-success" : "badge bg-danger"}>
+                                                                                {loanDetails[0]?.IsDefected.toString() !== '1' ?
+                                                                                    "NO" : "YES"}
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-6">
@@ -399,6 +463,7 @@ const LoanDetails = (props) => {
                                                     ApplicationID={ApplicationID}
                                                     token={token}
                                                     customer={customer}
+                                                    setLoanNOK={setLoanNOK}
                                                 />
 
                                             </div>
@@ -411,6 +476,8 @@ const LoanDetails = (props) => {
                                                     ApplicationID={ApplicationID}
                                                     token={token}
                                                     customer={customer}
+                                                    setLoanGuarantor={setLoanGuarantor}
+                                                    
                                                 />
 
                                             </div>
@@ -423,6 +490,7 @@ const LoanDetails = (props) => {
                                                     ApplicationID={ApplicationID}
                                                     token={token}
                                                     customer={customer}
+                                                    setLoanCollateral={setLoanCollateral}
                                                 />
 
                                             </div>

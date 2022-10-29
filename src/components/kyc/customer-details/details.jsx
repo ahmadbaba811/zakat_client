@@ -20,22 +20,25 @@ import CustomerTransactions from "./transactions";
 
 const CustomerDetails = (props) => {
     const params = useLocation();
-    const customerID = params.pathname.split("/")[2]
+    const customerID = params.pathname.split("/")[2];
 
     const [isLoading, setIsLoading] = useState(false);
-    const [LastLoan, setLastLoan] = useState([])
+    const [LastLoan, setLastLoan] = useState([]);
+    const [Loans, setLoans] = useState([])
+    const [bvnStatus, setBVNStatus] = useState('')
 
     const token = props.loginData[0].token
     const [bvn, setBvn] = useState('');
     const [loanTypes, setLoanTypes] = useState(props.loan_types.length > 0 ? props.loan_types : [])
 
+    const [cu_nok, setcu_nok] = useState([])
     const [customer, setCustomer] = useState([])
     const [formData, setFormData] = useState({
         LoanType: "",
         MaxAmount: "",
         MinAmount: "",
         IssueingBranch: props.loginData[0].Branch,
-        customerID: customerID,
+        CustomerID: customerID,
         AmountApplied: "",
         PayBackInstallments: "",
         LoanDuration: "",
@@ -47,7 +50,7 @@ const CustomerDetails = (props) => {
         LastLoanReceived: "",
         LastLoanPaid: "",
         InsertedBy: props.loginData[0].StaffID,
-        Ltype:""
+        Ltype: ""
     })
 
     const getData = async () => {
@@ -58,6 +61,7 @@ const CustomerDetails = (props) => {
         })
         await axios.get(`${serverLink}customer/personal_details/${customerID}`, token).then((res) => {
             if (res.data.length > 0) {
+                setBVNStatus(res.data[0]?.BvnStatus)
                 setBvn(res.data[0]?.Bvn)
                 setCustomer(res.data);
             }
@@ -119,10 +123,21 @@ const CustomerDetails = (props) => {
 
     const applyLoan = (e) => {
         e.preventDefault();
+        if (bvnStatus !== 1) {
+            toast.error("Please Verify BVN Status");
+            return false;
+        }
+        if (cu_nok.length === 0) {
+            toast.error("Please Add next of Kin");
+            return false;
+        }
+        if (Loans.filter(x => x.ApplicationStatus === 0).length > 0) {
+            toast.error("You have a pending Loan");
+            return false;
+        }
         if (formData.AmountApplied < formData.MinAmount) {
             toast.error("Amount less than minimum value");
             return false;
-
         }
         if (formData.AmountApplied > formData.MaxAmount) {
             toast.error("Amount is more than maximum value");
@@ -133,7 +148,9 @@ const CustomerDetails = (props) => {
                 if (isConfirm) {
                     await axios.post(`${serverLink}loan/apply`, formData, token).then((res) => {
                         if (res.data.message === 'success') {
-                            document.getElementById("Close").click();
+                            getData();
+                            toast.success("Loan Application successfully submitted")
+                            document.getElementById("Close_loan").click();
 
                         } else {
                             toast.error("please try again");
@@ -183,7 +200,23 @@ const CustomerDetails = (props) => {
                                                     <a href="#" data-bs-toggle="modal" data-bs-target="#bvn-modal" className="btn btn-outline-success">
                                                         Verifiy BVN
                                                     </a>
-                                                    <a href="#" onClick={Reset} data-bs-toggle="modal" data-bs-target="#loan-modal" className="btn btn-outline-primary ms-2">
+                                                    <a href="#"
+                                                        onClick={() => {
+                                                            Reset();
+                                                            if (Loans.filter(x => x.ApplicationStatus === 0).length > 0) {
+                                                                toast.error("You have a pending Loan");
+                                                                return false;
+                                                            }
+                                                            if (bvnStatus !== 1) {
+                                                                toast.error("Please Verify BVN Status");
+                                                                return false;
+                                                            }
+                                                            if (cu_nok.length === 0) {
+                                                                toast.error("Please Add next of Kin");
+                                                                return false;
+                                                            }
+                                                        }}
+                                                        data-bs-toggle="modal" data-bs-target="#loan-modal" className="btn btn-outline-primary ms-2">
                                                         Apply Loan
                                                     </a>
                                                 </div>
@@ -294,13 +327,13 @@ const CustomerDetails = (props) => {
                                         <div className="tab-pane" id="tabs-loans" role="tabpanel">
                                             {
                                                 customer.length > 0 ?
-                                                    <CustomerLoans customer={customer} setLastLoan={setLastLoan} /> : <ComponentLoader />
+                                                    <CustomerLoans customer={customer} setLastLoan={setLastLoan} setLoans={setLoans} /> : <ComponentLoader />
                                             }
                                         </div>
                                         <div className="tab-pane" id="tabs-next-of-kin" role="tabpanel">
                                             {
                                                 customer.length > 0 ?
-                                                    <CustomerNextOfKin customer={customer} /> : <ComponentLoader />
+                                                    <CustomerNextOfKin customer={customer} setcu_nok={setcu_nok} /> : <ComponentLoader />
                                             }
                                         </div>
                                     </div>
@@ -326,7 +359,7 @@ const CustomerDetails = (props) => {
 
                             </Modal>
 
-                            <Modal id="loan-modal" title="Apply for Loan">
+                            <Modal id="loan-modal" title="Apply for Loan" close="Close_loan">
                                 <form onSubmit={applyLoan}>
                                     <div className="col-md-6 col-xl-12">
                                         <div className="mb-3">

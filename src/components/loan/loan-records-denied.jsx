@@ -12,10 +12,10 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 
-const LoanRecords = (props) => {
+const LoanRecordsDenied = (props) => {
     const token = props.loginData[0].token;
     const [data, setData] = useState([]);
-    const columns = ["SN", "CustomerID", "Type", "Amount Applied", "Branch", "Duration", "Installments", "Last Due Date", "App. Status", "Loan Status", "Action"];
+    const columns = ["SN", "CustomerID", "Type", "Amount Applied", "Branch", "Last Due Date", "App. Status", "Loan Status", "Action"];
     const [Loans, setLoans] = useState([])
 
     const [customer, setCustomer] = useState([])
@@ -42,7 +42,7 @@ const LoanRecords = (props) => {
 
     const getData = async () => {
         try {
-            await axios.get(`${serverLink}loan/loans/list`, token).then((res) => {
+            await axios.get(`${serverLink}loan/denied/list`, token).then((res) => {
                 if (res.data.length > 0) {
                     let rows = [];
                     res.data.map((x, i) => {
@@ -52,8 +52,6 @@ const LoanRecords = (props) => {
                             x.LoanType,
                             currencyConverter(x.AmountApplied),
                             x.IssueingBranch,
-                            x.LoanDuration +" Months",
-                            currencyConverter(x.PayBackInstallments),
                             formatDateAndTime(x.DueDateLast, "date"),
                             <span
                                 className={x.ApplicationStatus === 0 ? "badge bg-info" :
@@ -61,7 +59,7 @@ const LoanRecords = (props) => {
                                 {x.ApplicationStatus === 0 ? "Pending" :
                                     x.ApplicationStatus === 1 ? "Approved" : "Denied"}
                             </span>,
-                            <span className={x.PayBackStatus === 1 ?
+                             <span className={x.PayBackStatus === 1 ?
                                 "badge bg-info" : x.PayBackStatus === 2 ?
                                     "badge bg-success" : "badge bg-danger"}>
                                 {x.PayBackStatus === 1 ? "Payback Started" :
@@ -87,38 +85,10 @@ const LoanRecords = (props) => {
     }, [])
 
 
-    const onEdit = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.id]: e.target.value
-        })
-    }
-
-    const Reset = (e) => {
-        setFormData({
-            ...formData,
-            LoanType: "",
-            MaxAmount: "",
-            MinAmount: "",
-            IssueingBranch: props.loginData[0].Branch,
-            CustomerID: "",
-            AmountApplied: "",
-            PayBackInstallments: "",
-            LoanDuration: "",
-            DueDateFirst: "",
-            DueDateLast: "",
-            AccountName: "",
-            AccountNumber: "",
-            BankName: "",
-            LastLoanReceived: "",
-            LastLoanPaid: "",
-            InsertedBy: props.loginData[0].StaffID,
-        })
-    }
 
     return (
         <div className="page-wrapper">
-            <PageHeader target="modal-large" Reset={Reset} title={["Loans", "Loans", "All Loans"]} />
+            <PageHeader target="modal-large" title={["Denied Loans", "Loans", "Denied Loans"]} />
 
             <div className="page-body">
                 <div className="container-xl">
@@ -144,5 +114,5 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, null)(LoanRecords)
+export default connect(mapStateToProps, null)(LoanRecordsDenied)
 

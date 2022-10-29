@@ -35,6 +35,7 @@ const CustomerNextOfKin = (props) => {
         try {
             await axios.get(`${serverLink}customer/nex_of_kin/list/${props.customer[0]?.CustomerID}`, token).then((res) => {
                 if (res.data.length > 0) {
+                    props.setcu_nok(res.data)
                     setNextOfKin(res.data);
                     setNextOfKin2(res.data)
                 }
