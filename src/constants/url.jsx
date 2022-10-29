@@ -1,8 +1,7 @@
 
-export const serverStatus = "Dev"
+export const serverStatus = "Live"
 
 export const serverLink =
   serverStatus === "Dev"
     ? "http://localhost:3005/"
-    //"http://192.168.137.1:3005/"
-    : "";
+    : "https://zkt-server.herokuapp.com/";
