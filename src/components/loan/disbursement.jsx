@@ -118,9 +118,12 @@ const DisbursementHistory = (props) => {
             <div className="card card-sm">
                 <div className="card-body">
                     <div className="d-flex justify-content-end">
-                        <a data-bs-toggle="modal" onClick={Reset} data-bs-target={"#disbursement-modal"} className="btn btn-md btn-primary">
-                            Add Disbursement Record
-                        </a>
+
+                        <button
+                            disabled={props.loanDetails[0]?.ApplicationStatus !== 1 ? true : false}
+                            data-bs-toggle="modal" onClick={Reset} data-bs-target={"#disbursement-modal"} className="btn btn-md btn-primary">
+                            {props.loanDetails[0]?.ApplicationStatus === 1 ? "Loan Not Approved" : "Add Disbursement Record"}
+                        </button>
                     </div>
                     <div className="ratio ratio-16x9">
                         <div className="table-responsive">

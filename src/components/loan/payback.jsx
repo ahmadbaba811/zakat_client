@@ -31,6 +31,14 @@ const PayBackHistory = (props) => {
     })
 
     const getData = async () => {
+        if (props.loanDetails[0]?.ApplicationStatus !== 1) {
+            setBtn({
+                ...btn,
+                Text: "Loan Not Approved",
+                className: "btn-info",
+                disabled: true
+            })
+        }
         try {
             await axios.get(`${serverLink}loan/payback/list/${props.ApplicationID}`, props.token).then((res) => {
                 if (res.data.length > 0) {
@@ -46,7 +54,7 @@ const PayBackHistory = (props) => {
                             ...btn,
                             Text: "Loan Fully Repaid",
                             className: "btn-success",
-                            disbale: true
+                            disabled: true
                         })
                     }
                 }
@@ -119,9 +127,10 @@ const PayBackHistory = (props) => {
             <div className="card card-sm">
                 <div className="card-body">
                     <div className="d-flex justify-content-end">
-                        <a data-bs-toggle="modal" disabled={btn.disabled} onClick={Reset} data-bs-target={"#payback-modal"} className={`btn btn-md ${btn.className}`}>
+                        <button
+                            data-bs-toggle="modal" disabled={btn.disabled} onClick={Reset} data-bs-target={"#payback-modal"} className={`btn btn-md ${btn.className}`}>
                             {btn.Text}
-                        </a>
+                        </button>
                     </div>
                     <div className="ratio ratio-16x9">
                         <div className="table-responsive">
@@ -165,44 +174,44 @@ const PayBackHistory = (props) => {
                             </table>
                         </div>
 
-                      
+
                     </div>
                 </div>
             </div>
 
             <Modal id="payback-modal" title="Add Payback Record" close={"close_payback"}>
-                            <form onSubmit={onSubmit} >
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <div className="mb-3">
-                                            <label className="form-label required">Amount Paid</label>
-                                            <input type="number" className="form-control" id="AmountPaid" value={formData.AmountPaid} onChange={onEdit} required placeholder="Amount Paid" />
-                                        </div>
-                                    </div>
+                <form onSubmit={onSubmit} >
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="mb-3">
+                                <label className="form-label required">Amount Paid</label>
+                                <input type="number" className="form-control" id="AmountPaid" value={formData.AmountPaid} onChange={onEdit} required placeholder="Amount Paid" />
+                            </div>
+                        </div>
 
-                                    <div className="col-md-12">
-                                        <div className="mb-3">
-                                            <label className="form-label required">Payment Mode</label>
-                                            <select className="form-control form-select" id="PaymentMode" onChange={onEdit} value={formData.PaymentMode} required >
-                                                <option value={""}>-select-</option>
-                                                <option value={"Cash"}>Cash</option>
-                                                <option value={"Online"}>Online</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                        <div className="col-md-12">
+                            <div className="mb-3">
+                                <label className="form-label required">Payment Mode</label>
+                                <select className="form-control form-select" id="PaymentMode" onChange={onEdit} value={formData.PaymentMode} required >
+                                    <option value={""}>-select-</option>
+                                    <option value={"Cash"}>Cash</option>
+                                    <option value={"Online"}>Online</option>
+                                </select>
+                            </div>
+                        </div>
 
 
 
-                                    <div className="col-md-12">
-                                        <div className="mb-3">
-                                            <button type="submit" className="btn bt-sm btn-primary w-100">
-                                                Submit
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </Modal>
+                        <div className="col-md-12">
+                            <div className="mb-3">
+                                <button type="submit" className="btn bt-sm btn-primary w-100">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </Modal>
         </div>
 
     )

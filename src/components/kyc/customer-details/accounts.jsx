@@ -7,12 +7,26 @@ import { currencyConverter, formatDate, formatDateAndTime } from "../../../const
 import { serverLink } from "../../../constants/url";
 import ComponentLoader from "../../common/modal/component-loader";
 import { NetworkErrorAlert } from "../../common/sweetalert/sweetalert";
+import Modal from "../../common/modal/modal";
+
 
 
 const CustomerAccounts = (props) => {
     const token = props.loginData[0].token
     const [accounts, setAccounts] = useState([]);
     const [accounts2, setAccounts2] = useState([]);
+    const [confirming, setConfirming] = useState(false);
+    const [reciever, setreciever] = useState(false);
+    const [formData, setFormData] = useState({
+        CustomerID: props.customer[0].CustomerID,
+        AccountNo: "",
+        TransactionType: "",
+        TransactionDescription: "",
+        TransactionAmount: "",
+        CurrencyType: "NGN",
+        TransactionBranch: props.loginData[0].Branch,
+        InsertedBy: props.loginData[0].StaffID
+    })
 
     const getData = async () => {
         try {
@@ -33,14 +47,48 @@ const CustomerAccounts = (props) => {
         }
     }, [])
 
-    const onSearch=(e)=>{
+    const onSearch = (e) => {
         let filtered = accounts2.length > 0 &&
-                        accounts2.filter(x=>x.AccountNo.includes(e.target.value)) ||
-                        accounts2.filter(x=>x.AccountBalance.includes(e.target.value)) ||
-                        accounts2.filter(x=>x.Bvn.includes(e.target.value)) ||
-                        accounts2.filter(x=>x.AccountOpeningDate.includes(e.target.value))
+            accounts2.filter(x => x.AccountNo.includes(e.target.value)) ||
+            accounts2.filter(x => x.AccountBalance.includes(e.target.value)) ||
+            accounts2.filter(x => x.Bvn.includes(e.target.value)) ||
+            accounts2.filter(x => x.AccountOpeningDate.includes(e.target.value))
         setAccounts(filtered)
     }
+    const onEdit = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.id]: e.target.value
+        })
+    }
+    const ConfirmReciever = async () => {
+        setConfirming(true);
+        if (formData.RecieverAcctNo !== "") {
+            try {
+                await axios.get(`${serverLink}customer/account/${formData.RecieverAcctNo}`, token).then((res) => {
+                    if (res.data.length > 0) {
+                        setFormData({
+                            ...formData,
+                            RecieverAcctNo: res.data[0]?.AccountNo
+                        })
+                        setConfirming(false)
+                        setreciever(res.data)
+                    }
+                })
+            } catch (e) {
+                NetworkErrorAlert();
+            }
+        }
+        setConfirming(true)
+    }
+    const onSubmit = () => {
+
+    }
+
+    const Reset = () => {
+
+    }
+
 
     return props.customer.length === 0 ? (<ComponentLoader />) : (
 
@@ -50,9 +98,10 @@ const CustomerAccounts = (props) => {
                     <div className="d-flex justify-content-between">
                         <h3 className="card-title">Registered Accounts</h3>
                         <div>
-                            <input className="form-control" placeholder="search" onChange={onSearch}  />
+                            <input className="form-control" placeholder="search" onChange={onSearch} />
                         </div>
                     </div>
+
                     <div className="ratio ratio-16x9">
                         <div className="table-responsive">
                             <table className="table table-vcenter card-table">
@@ -82,6 +131,17 @@ const CustomerAccounts = (props) => {
                                                             </span>
                                                         </td>
                                                         <td className="text-muted">{x.AccountClosingDate !== null ? formatDateAndTime(x.AccountClosingDate, "date_and_time") : ""}</td>
+                                                        <td>
+                                                            <a data-bs-toggle="modal" onClick={() => {
+                                                                setFormData({
+                                                                    ...formData,
+                                                                    AccountNo: x.AccountNo
+                                                                })
+
+                                                            }} data-bs-target={"#transaction-modal"} className="btn btn-md btn-primary">
+                                                                Transact
+                                                            </a>
+                                                        </td>
                                                     </tr>
                                                 )
                                             })
@@ -98,6 +158,62 @@ const CustomerAccounts = (props) => {
                         </div>
                     </div>
 
+                    <Modal id="transaction-modal" title="Transaction Record">
+                        <form onSubmit={onSubmit} >
+                            <div className="col-md-6 col-xl-12">
+                                <div className="mb-3">
+                                    <label className="form-label required" >Transaction Type</label>
+                                    <select className="form-control form-select" onChange={onEdit} value={formData.TransactionType} required id="TransactionType">
+                                        <option value={""}>-Select Transaction Type- </option>
+                                        <option value={"Credit"}>Credit</option>
+                                        <option value={"Debit"}>Debit</option>
+                                        <option value={"Transfer"}>Transfer</option>
+                                    </select>
+                                </div>
+                                {
+                                    formData.TransactionType === "Transfer" &&
+                                    <div className="mb-3">
+                                        <label className="form-label required">Reciever Account Number</label>
+                                        <input type="number" className="form-control" id="RecieverAcctNo" value={formData.RecieverAcctNo} onChange={onEdit} onBlur={ConfirmReciever} required placeholder="RecieverAcctNo" />
+                                        <label className="form-label mt-2 ms-2">
+                                            {
+                                                confirming === true &&
+                                                <strong className="text-danger" style={{ fontSize: '10px' }}>
+                                                    CONFIRMING RECEIVER, PLEASE WAIT...
+                                                </strong>
+                                            }
+                                            {
+                                                reciever.length > 0 &&
+                                                <strong className="text-success" >
+                                                    {reciever[0]?.FirstName}
+                                                </strong>
+                                            }
+
+                                        </label>
+                                    </div>
+                                }
+
+
+                                <div className="mb-3">
+                                    <label className="form-label required">Transaction Amount</label>
+                                    <input type="number" className="form-control" id="TransactionAmount" value={formData.TransactionAmount} onChange={onEdit} required placeholder="TransactionAmount" />
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className="form-label required">Transaction Description</label>
+                                    <textarea type="text" rows={'5'} className="form-control" value={formData.TransactionDescription} id="TransactionDescription" onChange={onEdit} required placeholder="TransactionDescription" >
+
+                                    </textarea>
+                                </div>
+
+                                <div className="mb-3">
+                                    <button type="submit" className="btn bt-sm btn-primary w-100">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </Modal>
                 </div>
             </div>
         </div>

@@ -9,10 +9,12 @@ import ComponentLoader from "../../common/modal/component-loader";
 import { NetworkErrorAlert } from "../../common/sweetalert/sweetalert";
 
 
+
 const CustomerTransactions = (props) => {
     const token = props.loginData[0].token
     const [transactions, settransactions] = useState([]);
     const [transactions2, settransactions2] = useState([]);
+    
 
     const getData = async () => {
         try {
@@ -42,11 +44,11 @@ const CustomerTransactions = (props) => {
             transactions2.filter(x => x.SourceAccountName.toLowerCase().includes(e.target.value.toLowerCase())) ||
             transactions2.filter(x => x.DestinationAccountName.toLowerCase().includes(e.target.value.toLowerCase())) ||
             transactions2.filter(x => x.TransactionDescription.toLowerCase().includes(e.target.value.toLowerCase())) ||
-            transactions2.filter(x => x.SourceAccountNo.includes(e.target.value.toLowerCase()))  ||
-            transactions2.filter(x => x.DestinationAccountNo.includes(e.target.value.toLowerCase())) 
+            transactions2.filter(x => x.SourceAccountNo.includes(e.target.value.toLowerCase())) ||
+            transactions2.filter(x => x.DestinationAccountNo.includes(e.target.value.toLowerCase()))
         settransactions(filtered)
     }
-
+   
     return props.customer.length === 0 ? (<ComponentLoader />) : (
 
         <div className="col-12">
@@ -58,6 +60,7 @@ const CustomerTransactions = (props) => {
                             <input className="form-control" placeholder="search" onChange={onSearch} />
                         </div>
                     </div>
+                    
                     <div className="ratio ratio-16x9">
                         <div className="table-responsive">
                             <table className="table table-vcenter card-table">
@@ -65,12 +68,6 @@ const CustomerTransactions = (props) => {
                                     <tr>
                                         <th>Transaction No</th>
                                         <th>Transaction Branch</th>
-                                        <th>Source Bank</th>
-                                        <th>Source Act. Name</th>
-                                        <th>Source. Act. No</th>
-                                        <th>Dest. Bank</th>
-                                        <th>Dest. Act. Name</th>
-                                        <th>Dest. Act. No</th>
                                         <th>Amount</th>
                                         <th>Description</th>
                                         <th>Description</th>
@@ -86,12 +83,6 @@ const CustomerTransactions = (props) => {
                                                     <tr key={i}>
                                                         <td>{x.TransactionNo}</td>
                                                         <td>{x.TransactionBranch}</td>
-                                                        <td>{x.SourceBank} </td>
-                                                        <td>{x.SourceAccountName} </td>
-                                                        <td className="text-muted">{x.SourceAccountNo}</td>
-                                                        <td>{x.DestinationBank} </td>
-                                                        <td>{x.DestinationAccountName} </td>
-                                                        <td>{x.DestinationAccountNo} </td>
                                                         <td className="text-muted">{currencyConverter(x.TransactionAmount)}</td>
                                                         <td>{x.TransactionDescription}</td>
                                                         <td className="text-muted">{formatDateAndTime(x.TransactionDate, "date")}</td>
@@ -115,7 +106,6 @@ const CustomerTransactions = (props) => {
                             </table>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

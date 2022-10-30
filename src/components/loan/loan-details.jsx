@@ -79,15 +79,15 @@ const LoanDetails = (props) => {
     }
 
     const ApproveLoan = () => {
-        if(loanCollateral.length === 0){
+        if (loanCollateral.length === 0) {
             toast.error("Please add Loan collateral")
             return false;
         }
-        if(loanNOK.length === 0){
+        if (loanNOK.length === 0) {
             toast.error("Please add Loan Next of Kin")
             return false;
         }
-        if(loanGuarantor.length === 0){
+        if (loanGuarantor.length === 0) {
             toast.error("Please add Loan Guarantor")
             return false;
         }
@@ -183,15 +183,15 @@ const LoanDetails = (props) => {
         }
         try {
             showConfirm("Warning", "Are you sure you want to add this loan as defected?", "warning")
-            .then(async (isConfirmed) => {
-                if (isConfirmed) {
-                    await axios.put(`${serverLink}loan/add_defected/${ApplicationID}`, formData, token).then((res) => {
-                        if (res.data.message === 'success') {
-                            toast.success("Loan Status Changed")
-                        }
-                    })
-                }
-            })
+                .then(async (isConfirmed) => {
+                    if (isConfirmed) {
+                        await axios.put(`${serverLink}loan/add_defected/${ApplicationID}`, formData, token).then((res) => {
+                            if (res.data.message === 'success') {
+                                toast.success("Loan Status Changed")
+                            }
+                        })
+                    }
+                })
         } catch (e) {
             console.log(e)
             NetworkErrorAlert();
@@ -219,20 +219,26 @@ const LoanDetails = (props) => {
                                             </h3>
                                             <div className="row g-2 align-items-center">
                                                 <div className="col-6 col-sm-4 col-md-2 col-xl py-3">
+
                                                     <button
                                                         disabled={loanDetails[0]?.ApplicationStatus === 1 ? true : false}
                                                         onClick={ApproveLoan} className="btn btn-outline-success">
                                                         Approve Loan
                                                     </button>
-                                                    <a href="#"
-                                                        onClick={Reset} data-bs-toggle="modal" 
+                                                    <button
+                                                        disabled={loanDetails[0]?.PayBackStatus === 2 ? true
+                                                            : loanDetails[0]?.ApplicationStatus !== 1 ? true : false}
+                                                        onClick={Reset} data-bs-toggle="modal"
                                                         data-bs-target="#extent_date" className="btn btn-outline-primary ms-2">
                                                         Extend Due Date
-                                                    </a>
+                                                    </button>
 
-                                                    <a href="#" onClick={addAsDefected} className="btn btn-outline-danger ms-2">
+                                                    <button
+                                                        disabled={loanDetails[0]?.PayBackStatus === 2 ? true
+                                                            : loanDetails[0]?.ApplicationStatus !== 1 ? true : false}
+                                                        onClick={addAsDefected} className="btn btn-outline-danger ms-2">
                                                         Add as Defected
-                                                    </a>
+                                                    </button>
                                                 </div>
 
                                             </div>
@@ -436,6 +442,7 @@ const LoanDetails = (props) => {
                                                 <DisbursementHistory
                                                     ApplicationID={ApplicationID}
                                                     token={token}
+                                                    loanDetails={loanDetails}
                                                     customer={customer} />
 
                                             </div>
@@ -477,7 +484,7 @@ const LoanDetails = (props) => {
                                                     token={token}
                                                     customer={customer}
                                                     setLoanGuarantor={setLoanGuarantor}
-                                                    
+
                                                 />
 
                                             </div>
