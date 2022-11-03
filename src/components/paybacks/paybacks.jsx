@@ -41,7 +41,7 @@ const LoanPayBacks = (props) => {
                                     data-bs-target="#payback-modal"
                                     data-bs-toggle="modal"
                                     onClick={() => {
-                                        setPayBackCustomerID(x.CustomerID,)
+                                        setPayBackCustomerID(x.CustomerID)
                                         getPayBackDetails(x.ApplicationID)
                                     }} >
                                     View Details
@@ -99,6 +99,7 @@ const LoanPayBacks = (props) => {
                         <table className="table table-vcenter table-hover card-table">
                             <thead>
                                 <tr>
+                                    <th>SN</th>
                                     <th>Branch</th>
                                     <th>Amount Paid</th>
                                     <th>Payment Mode</th>
@@ -111,6 +112,7 @@ const LoanPayBacks = (props) => {
                                         payback.map((x, i) => {
                                             return (
                                                 <tr key={i}>
+                                                    <td width={'5px'} >{i + 1}</td>
                                                     <td>
                                                         {
                                                             props.branch_list.length > 0 &&
@@ -133,9 +135,9 @@ const LoanPayBacks = (props) => {
                                         </tr>
                                 }
                                 <tr className="h3">
-                                    <td>Total Payback</td>
-                                    <td>{currencyConverter(totalPaid)}</td>
                                     <td></td>
+                                    <td colSpan={2} width={'5px'}>Total Payback</td>
+                                    <td>{currencyConverter(totalPaid)}</td>
                                     <td></td>
                                 </tr>
                             </tbody>
