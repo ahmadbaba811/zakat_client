@@ -471,6 +471,7 @@ const LoanDetails = (props) => {
                                                     token={token}
                                                     customer={customer}
                                                     setLoanNOK={setLoanNOK}
+                                                    loanDetails={loanDetails}
                                                 />
 
                                             </div>
@@ -484,6 +485,7 @@ const LoanDetails = (props) => {
                                                     token={token}
                                                     customer={customer}
                                                     setLoanGuarantor={setLoanGuarantor}
+                                                    loanDetails={loanDetails}
 
                                                 />
 
@@ -498,6 +500,7 @@ const LoanDetails = (props) => {
                                                     token={token}
                                                     customer={customer}
                                                     setLoanCollateral={setLoanCollateral}
+                                                    loanDetails={loanDetails}
                                                 />
 
                                             </div>

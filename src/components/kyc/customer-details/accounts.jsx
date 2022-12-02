@@ -24,6 +24,7 @@ const CustomerAccounts = (props) => {
         TransactionDescription: "",
         TransactionAmount: "",
         CurrencyType: "NGN",
+        RecieverAcctNo: "",
         TransactionBranch: props.loginData[0].Branch,
         InsertedBy: props.loginData[0].StaffID
     })
@@ -81,12 +82,33 @@ const CustomerAccounts = (props) => {
         }
         setConfirming(true)
     }
-    const onSubmit = () => {
+    const onSubmit = async(e) => {
+        e.preventDefault();
+        // await axios.post(`${serverLink}loan/apply`, formData, token).then((res) => {
+        //     if (res.data.message === 'success') {
+        //         getData();
+        //         toast.success("Loan Application successfully submitted")
+        //         document.getElementById("Close_loan").click();
+
+        //     } else {
+        //         toast.error("please try again");
+        //     }
+        // })
 
     }
 
     const Reset = () => {
-
+        setFormData({
+            ...formData,
+            CustomerID: props.customer[0].CustomerID,
+            AccountNo: "",
+            TransactionType: "",
+            TransactionDescription: "",
+            TransactionAmount: "",
+            CurrencyType: "NGN",
+            TransactionBranch: props.loginData[0].Branch,
+            InsertedBy: props.loginData[0].StaffID
+        })
     }
 
 
@@ -109,10 +131,11 @@ const CustomerAccounts = (props) => {
                                     <tr>
                                         <th>Account Number</th>
                                         <th>BVN</th>
+                                        <th>Account Type</th>
                                         <th>Account Balance</th>
                                         <th>Opening Date</th>
                                         <th>Account Status</th>
-                                        <th>Closing Date</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -123,6 +146,7 @@ const CustomerAccounts = (props) => {
                                                     <tr key={i}>
                                                         <td>{x.AccountNo} </td>
                                                         <td className="text-muted">{x.Bvn}</td>
+                                                        <td>{x.AccountType}</td>
                                                         <td className="text-muted">{currencyConverter(x.AccountBalance)}</td>
                                                         <td className="text-muted">{formatDateAndTime(x.AccountOpeningDate, "date_and_time")}</td>
                                                         <td className="text-muted">
@@ -130,9 +154,9 @@ const CustomerAccounts = (props) => {
                                                                 {x.AccountStatus === 1 ? "Active" : "InActive"}
                                                             </span>
                                                         </td>
-                                                        <td className="text-muted">{x.AccountClosingDate !== null ? formatDateAndTime(x.AccountClosingDate, "date_and_time") : ""}</td>
                                                         <td>
                                                             <a data-bs-toggle="modal" onClick={() => {
+                                                                Reset();
                                                                 setFormData({
                                                                     ...formData,
                                                                     AccountNo: x.AccountNo
@@ -174,7 +198,7 @@ const CustomerAccounts = (props) => {
                                     formData.TransactionType === "Transfer" &&
                                     <div className="mb-3">
                                         <label className="form-label required">Reciever Account Number</label>
-                                        <input type="number" className="form-control" id="RecieverAcctNo" value={formData.RecieverAcctNo} onChange={onEdit} onBlur={ConfirmReciever} required placeholder="RecieverAcctNo" />
+                                        <input type="number" className="form-control" id="RecieverAcctNo" value={formData.RecieverAcctNo} onChange={onEdit} onBlur={ConfirmReciever} required placeholder="Reciever Acct. No" />
                                         <label className="form-label mt-2 ms-2">
                                             {
                                                 confirming === true &&
@@ -182,13 +206,13 @@ const CustomerAccounts = (props) => {
                                                     CONFIRMING RECEIVER, PLEASE WAIT...
                                                 </strong>
                                             }
+
                                             {
                                                 reciever.length > 0 &&
                                                 <strong className="text-success" >
                                                     {reciever[0]?.FirstName}
                                                 </strong>
                                             }
-
                                         </label>
                                     </div>
                                 }
@@ -196,12 +220,12 @@ const CustomerAccounts = (props) => {
 
                                 <div className="mb-3">
                                     <label className="form-label required">Transaction Amount</label>
-                                    <input type="number" className="form-control" id="TransactionAmount" value={formData.TransactionAmount} onChange={onEdit} required placeholder="TransactionAmount" />
+                                    <input type="number" className="form-control" id="TransactionAmount" value={formData.TransactionAmount} onChange={onEdit} required placeholder="Transaction Amount" />
                                 </div>
 
                                 <div className="mb-3">
                                     <label className="form-label required">Transaction Description</label>
-                                    <textarea type="text" rows={'5'} className="form-control" value={formData.TransactionDescription} id="TransactionDescription" onChange={onEdit} required placeholder="TransactionDescription" >
+                                    <textarea type="text" rows={'5'} className="form-control" value={formData.TransactionDescription} id="TransactionDescription" onChange={onEdit} required placeholder="Transaction Description" >
 
                                     </textarea>
                                 </div>

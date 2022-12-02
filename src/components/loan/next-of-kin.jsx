@@ -24,7 +24,19 @@ const LoanNOK = (props) => {
         InsertedBy: props.loginData[0]?.StaffID
     })
 
+    const [btn, setBtn] = useState({
+        className: "btn-primary",
+        disabled: false
+    })
+
     const getData = async () => {
+        if (props.loanDetails[0]?.ApplicationStatus !== 0) {
+            setBtn({
+                ...btn,
+                className: "btn-info",
+                disabled: true
+            })
+        }
         try {
             await axios.get(`${serverLink}customer/nex_of_kin/list/${props.customer[0]?.CustomerID}`, props.token).then((res) => {
                 if (res.data.length > 0) {
@@ -93,9 +105,9 @@ const LoanNOK = (props) => {
             <div className="card card-sm">
                 <div className="card-body">
                     <div className="d-flex justify-content-end">
-                        <a data-bs-toggle="modal" onClick={Reset} data-bs-target={"#loan_nok-modal"} className="btn btn-md btn-primary">
+                        <button disabled={btn.disabled} data-bs-toggle="modal" onClick={Reset} data-bs-target={"#loan_nok-modal"} className="btn btn-md btn-primary">
                             Add Next of Kin
-                        </a>
+                        </button>
                     </div>
                     <div className="ratio ratio-16x9">
                         <div className="table-responsive">
@@ -123,7 +135,7 @@ const LoanNOK = (props) => {
                                                         <td>{x.Relationship}</td>
                                                         <td>{x.Occupation}</td>
                                                         <td>{x.Address}</td>
-                                                        <td>{x.InsertedBy}</td>
+                                                        <td>{x.Inserted}</td>
                                                     </tr>
                                                 )
                                             })

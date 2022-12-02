@@ -28,8 +28,20 @@ const LoanGuarantor = (props) => {
         Address: "",
         InsertedBy: props.loginData[0]?.StaffID
     })
+    const [btn, setBtn] = useState({
+        className: "btn-primary",
+        disabled: false
+    })
+
 
     const getData = async () => {
+        if (props.loanDetails[0]?.ApplicationStatus !== 0) {
+            setBtn({
+                ...btn,
+                className: "btn-info",
+                disabled: true
+            })
+        }
         try {
             await axios.get(`${serverLink}loan/loan_guarantor/list/${props.ApplicationID}`, props.token).then((res) => {
                 if (res.data.length > 0) {
@@ -101,6 +113,7 @@ const LoanGuarantor = (props) => {
             Phone: "",
             Occupation: "",
             Address: "",
+            ID:""
         })
 
     }
@@ -110,9 +123,9 @@ const LoanGuarantor = (props) => {
             <div className="card card-sm">
                 <div className="card-body">
                     <div className="d-flex justify-content-end">
-                        <a data-bs-toggle="modal" onClick={Reset} data-bs-target={"#loan_guarantor-modal"} className="btn btn-md btn-primary">
+                        <button  disabled={btn.disabled} data-bs-toggle="modal" onClick={Reset} data-bs-target={"#loan_guarantor-modal"} className="btn btn-md btn-primary">
                             Add Guarantor
-                        </a>
+                        </button>
                     </div>
                     <div className="ratio ratio-16x9 mt-3">
                         <div className="table-responsive">
@@ -141,7 +154,7 @@ const LoanGuarantor = (props) => {
                                                         <td>{x.Address}</td>
                                                         <td>{x.InsertedBy}</td>
                                                         <td>
-                                                            <button className="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#loan_guarantor-modal"
+                                                            <button disabled={btn.disabled} className="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#loan_guarantor-modal"
                                                                 onClick={() => {
                                                                     setFormData({
                                                                         ...formData,
@@ -155,7 +168,7 @@ const LoanGuarantor = (props) => {
                                                                         Phone: x.Phone,
                                                                         Occupation: x.Occupation,
                                                                         Address: x.Address,
-                                                                        InsertedBy: props.loginData[0].StaffID,
+                                                                        InsertedBy: props.loginData[0]?.StaffID,
                                                                     })
                                                                 }}>
                                                                 Edit

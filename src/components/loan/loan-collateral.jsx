@@ -29,7 +29,19 @@ const LoanCollateral = (props) => {
         InsertedBy: props.loginData[0]?.StaffID
     })
 
+    const [btn, setBtn] = useState({
+        className: "btn-primary",
+        disabled: false
+    })
+
     const getData = async () => {
+        if (props.loanDetails[0]?.ApplicationStatus !== 0) {
+            setBtn({
+                ...btn,
+                className: "btn-info",
+                disabled: true
+            })
+        }
         try {
             await axios.get(`${serverLink}loan/loan_applicant_group/list/${props.ApplicationID}`, props.token).then((res) => {
                 if (res.data.length > 0) {
@@ -110,9 +122,9 @@ const LoanCollateral = (props) => {
             <div className="card card-sm">
                 <div className="card-body">
                     <div className="d-flex justify-content-end">
-                        <a data-bs-toggle="modal" onClick={Reset} data-bs-target={"#loan_collateral-modal"} className="btn btn-md btn-primary">
+                        <button data-bs-toggle="modal" disabled={btn.disabled} onClick={Reset} data-bs-target={"#loan_collateral-modal"} className="btn btn-md btn-primary">
                             Add Collateral
-                        </a>
+                        </button>
                     </div>
                     <div className="ratio ratio-16x9 mt-3">
                         <div className="table-responsive">
@@ -143,7 +155,7 @@ const LoanCollateral = (props) => {
                                                         <td>{x.Phone}</td>
                                                         <td>{x.Address}</td>
                                                         <td>
-                                                            <button className="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#loan_collateral-modal"
+                                                            <button disabled={btn.disabled} className="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#loan_collateral-modal"
                                                                 onClick={() => {
                                                                     setFormData({
                                                                         ...formData,
@@ -157,7 +169,7 @@ const LoanCollateral = (props) => {
                                                                         Email: x.Email,
                                                                         Phone: x.Phone,
                                                                         Address: x.Address,
-                                                                        InsertedBy: props.loginData[0].StaffID,
+                                                                        InsertedBy: props.loginData[0]?.StaffID,
                                                                     })
                                                                 }}>
                                                                 Edit

@@ -53,6 +53,22 @@ const CustomerDetails = (props) => {
         Ltype: ""
     })
 
+    const [account, setAccount] = useState({
+        IssueingBranch: props.loginData[0]?.Branch,
+        CustomerID: customerID,
+        InsertedBy: props.loginData[0]?.StaffID,
+        Bvn: "",
+        AccountType: "",
+        CompanyName: "",
+        CompanyType: "",
+        CompanyAddress: "",
+        CompanyIncNo: "",
+        CompanyIncNo: "",
+        CompanyIncCert: "",
+        AccountOpeningDate: "",
+        CompanyRegDate: ""
+    })
+
     const getData = async () => {
         await axios.get(`${serverLink}settings/loan_types/list`, token).then((res) => {
             if (res.data.length > 0) {
@@ -181,6 +197,46 @@ const CustomerDetails = (props) => {
             AccountNumber: "",
             BankName: "",
             InsertedBy: props.loginData[0].StaffID,
+        })
+    }
+
+    const onAccountEdit = (e) => {
+        setAccount({
+            ...account,
+            [e.target.id]: e.target.value
+        })
+        if (e.target.id === "CompanyIncCert") {
+            setAccount({
+                ...account,
+                [e.target.id]: e.target.files[0]
+            })
+        }
+    }
+
+    const createAccount = async (e) => {
+        e.preventDefault();
+
+        showConfirm("Warning", "Create Account?", "warning").then(async (isConfirm) => {
+            if (isConfirm) {
+                await axios.post(`${serverLink}customer/create-account`, account, token).then((res) => {
+                    if (res.data.message === 'success') {
+                        getData();
+                        if (account.CompanyIncCert !== "") {
+                            const dt = new FormData();
+                            dt.append("AccountNumber", res.data.AccountNumber)
+                            dt.append("File", account.CompanyIncCert)
+                            axios.post(`${serverLink}customer/account_company_document/upload`, dt).then((res) => {
+                                document.getElementById("Close_account").click();
+                            })
+                        }
+                        toast.success("Loan Application successfully submitted")
+                        document.getElementById("Close_account").click();
+
+                    } else {
+                        toast.error("please try again");
+                    }
+                })
+            }
         })
     }
 
@@ -464,29 +520,78 @@ const CustomerDetails = (props) => {
                                 </form>
                             </Modal>
 
-                            <Modal id="account-modal" size="modal-lg" title="Create Account">
-                                <form onSubmit={veryfyBVN}>
+                            <Modal id="account-modal" size="modal-lg" title="Create Account" close={`Close_account`}>
+                                <form onSubmit={createAccount}>
                                     <div className="row">
                                         <div className="col-md-6">
                                             <div className="mb-3">
                                                 <label className="form-label required">Account Type</label>
-                                                <select className="form-control form-select" value={formData.AccountType} onChange={onEdit} id="AccountType" required >
+                                                <select className="form-control form-select" value={account.AccountType} onChange={onAccountEdit} id="AccountType" required >
                                                     <option value={""} >-select options-</option>
-                                                    <option value={"D"} >Corporate</option>
-                                                    <option value={"E"} >Individual</option>
+                                                    <option value={"Corporate"} >Corporate</option>
+                                                    <option value={"Individual"} >Individual</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div className="col-md-6">
                                             <div className="mb-3">
-                                                <label className="form-label required">Account Type</label>
-                                                <input type="text" disabled className="form-control" onChange={onEdit} value={bvn} required placeholder="BVN Number" />
+                                                <label className="form-label required">Bank Verification Number (BVN)</label>
+                                                <input type="text" id="Bvn" className="form-control" onChange={onAccountEdit} value={account.Bvn} required placeholder="BVN Number" />
                                             </div>
                                         </div>
+                                        {
+                                            account.AccountType === "Corporate" &&
+                                            <>
+                                                <div className="col-md-6">
+                                                    <div className="mb-3">
+                                                        <label className="form-label required">Company Name</label>
+                                                        <input type="text" id="CompanyName" className="form-control" onChange={onAccountEdit} value={account.CompanyName} required placeholder="Company Name" />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="mb-3">
+                                                        <label className="form-label required">Company Type</label>
+                                                        <select className="form-control form-select" value={account.CompanyType} onChange={onAccountEdit} id="CompanyType" required >
+                                                            <option value={""} >-select options-</option>
+                                                            <option value={"Limited Liability Company"} >Limited Liability Company</option>
+                                                            <option value={"Incorporated"} >Incorporated</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="mb-3">
+                                                        <label className="form-label required">Incorpration Number (INC No)</label>
+                                                        <input type="text" id="CompanyIncNo" className="form-control" onChange={onAccountEdit} value={account.CompanyIncNo} required placeholder="Company Inc No" />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="mb-3">
+                                                        <label className="form-label required">Company Reg. Date</label>
+                                                        <input type="date" id="CompanyRegDate" className="form-control" onChange={onAccountEdit} value={account.CompanyRegDate} required />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-12">
+                                                    <div className="mb-3">
+                                                        <label className="form-label required">Company Reg. Certificate</label>
+                                                        <input type="file" id="CompanyIncCert" className="form-control" onChange={onAccountEdit} required />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-12">
+                                                    <div className="mb-3">
+                                                        <label className="form-label required">Company Address</label>
+                                                        <textarea type="text" rows={5} id="CompanyAddress" className="form-control" onChange={onAccountEdit} value={account.CompanyAddress} required >
+
+                                                        </textarea>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        }
+
+
                                         <div className="col-md-12">
                                             <div className="mb-3">
                                                 <button type="submit" className="btn bt-sm btn-primary w-100">
-                                                    Verify
+                                                    Create Account
                                                 </button>
                                             </div>
                                         </div>
