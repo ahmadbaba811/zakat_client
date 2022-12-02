@@ -116,12 +116,15 @@ const NaviagtionTab = (props) => {
                 <div className="dropdown-menu">
                   <div className="dropdown-menu-columns">
                     <div className="dropdown-menu-column">
-                      <a
-                        className="dropdown-item"
-                        href="./layout-horizontal.html"
-                      >
-                        Horizontal
-                      </a>
+                      <Link className="dropdown-item" to="/all-transactions">
+                        All Transactions
+                      </Link>
+                      <Link className="dropdown-item" to="/credit-transactions">
+                        Credit Transactions
+                      </Link>
+                      <Link className="dropdown-item" to="/debit-transactions">
+                        Debit Transactions
+                      </Link>
                     </div>
                   </div>
                 </div>

@@ -197,6 +197,9 @@ const CustomerDetails = (props) => {
                                             <h2 className="mb-4">{customer[0].Surname} {customer[0].MiddleName} {customer[0].FirstName}</h2>
                                             <div className="row g-2 align-items-center">
                                                 <div className="col-6 col-sm-4 col-md-2 col-xl py-3">
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#account-modal" className="btn btn-outline-info me-2">
+                                                        Create Account
+                                                    </a>
                                                     <a href="#" data-bs-toggle="modal" data-bs-target="#bvn-modal" className="btn btn-outline-success">
                                                         Verifiy BVN
                                                     </a>
@@ -460,6 +463,38 @@ const CustomerDetails = (props) => {
                                     </div>
                                 </form>
                             </Modal>
+
+                            <Modal id="account-modal" size="modal-lg" title="Create Account">
+                                <form onSubmit={veryfyBVN}>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className="mb-3">
+                                                <label className="form-label required">Account Type</label>
+                                                <select className="form-control form-select" value={formData.AccountType} onChange={onEdit} id="AccountType" required >
+                                                    <option value={""} >-select options-</option>
+                                                    <option value={"D"} >Corporate</option>
+                                                    <option value={"E"} >Individual</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="mb-3">
+                                                <label className="form-label required">Account Type</label>
+                                                <input type="text" disabled className="form-control" onChange={onEdit} value={bvn} required placeholder="BVN Number" />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-12">
+                                            <div className="mb-3">
+                                                <button type="submit" className="btn bt-sm btn-primary w-100">
+                                                    Verify
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </Modal>
+
                         </div>
                     </div>
 
