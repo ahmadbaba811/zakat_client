@@ -79,11 +79,11 @@ const PayBackHistory = (props) => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        if (totalPaid >= parseInt(props.loanDetails[0]?.AmountApplied)) {
+        if (totalPaid >= parseInt(props.loanDetails[0]?.AmountApproved)) {
             toast.error("Loan have been fully repaid")
             return false;
         }
-        if (totalPaid + parseInt(formData.AmountPaid) > parseInt(props.loanDetails[0]?.AmountApplied)) {
+        if (totalPaid + parseInt(formData.AmountPaid) > parseInt(props.loanDetails[0]?.AmountApproved)) {
             toast.error("Total Amount is Higher than borrowed value");
             return false;
         }
@@ -96,7 +96,7 @@ const PayBackHistory = (props) => {
                     toast.success("Payback record added");
                 }
             })
-            if (totalPaid + parseInt(formData.AmountPaid) === parseInt(props.loanDetails[0]?.AmountApplied)) {
+            if (totalPaid + parseInt(formData.AmountPaid) === parseInt(props.loanDetails[0]?.AmountApproved)) {
                 await axios.put(`${serverLink}loan/payback/complete_payback`, formData, props.token).then((res) => {
                     if (res.data.message === "success") {
                         Audit(`Loan ${props.ApplicationID} fully paid back by ${formData.InsertedBy}`, formData.Branch, formData.InsertedBy, props.token)

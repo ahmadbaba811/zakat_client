@@ -3,11 +3,12 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { connect } from "react-redux";
-import { currencyConverter, formatDate, formatDateAndTime } from "../../../constants/constants";
+import { currencyConverter, currentDate, formatDate, formatDateAndTime } from "../../../constants/constants";
 import { serverLink } from "../../../constants/url";
 import ComponentLoader from "../../common/modal/component-loader";
 import { NetworkErrorAlert } from "../../common/sweetalert/sweetalert";
 import Modal from "../../common/modal/modal";
+import { toast } from "react-toastify";
 
 
 
@@ -23,10 +24,17 @@ const CustomerAccounts = (props) => {
         TransactionType: "",
         TransactionDescription: "",
         TransactionAmount: "",
+        TransactionDate: currentDate,
         CurrencyType: "NGN",
         RecieverAcctNo: "",
         TransactionBranch: props.loginData[0].Branch,
         InsertedBy: props.loginData[0].StaffID
+    })
+
+    const [btn, setBtn] = useState({
+        className: "btn-primary",
+        btnText: "Submit",
+        disabled: false
     })
 
     const getData = async () => {
@@ -64,16 +72,36 @@ const CustomerAccounts = (props) => {
     }
     const ConfirmReciever = async () => {
         setConfirming(true);
+        setBtn({
+            ...btn,
+            btnText: 'Confirming...',
+            className: 'btn-info',
+            disabled: true
+        })
         if (formData.RecieverAcctNo !== "") {
             try {
                 await axios.get(`${serverLink}customer/account/${formData.RecieverAcctNo}`, token).then((res) => {
                     if (res.data.length > 0) {
+                        setConfirming(false)
+                        setreciever(res.data)
                         setFormData({
                             ...formData,
                             RecieverAcctNo: res.data[0]?.AccountNo
                         })
-                        setConfirming(false)
-                        setreciever(res.data)
+                        setBtn({
+                            ...btn,
+                            btnText: 'Submit',
+                            className: 'btn-primary',
+                            disabled: false
+                        })
+                        
+                    }else{
+                        setBtn({
+                            ...btn,
+                            btnText: 'Account Does Not Exist',
+                            className: 'btn-danger',
+                            disabled: true
+                        })
                     }
                 })
             } catch (e) {
@@ -82,18 +110,18 @@ const CustomerAccounts = (props) => {
         }
         setConfirming(true)
     }
-    const onSubmit = async(e) => {
+    const onSubmitTransaction = async (e) => {
         e.preventDefault();
-        // await axios.post(`${serverLink}loan/apply`, formData, token).then((res) => {
-        //     if (res.data.message === 'success') {
-        //         getData();
-        //         toast.success("Loan Application successfully submitted")
-        //         document.getElementById("Close_loan").click();
+        await axios.post(`${serverLink}customer/transactions/add`, formData, token).then((res) => {
+            if (res.data.message === 'success') {
+                getData();
+                toast.success("Loan Application successfully submitted")
+                document.getElementById("Close_loan").click();
 
-        //     } else {
-        //         toast.error("please try again");
-        //     }
-        // })
+            } else {
+                toast.error("please try again");
+            }
+        })
 
     }
 
@@ -106,6 +134,7 @@ const CustomerAccounts = (props) => {
             TransactionDescription: "",
             TransactionAmount: "",
             CurrencyType: "NGN",
+            TransactionDate : currentDate,
             TransactionBranch: props.loginData[0].Branch,
             InsertedBy: props.loginData[0].StaffID
         })
@@ -183,7 +212,7 @@ const CustomerAccounts = (props) => {
                     </div>
 
                     <Modal id="transaction-modal" title="Transaction Record">
-                        <form onSubmit={onSubmit} >
+                        <form onSubmit={onSubmitTransaction} >
                             <div className="col-md-6 col-xl-12">
                                 <div className="mb-3">
                                     <label className="form-label required" >Transaction Type</label>
@@ -201,13 +230,6 @@ const CustomerAccounts = (props) => {
                                         <input type="number" className="form-control" id="RecieverAcctNo" value={formData.RecieverAcctNo} onChange={onEdit} onBlur={ConfirmReciever} required placeholder="Reciever Acct. No" />
                                         <label className="form-label mt-2 ms-2">
                                             {
-                                                confirming === true &&
-                                                <strong className="text-danger" style={{ fontSize: '10px' }}>
-                                                    CONFIRMING RECEIVER, PLEASE WAIT...
-                                                </strong>
-                                            }
-
-                                            {
                                                 reciever.length > 0 &&
                                                 <strong className="text-success" >
                                                     {reciever[0]?.FirstName}
@@ -224,6 +246,11 @@ const CustomerAccounts = (props) => {
                                 </div>
 
                                 <div className="mb-3">
+                                    <label className="form-label required">Transaction Date</label>
+                                    <input type="date" className="form-control" id="TransactionDate" value={formatDate(formData.TransactionDate)} onChange={onEdit} required />
+                                </div>
+
+                                <div className="mb-3">
                                     <label className="form-label required">Transaction Description</label>
                                     <textarea type="text" rows={'5'} className="form-control" value={formData.TransactionDescription} id="TransactionDescription" onChange={onEdit} required placeholder="Transaction Description" >
 
@@ -231,8 +258,8 @@ const CustomerAccounts = (props) => {
                                 </div>
 
                                 <div className="mb-3">
-                                    <button type="submit" className="btn bt-sm btn-primary w-100">
-                                        Submit
+                                    <button disabled={btn.disabled} type="submit" className={`btn bt-sm ${btn.className} w-100`}>
+                                        {btn.btnText}
                                     </button>
                                 </div>
                             </div>

@@ -371,7 +371,7 @@ const LoanDetails = (props) => {
                                                             </div>
                                                             <div className="col-md-6">
                                                                 <div className="card card-body mt-3 h3">
-                                                                    Total Borrowed : {currencyConverter(loanDetails[0].AmountApplied)}
+                                                                    Total Approved : {currencyConverter(loanDetails[0].AmountApproved)}
 
                                                                 </div>
                                                                 <div className="card card-body mt-3 h3">
@@ -381,7 +381,7 @@ const LoanDetails = (props) => {
                                                                     In Debt:<br />
                                                                     {
                                                                         currencyConverter(
-                                                                            parseInt(loanDetails[0].AmountApplied) -
+                                                                            parseInt(loanDetails[0].AmountApproved) -
                                                                             parseInt(totalPayBack))
                                                                     }
                                                                 </div>
