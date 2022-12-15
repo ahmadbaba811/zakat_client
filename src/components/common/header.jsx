@@ -5,10 +5,41 @@ import { setLoginDetails } from "../../action/action";
 import Logo from '../../images/zakat.jpg'
 import { serverLink } from "../../constants/url";
 import BranchSVG from './arrows-split.svg'
+import { useState } from "react";
+import axios from "axios";
 
 const Header = (props) => {
+  const login = props.loginData;
+  const token = props.loginData[0].token
+
+  const [TodaysCustomers, setTodaysCustomers] = useState([]);
+  const [TodaysLoans, setTodaysLoans] = useState([]);
+
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [])
+
+  const getData = async () => {
+    await axios.get(`${serverLink}dashboard/notification`, token).then((res) => {
+      if (res.data.length > 0) {
+        setTodaysCustomers(res.data[0]?.Customers);
+        setTodaysLoans(res.data[0].Loans);
+
+        let Customer = res.data[0].Customers
+
+        const t = [
+          {cUID : [res.data[0]?.Customers.map(x => x.CustomerID), res.data[0]?.Loans.map(x => x.CustomerID)], InsertedDate : res.data[0].Customers.map(x => x.TDate) },
+          {cUID : res.data[0]?.Loans.map(x => x.CustomerID), InsertedDate : res.data[0].Loans.map(x => x.TDate) }
+        ]
+        
+         console.log(t)
+      }
+    })
+  }
+
+  useEffect(() => {
+    getData();
   }, [])
 
   const Logout = () => {
@@ -41,12 +72,20 @@ const Header = (props) => {
         <div className="navbar-nav flex-row order-md-last">
           <div className="nav-item d-none d-md-flex me-3">
             <div className="btn-list">
-              {/* <div className="mb-3">
-                <select type="text" className="form-control">
-                  <option value={3} style={{backgroundImage:`url(${Logo})`}} >  Mallory Hulme</option>
+              <div className="mb-3">
+                <select type="text" className="form-control" disabled={login[0]?.Role !== "Admin" ? true : false} value={login[0]?.Branch}>
+                  {
+                    props.branch_list.length > 0 &&
+                    props.branch_list.map((x, y) => {
+                      return (
+                        <option key={y} value={x.BranchCode}  >{x.BranchName}</option>
+                      )
+                    })
+                  }
+
                 </select>
-              </div> */}
-              <a
+              </div>
+              {/* <a
                 href="https://github.com/tabler/tabler"
                 className="btn"
                 target="_blank"
@@ -67,14 +106,13 @@ const Header = (props) => {
                     props.branch_list.filter(x => x.BranchCode === props.loginData[0].Branch)[0].BranchName :
                     props.loginData[0].Branch
                 }
-              </a>
+              </a> */}
               <a
-                href="https://github.com/sponsors/codecalm"
+                href="#"
                 className="btn"
                 target="_blank"
                 rel="noreferrer"
               >
-                {/* Download SVG icon from http://tabler-icons.io/i/heart */}
                 <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-world-www" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                   <path d="M19.5 7a8.998 8.998 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4" />
@@ -290,11 +328,11 @@ const Header = (props) => {
             </a>
             <div className="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
 
-              <Link to="/my-profile" className="dropdown-item">
+              <Link to={`/manage-staff?st=${props.loginData[0].StaffID}`} className="dropdown-item">
                 Profile
               </Link>
               <div className="dropdown-divider" />
-              <Link to="/my-settings" className="dropdown-item">
+              <Link to={`/staff-report/${props.loginData[0].StaffID}`} className="dropdown-item">
                 Settings
               </Link>
               <span onClick={Logout} className="dropdown-item cursor-pointer">

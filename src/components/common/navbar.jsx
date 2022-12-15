@@ -9,7 +9,7 @@ const NaviagtionTab = (props) => {
           <div className="container-xl">
             <ul className="navbar-nav">
               <li className="nav-item active">
-                <a className="nav-link" href="./index.html">
+                <Link className="nav-link" to="/dashboard">
                   <span className="nav-link-icon d-md-none d-lg-inline-block">
                     {/* Download SVG icon from http://tabler-icons.io/i/home */}
                     <svg
@@ -31,7 +31,7 @@ const NaviagtionTab = (props) => {
                     </svg>
                   </span>
                   <span className="nav-link-title">Home</span>
-                </a>
+                </Link>
               </li>
               <li className="nav-item dropdown">
                 <a

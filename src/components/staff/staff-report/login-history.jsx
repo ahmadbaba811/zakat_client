@@ -50,7 +50,7 @@ const LoginHistory = (props) => {
                     <div style={{ float: 'right' }}><input className="form-control w-9 me-3" placeholder="search..." onChange={handleSearch} /></div>
                 </div>
             </div>
-            <div className="card-body">
+            <div className="card-body" style={{ maxHeight: '500px', overflowY: 'auto' }}>
 
                 <div className="card">
                     <div className="table-responsive">
@@ -88,6 +88,7 @@ const LoginHistory = (props) => {
                                         <tr className="text-center">
                                             <td>
                                                 <h2>
+                                                    No Activities
                                                 </h2>
                                             </td>
                                         </tr>
@@ -96,13 +97,6 @@ const LoginHistory = (props) => {
                         </table>
                     </div>
                 </div>
-
-                <div className="text-center">
-                    <h2>
-                        No Activities
-                    </h2>
-                </div>
-
             </div>
 
         </div>

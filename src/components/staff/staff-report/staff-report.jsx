@@ -17,7 +17,7 @@ const StafffReport = (props) => {
     const [isLoading, setIsLoading] = useState(false)
     const token = props.loginData[0].token
     const [active, setisActive] = useState(false);
-    const [details, setDetails] = useState(props.staff_details)
+    const [details, setDetails] = useState(props.staff_details);
 
     const ChangeActive = (e) => {
 
@@ -142,35 +142,7 @@ const StafffReport = (props) => {
             <div className="container-xl">
                 <div className="card">
                     <div className="row g-0">
-                        <div className="col-3 d-none d-md-block border-end">
-                            <div className="card-body">
-                                <h4 className="subheader">Settings</h4>
-                                <div className="list-group list-group-transparent">
-                                    <span
-                                        onClick={ChangeActive}
-                                        accessKey={'account-settings'}
-                                        value={'account-settings'}
-                                        className={`list-group-item list-group-item-action d-flex align-items-center cursor-pointer active`}>
-                                        Account Settings
-                                    </span>
-                                </div>
-                                <h4 className="subheader mt-4">Experience</h4>
-                                <div className="list-group list-group-transparent">
-                                    <span
-                                        className={`list-group-item list-group-item-action d-flex align-items-center cursor-pointer`}>
-                                        Login History
-                                    </span>
-                                    <span
-                                        className={`list-group-item list-group-item-action d-flex align-items-center cursor-pointer`}>
-                                        Activities Track
-                                    </span>
-                                    <span
-                                        className={`list-group-item list-group-item-action d-flex align-items-center cursor-pointer`}>
-                                        Staff performace
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div className="col d-flex flex-column">
                             <div className="card-body">
                                 <h2 className="mb-4">Account</h2>

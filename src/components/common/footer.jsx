@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 
 export const Footer = () => {
@@ -9,9 +10,9 @@ export const Footer = () => {
                 <div className="col-lg-auto ms-lg-auto">
                     <ul className="list-inline list-inline-dots mb-0">
                         <li className="list-inline-item">
-                            <a href="#" className="link-secondary">
+                            <Link to="/dashboard" className="link-secondary">
                                 Dashboard
-                            </a>
+                            </Link>
                         </li>
                         <li className="list-inline-item">
                             <a href="#" className="link-secondary">
@@ -25,19 +26,10 @@ export const Footer = () => {
                     <ul className="list-inline list-inline-dots mb-0">
                         <li className="list-inline-item">
                             Copyright © 2022&emsp;
-                            <a href="." className="link-secondary">
+                            <a href="/dashboard" className="link-secondary">
                                 Zakat initiative
                             </a>
                             . All rights reserved.
-                        </li>
-                        <li className="list-inline-item">
-                            <a
-                                href="./changelog.html"
-                                className="link-secondary"
-                                rel="noopener"
-                            >
-                                
-                            </a>
                         </li>
                     </ul>
                 </div>
