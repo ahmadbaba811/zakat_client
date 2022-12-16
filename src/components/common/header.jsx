@@ -7,13 +7,13 @@ import { serverLink } from "../../constants/url";
 import BranchSVG from './arrows-split.svg'
 import { useState } from "react";
 import axios from "axios";
+import { formatDateAndTime } from "../../constants/constants";
 
 const Header = (props) => {
   const login = props.loginData;
   const token = props.loginData[0].token
 
-  const [TodaysCustomers, setTodaysCustomers] = useState([]);
-  const [TodaysLoans, setTodaysLoans] = useState([]);
+  const [Notifications, setNotifications] = useState([]);
 
 
   useEffect(() => {
@@ -23,17 +23,10 @@ const Header = (props) => {
   const getData = async () => {
     await axios.get(`${serverLink}dashboard/notification`, token).then((res) => {
       if (res.data.length > 0) {
-        setTodaysCustomers(res.data[0]?.Customers);
-        setTodaysLoans(res.data[0].Loans);
-
-        let Customer = res.data[0].Customers
-
-        const t = [
-          {cUID : [res.data[0]?.Customers.map(x => x.CustomerID), res.data[0]?.Loans.map(x => x.CustomerID)], InsertedDate : res.data[0].Customers.map(x => x.TDate) },
-          {cUID : res.data[0]?.Loans.map(x => x.CustomerID), InsertedDate : res.data[0].Loans.map(x => x.TDate) }
-        ]
-        
-         console.log(t)
+        let Customer = res.data[0].Customers.map(x => ({ title: 'New Customer', message: `Customer ${x.CustomerID + " added by " + x.InsertedBy}`, date: x.TDate }));
+        let Loans = res.data[0].Loans.map(x => ({ title: 'New Loan', message: `Loan ${x.ID + " for customer " + x.CustomerID + " added by " + x.InsertedBy}`, date: x.TDate }));
+        const t = [...Customer, ...Loans]
+        setNotifications(t);
       }
     })
   }
@@ -226,78 +219,35 @@ const Header = (props) => {
                     <h3 className="card-title">Last updates</h3>
                   </div>
                   <div className="list-group list-group-flush list-group-hoverable">
-                    <div className="list-group-item">
-                      <div className="row align-items-center">
-                        <div className="col-auto">
-                          <span className="status-dot status-dot-animated bg-red d-block" />
-                        </div>
-                        <div className="col text-truncate">
-                          <a href="#" className="text-body d-block">
-                            Example 1
-                          </a>
-                          <div className="d-block text-muted text-truncate mt-n1">
-                            Change deprecated html tags to text decoration classes
-                            (#29604)
+
+                    {
+                      Notifications.length > 0 &&
+                      Notifications.map((x, i) => {
+                        return (
+                          <div className="list-group-item">
+                            <div className="row align-items-center">
+                              <div className="col-md-2">
+                                <span className="status-dot status-dot-animated bg-red d-block" />
+                              </div>
+                              <div className="col-md-10">
+                                <a href="#" className="text-body d-block">
+                                  {x.title}
+                                </a>
+                                <div className="d-block text-muted text-truncate mt-n1">
+                                  {x.message}
+                                </div>
+                                <div className="col-md-12 text-dark fw-bold">
+                                <span >
+                                  {formatDateAndTime(x.date, "date_and_time")}
+                                </span>
+                              </div>
+                              </div>
+                              
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-auto">
-                          <a href="#" className="list-group-item-actions">
-                            {/* Download SVG icon from http://tabler-icons.io/i/star */}
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="icon text-muted"
-                              width={24}
-                              height={24}
-                              viewBox="0 0 24 24"
-                              strokeWidth={2}
-                              stroke="currentColor"
-                              fill="none"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                              <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
-                            </svg>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="list-group-item">
-                      <div className="row align-items-center">
-                        <div className="col-auto">
-                          <span className="status-dot d-block" />
-                        </div>
-                        <div className="col text-truncate">
-                          <a href="#" className="text-body d-block">
-                            Example 2
-                          </a>
-                          <div className="d-block text-muted text-truncate mt-n1">
-                            justify-content:between ⇒
-                            justify-content:space-between (#29734)
-                          </div>
-                        </div>
-                        <div className="col-auto">
-                          <a href="#" className="list-group-item-actions show">
-                            {/* Download SVG icon from http://tabler-icons.io/i/star */}
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="icon text-yellow"
-                              width={24}
-                              height={24}
-                              viewBox="0 0 24 24"
-                              strokeWidth={2}
-                              stroke="currentColor"
-                              fill="none"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                              <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
-                            </svg>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
+                        )
+                      })
+                    }
                   </div>
                 </div>
               </div>
