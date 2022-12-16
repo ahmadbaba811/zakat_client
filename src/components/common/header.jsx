@@ -1,19 +1,25 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { setLoginDetails } from "../../action/action";
+import { setLoginDetails, setStaffDetails } from "../../action/action";
 import Logo from '../../images/zakat.jpg'
 import { serverLink } from "../../constants/url";
 import BranchSVG from './arrows-split.svg'
 import { useState } from "react";
 import axios from "axios";
 import { formatDateAndTime } from "../../constants/constants";
+import { toast } from "react-toastify";
 
 const Header = (props) => {
   const login = props.loginData;
   const token = props.loginData[0].token
 
   const [Notifications, setNotifications] = useState([]);
+  const [disabled, setDisabled] = useState(true);
+  const [branch, setBranch] = useState({
+    BranchCode: login[0]?.Branch,
+    StaffID: login[0]?.StaffID
+  })
 
 
   useEffect(() => {
@@ -32,11 +38,42 @@ const Header = (props) => {
   }
 
   useEffect(() => {
+    setDisabled(
+      login[0]?.Role === "Admin" || login[0]?.Role === "SuperAdmin" ? false : true
+    )
     getData();
   }, [])
 
+  const onEdit = async (e) => {
+    toast.info("please wait...")
+    setBranch({
+      ...branch,
+      BranchCode: e.target.value
+    })
+
+    const br = {
+      BranchCode: e.target.value,
+      StaffID: login[0]?.StaffID
+    }
+
+    await axios.put(`${serverLink}staff/update_branch/${login[0]?.StaffID}`, br, token).then((res) => {
+      if (res.data.message === "success") {
+        toast.success("Changing branch, please wait...");
+        const value = [{ ...res.data.data[0], token }]
+        props.setOnLoginDetails(value);
+        props.setonStaffDetails(...value);
+
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000);
+
+      }
+    })
+  }
+
   const Logout = () => {
-    props.setOnLoginDetails([])
+    props.setOnLoginDetails([]);
+    props.setonStaffDetails('')
   }
 
   return (
@@ -66,7 +103,7 @@ const Header = (props) => {
           <div className="nav-item d-none d-md-flex me-3">
             <div className="btn-list">
               <div className="mb-3">
-                <select type="text" className="form-control" disabled={login[0]?.Role !== "Admin" ? true : false} value={login[0]?.Branch}>
+                <select type="text" className="form-control" disabled={disabled} value={branch.BranchCode} onChange={onEdit} >
                   {
                     props.branch_list.length > 0 &&
                     props.branch_list.map((x, y) => {
@@ -216,37 +253,41 @@ const Header = (props) => {
               <div className="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
                 <div className="card">
                   <div className="card-header">
-                    <h3 className="card-title">Last updates</h3>
+                    <h3 className="card-title">Latest updates</h3>
                   </div>
                   <div className="list-group list-group-flush list-group-hoverable">
 
                     {
-                      Notifications.length > 0 &&
-                      Notifications.map((x, i) => {
-                        return (
-                          <div className="list-group-item">
-                            <div className="row align-items-center">
-                              <div className="col-md-2">
-                                <span className="status-dot status-dot-animated bg-red d-block" />
-                              </div>
-                              <div className="col-md-10">
-                                <a href="#" className="text-body d-block">
-                                  {x.title}
-                                </a>
-                                <div className="d-block text-muted text-truncate mt-n1">
-                                  {x.message}
+                      Notifications.length > 0 ?
+                        Notifications.map((x, i) => {
+                          return (
+                            <div className="list-group-item">
+                              <div className="row align-items-center">
+                                <div className="col-md-2">
+                                  <span className="status-dot status-dot-animated bg-red d-block" />
                                 </div>
-                                <div className="col-md-12 text-dark fw-bold">
-                                <span >
-                                  {formatDateAndTime(x.date, "date_and_time")}
-                                </span>
+                                <div className="col-md-10">
+                                  <a href="#" className="text-body d-block">
+                                    {x.title}
+                                  </a>
+                                  <div className="d-block text-muted text-truncate mt-n1">
+                                    {x.message}
+                                  </div>
+                                  <div className="col-md-12 text-dark fw-bold">
+                                    <span >
+                                      {formatDateAndTime(x.date, "date_and_time")}
+                                    </span>
+                                  </div>
+                                </div>
+
                               </div>
-                              </div>
-                              
                             </div>
-                          </div>
-                        )
-                      })
+                          )
+                        })
+                        :
+                        <div className="text-center" >
+                          <h4>No Updates today</h4>
+                        </div>
                     }
                   </div>
                 </div>
@@ -285,9 +326,11 @@ const Header = (props) => {
               <Link to={`/staff-report/${props.loginData[0].StaffID}`} className="dropdown-item">
                 Settings
               </Link>
-              <span onClick={Logout} className="dropdown-item cursor-pointer">
+
+              <a href={`/`} onClick={Logout} className="dropdown-item">
                 Logout
-              </span>
+              </a>
+
             </div>
           </div>
         </div>
@@ -309,6 +352,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setOnLoginDetails: (p) => {
       dispatch(setLoginDetails(p));
+    },
+    setonStaffDetails: (p) => {
+      dispatch(setStaffDetails(p));
     }
   };
 };
