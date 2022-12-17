@@ -1,5 +1,5 @@
 
-export const serverStatus = "Dev"
+export const serverStatus = "Live"
 
 export const serverLink =
   serverStatus === "Dev"
