@@ -26,7 +26,7 @@ import LoanRecordsDefected from "../loan/loan-records-defected";
 import LoanRecordsDenied from "../loan/loan-records-denied";
 import VerifiedCustomersList from "../kyc/customer-list-verified";
 import LoanPayBacks from "../paybacks/paybacks";
-import AllTransactions from "../transactions/paybacks";
+import AllTransactions from "../transactions/all-transactions";
 import CreditTransactions from "../transactions/credit-transactions";
 import DebitTransactions from "../transactions/debit-transactions";
 

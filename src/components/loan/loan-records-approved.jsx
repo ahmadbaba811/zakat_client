@@ -42,7 +42,7 @@ const LoanRecordsApproved = (props) => {
 
     const getData = async () => {
         try {
-            await axios.get(`${serverLink}loan/approved/list`, token).then((res) => {
+            await axios.get(`${serverLink}loan/approved/list/${props.loginData[0]?.Branch}`, token).then((res) => {
                 if (res.data.length > 0) {
                     let rows = [];
                     res.data.map((x, i) => {

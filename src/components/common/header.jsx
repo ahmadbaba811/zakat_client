@@ -261,7 +261,7 @@ const Header = (props) => {
                       Notifications.length > 0 ?
                         Notifications.map((x, i) => {
                           return (
-                            <div className="list-group-item">
+                            <div className="list-group-item" key={i}>
                               <div className="row align-items-center">
                                 <div className="col-md-2">
                                   <span className="status-dot status-dot-animated bg-red d-block" />

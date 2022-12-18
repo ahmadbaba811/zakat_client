@@ -18,7 +18,7 @@ import { Audit, formatDate } from "../../constants/constants";
 
 
 const VerifiedCustomersList = (props) => {
-    const token = props.loginData[0].token;
+    const token = props.loginData[0]?.token;
 
     const [isLoading, setIsLoading] = useState(true);
     const columns = ["SN", "CustomerID", "Full Name", "Email", "Phone", "Gender", "Status", "Passport", "Action"];
@@ -47,19 +47,19 @@ const VerifiedCustomersList = (props) => {
         City: "",
         Address: "",
         LandMark: "",
-        InsertedBy: props.loginData[0].StaffID,
+        InsertedBy: props.loginData[0]?.StaffID,
         Status: 1,
         Passport: "",
         DateOfBirth: "",
         Gender: "",
         Bvn: "",
-        Branch: props.loginData[0].Branch
+        Branch: props.loginData[0]?.Branch
     })
 
 
     const getData = async () => {
         try {
-            await axios.get(`${serverLink}customer/verified-customer/list`, token).then((res) => {
+            await axios.get(`${serverLink}customer/verified-customer/list/${props.loginData[0]?.Branch}`, token).then((res) => {
                 if (res.data.length > 0) {
                     let rows = [];
                     res.data.map((x, i) => {

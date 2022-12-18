@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 
 const LoanRecords = (props) => {
-    const token = props.loginData[0].token;
+    const token = props.loginData[0]?.token;
     const [data, setData] = useState([]);
     const columns = ["SN", "CustomerID", "Type", "Amount Applied", "Branch", "Duration", "Installments", "Last Due Date", "App. Status", "Loan Status", "Action"];
     const [Loans, setLoans] = useState([])
@@ -42,7 +42,7 @@ const LoanRecords = (props) => {
 
     const getData = async () => {
         try {
-            await axios.get(`${serverLink}loan/loans/list`, token).then((res) => {
+            await axios.get(`${serverLink}loan/loans/list/${props.loginData[0]?.Branch}`, token).then((res) => {
                 if (res.data.length > 0) {
                     let rows = [];
                     res.data.map((x, i) => {
