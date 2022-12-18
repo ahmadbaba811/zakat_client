@@ -121,12 +121,12 @@ const Login = (props) => {
                                             />
                                         </div>
                                         <div className="mb-2">
-                                            <label className="form-label">
+                                            {/* <label className="form-label">
                                                 Password
                                                 <span className="form-label-description">
                                                     <a href="./forgot-password.html">I forgot password</a>
                                                 </span>
-                                            </label>
+                                            </label> */}
                                             <div className="input-group input-group-flat">
                                                 <input
                                                     id="Password"

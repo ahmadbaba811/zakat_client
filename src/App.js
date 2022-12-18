@@ -16,27 +16,30 @@ import { setRoleList } from './action/action';
 
 function App(props) {
   const token = props.loginData[0]?.token;
-  const [roles, setRoles]=useState([]);
+  const [roles, setRoles] = useState([]);
 
-  const getRoles = async()=>{
-    if(token !== ''){
-      await axios.get(`${serverLink}settings/roles/list`, token).then((res)=>{
-        if(res.data.length > 0) {
-            setRoles(res.data)
+  const getRoles = async () => {
+    if (token !== '') {
+      await axios.get(`${serverLink}settings/roles/list`, token).then((res) => {
+        if (res.data.length > 0) {
+          setRoles(res.data)
         }
-    })
+      })
     }
-    
+
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getRoles();
   }, []);
 
   return (
     <div className="" id="aa">
+      {window.scrollTo({ top: 0, behavior: 'smooth' })}
       <Router>
-        {props.loginData.length < 1 ? <PublicRoutes /> : <PageRoutes />}
+        {props.loginData.length > 0 ?
+          <PageRoutes />
+          : <PublicRoutes />}
       </Router>
       <ToastContainer
         position="top-right"
@@ -62,9 +65,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      setOnLoginDetails: (p) => {
-          dispatch(setRoleList(p));
-      }
+    setOnLoginDetails: (p) => {
+      dispatch(setRoleList(p));
+    }
   };
 };
 

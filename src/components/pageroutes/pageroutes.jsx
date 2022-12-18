@@ -55,7 +55,6 @@ const PageRoutes = () => {
             </div>
 
             <Routes>
-                { window.scrollTo({ top: 0, behavior: 'smooth' })}
                 <Route path="/" element={<DashBoards />} />
                 <Route path="/dashboard" element={<DashBoards />} />
 
