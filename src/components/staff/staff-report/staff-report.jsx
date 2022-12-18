@@ -96,7 +96,9 @@ const StafffReport = (props) => {
         })
     }
 
-    const onSubmit = async () => {
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        toast.info("please wait..")
         if (formData.Password === "" || formData.nPassword === "" || formData.cPassword === "") {
             toast.error("Please enter password...")
             return false;
@@ -112,7 +114,7 @@ const StafffReport = (props) => {
         try {
             try {
                 const senData = {
-                    Password: encryptData(formData.cPassword),
+                    Password: encryptData(formData.nPassword),
                     StaffID: formData.StaffID
                 }
                 await axios.put(`${serverLink}staff/update_password`, senData, token).then((res) => {
