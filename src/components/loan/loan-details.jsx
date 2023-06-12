@@ -39,7 +39,7 @@ const LoanDetails = (props) => {
 
     const [totalPayBack, setPayBack] = useState(0)
     const getData = async () => {
-        await axios.get(`${serverLink}loan/loans/list/${ApplicationID}`, token).then(async (res) => {
+        await axios.get(`${serverLink}loan/loan_list/${ApplicationID}`, token).then(async (res) => {
             if (res.data.length > 0) {
                 setFormData({
                     ...formData,
@@ -52,9 +52,9 @@ const LoanDetails = (props) => {
                     if (res.data.length > 0) {
                         setCustomer(res.data);
                     }
-                    setIsLoading(false)
                 })
             }
+            setIsLoading(false)
         })
     }
 
@@ -209,11 +209,11 @@ const LoanDetails = (props) => {
                                     <div className="row">
                                         <div className="d-flex justify-content-between">
                                             <h2 className="mb-4">
-                                                {customer[0].Surname} {customer[0].MiddleName} {customer[0].FirstName} {customer[0].CustomerID}</h2>
+                                                {customer[0]?.Surname} {customer[0]?.MiddleName} {customer[0]?.FirstName} {customer[0]?.CustomerID}</h2>
                                             <h3>
                                                 {
                                                     props.loan_types.length > 0 &&
-                                                    props.loan_types.filter(x => x.LoanCode === loanDetails[0].LoanType)[0].LoanName + " (" + loanDetails[0].LoanType + ")"
+                                                    props.loan_types.filter(x => x.LoanCode === loanDetails[0]?.LoanType)[0]?.LoanName + " (" + loanDetails[0]?.LoanType + ")"
                                                 }
 
                                             </h3>
@@ -254,30 +254,30 @@ const LoanDetails = (props) => {
                                                                 <div className="datagrid h3">
                                                                     <div className="datagrid-item">
                                                                         <div className="datagrid-title">Issueing Branch</div>
-                                                                        <div className="datagrid-content">{props.branch_list.length > 0 && props.branch_list.filter(x => x.BranchCode === loanDetails[0].IssueingBranch)[0].BranchName}</div>
+                                                                        <div className="datagrid-content">{props.branch_list.length > 0 && props.branch_list.filter(x => x.BranchCode === loanDetails[0]?.IssueingBranch)[0]?.BranchName}</div>
                                                                     </div>
                                                                     <div className="datagrid-item">
                                                                         <div className="datagrid-title">Amount Applied</div>
                                                                         <div className="datagrid-content">
-                                                                            {currencyConverter(loanDetails[0].AmountApplied)}</div>
+                                                                            {currencyConverter(loanDetails[0]?.AmountApplied)}</div>
                                                                     </div>
                                                                     <div className="datagrid-item">
                                                                         <div className="datagrid-title">Loan Type</div>
-                                                                        <div className="datagrid-content">{loanDetails[0].LoanType}</div>
+                                                                        <div className="datagrid-content">{loanDetails[0]?.LoanType}</div>
                                                                     </div>
                                                                     <div className="datagrid-item">
                                                                         <div className="datagrid-title">Loan Duration</div>
-                                                                        <div className="datagrid-content">{loanDetails[0].LoanDuration} Months </div>
+                                                                        <div className="datagrid-content">{loanDetails[0]?.LoanDuration} Months </div>
                                                                     </div>
                                                                     <div className="datagrid-item">
                                                                         <div className="datagrid-title">First Due Date</div>
                                                                         <div className="datagrid-content">
-                                                                            {formatDateAndTime(loanDetails[0].DueDateFirst, "date")} </div>
+                                                                            {formatDateAndTime(loanDetails[0]?.DueDateFirst, "date")} </div>
                                                                     </div>
                                                                     <div className="datagrid-item">
                                                                         <div className="datagrid-title">Last Due Date</div>
                                                                         <div className="datagrid-content">
-                                                                            {formatDateAndTime(loanDetails[0].DueDateLast, "date")} </div>
+                                                                            {formatDateAndTime(loanDetails[0]?.DueDateLast, "date")} </div>
                                                                     </div>
 
                                                                 </div>
@@ -286,27 +286,27 @@ const LoanDetails = (props) => {
                                                                     <div className="datagrid-item">
                                                                         <div className="datagrid-title">Payback Installments</div>
                                                                         <div className="datagrid-content">
-                                                                            {currencyConverter(loanDetails[0].PayBackInstallments)} </div>
+                                                                            {currencyConverter(loanDetails[0]?.PayBackInstallments)} </div>
                                                                     </div>
                                                                     <div className="datagrid-item">
                                                                         <div className="datagrid-title">Application Date</div>
                                                                         <div className="datagrid-content">
-                                                                            {formatDateAndTime(loanDetails[0].InsertedDate, "date")} </div>
+                                                                            {formatDateAndTime(loanDetails[0]?.InsertedDate, "date")} </div>
                                                                     </div>
                                                                     <div className="datagrid-item">
                                                                         <div className="datagrid-title">Disbursement Account</div>
                                                                         <div className="datagrid-content">
-                                                                            {loanDetails[0].AccountName} </div>
+                                                                            {loanDetails[0]?.AccountName} </div>
                                                                     </div>
                                                                     <div className="datagrid-item">
                                                                         <div className="datagrid-title">Account Number</div>
                                                                         <div className="datagrid-content">
-                                                                            {loanDetails[0].AccountNumber} </div>
+                                                                            {loanDetails[0]?.AccountNumber} </div>
                                                                     </div>
                                                                     <div className="datagrid-item">
                                                                         <div className="datagrid-title">Bank Name</div>
                                                                         <div className="datagrid-content">
-                                                                            {loanDetails[0].BankName} </div>
+                                                                            {loanDetails[0]?.BankName} </div>
                                                                     </div>
                                                                 </div>
 
@@ -402,7 +402,7 @@ const LoanDetails = (props) => {
                                     <div className="col-md-6 col-xl-12">
                                         <div className="mb-3">
                                             <label className="form-label required">Last Due Date</label>
-                                            <input type="date" className="form-control" id="DueDateLast" value={formData.DueDateLast} onChange={onEdit} required min={loanDetails.length > 0 && formatDate(loanDetails[0].DueDateLast)} />
+                                            <input type="date" className="form-control" id="DueDateLast" value={formData.DueDateLast} onChange={onEdit} required min={formatDate(loanDetails[0]?.DueDateLast)} />
                                         </div>
                                         <div className="mb-3">
                                             <button type="submit" className="btn bt-sm btn-primary w-100">
